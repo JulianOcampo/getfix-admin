@@ -1,0 +1,96 @@
+<div id="brand-form">
+    <nb-card>
+        <nb-card-header></nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+                <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="brand.id"> -->
+                <label for="">Name:</label>
+                <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" name="name"
+                    formControlName="name">
+
+                <label for="">Description</label>
+                <textarea rows="2" nbInput fullWidth shape="rectangle" placeholder="Description" name="description"
+                    formControlName="description"></textarea>
+
+                <div class="row" style="padding: 10px 0px;">
+                    <div class="col-md-6" style="line-height: 3;">
+                        <label for="file" class="gfix-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload File
+                        </label>
+
+                        <input id="file" type='file' (change)="readURL($event.target.files[0]);" accept=".png, .jpg"
+                            name="image" data-buttonText="Your label here." style="display: none;" />
+                        <input type="hidden" name="fileHidden" formControlName="image" /> <!-- Validation Field -->
+                        {{newImageName}}
+                        <img id="blah" *ngIf="brand.image || imageSrc; else noImage" [src]="imageSrc || brand.image"
+                            alt="your image" height="100px"
+                            style="display:block; margin:auto; background-color: black; border-radius: 5px; padding: 10px;" />
+                        <ng-template #noImage>
+                            <img id="blah" [src]="'https://mdbootstrap.com/img/Photos/Others/placeholder.jpg'"
+                                alt="your image" width="100px"
+                                style="display:block; margin:auto; background-color: black; border-radius: 5px; padding: 10px;" />
+                        </ng-template>
+                        <div class="progress" *ngIf="uploadPercent">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                [style.width]="(uploadPercent | async) +'%'">
+                            </div>
+                        </div>
+
+                        <!-- <label class="custom-file-label" for="">Image</label>
+              <input type="file" class="custom-file-input" accept=".png, .jpg" (change)="onUploadImage($event.target.files[0])" nbInput
+                fullWidth shape="rectangle" placeholder="Image"> -->
+                        <input type="text" [value]="urlImage" name="image" style="display: none;">
+                    </div>
+                    <div class="col-md-6" id="active">
+                        <div class="validation-checkboxes">
+                            <label for="active">Active:</label>
+                            <nb-checkbox (checkedChange)="toggle($event)" name="active" formControlName="active"
+                                status="primary" [ngClass]="{'status-danger':!brandActive,
+                              'status-success':brandActive}">
+                                <span [ngClass]="{'gfix-active': brandActive,
+                                     'gfix-disabled': !brandActive }">{{brandActive}}</span></nb-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 col-sm-6">
+                        <p>Available</p>
+                        <div cdkDropList #moviesList="cdkDropList" [cdkDropListData]="availablecategories"
+                            [cdkDropListConnectedTo]="[doneMovieList]" class="movie-list"
+                            (cdkDropListDropped)="onDrop($event)">
+                            <div class="movie-block" *ngFor="let availablecategory of availablecategories" cdkDrag title="Drag to activate">
+                                {{availablecategory.name}}</div>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-sm-6">
+                        <p>Selected</p>
+                        <div cdkDropList #doneMovieList="cdkDropList" [cdkDropListData]="selectcategories"
+                            [cdkDropListConnectedTo]="[moviesList]" class="movie-list"
+                            (cdkDropListDropped)="onDrop($event)">
+                            <div class="movie-block" *ngFor="let selectcategory of selectcategories" cdkDrag title="Drag to disable">
+                                {{selectcategory.name}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 15px;">
+
+                    <div class="col-6 col-sm-6" *ngIf="brand.id" style="text-align: end;">
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Enviar"
+                            [disabled]="!brandForm.valid">
+                    </div>
+                    <div class="col-6 col-sm-6" *ngIf="!brand.id" style="text-align: end;">
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Crear"
+                            [disabled]="!brandForm.valid">
+                    </div>
+                    <div class="col-6 col-sm-6" style="text-align: initial;">
+                        <button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </nb-card-body>
+    </nb-card>
+</div>

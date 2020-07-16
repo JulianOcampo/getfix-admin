@@ -1,0 +1,93 @@
+<!-- <pre>{{ category | json }}</pre> -->
+
+<div id="category-form">
+  <nb-card>
+    <nb-card-header></nb-card-header>
+    <nb-card-body>
+      <form #categoryForm="ngForm" (ngSubmit)="onSubmit(categoryForm)">
+        <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="category.id"> -->
+        <label for="">Name:</label>
+        <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" name="name" #name="ngModel"
+          [ngModel]="category.name">
+        <label for="">Description</label>
+        <textarea rows="2" nbInput fullWidth shape="rectangle" placeholder="Text Area" name="description"
+          #description="ngModel" [ngModel]="category.description"></textarea>
+
+        <div class="row" style="padding: 10px 0px;">
+          <div class="col-md-6" style="line-height: 3;">
+            <input type='file' (change)="readURL($event.target.files[0]);" accept=".png, .jpg" />
+
+            <img id="blah" *ngIf="category.image || imageSrc; else noImage" [src]="imageSrc || category.image"
+              alt="your image" height="100px"
+              style="display:block; margin:auto; background-color: black; border-radius: 5px; padding: 10px;" />
+            <ng-template #noImage>
+              <img id="blah" [src]="'https://mdbootstrap.com/img/Photos/Others/placeholder.jpg'" alt="your image"
+                width="100px"
+                style="display:block; margin:auto; background-color: black; border-radius: 5px; padding: 10px;" />
+            </ng-template>
+            <div class="progress" *ngIf="uploadPercent">
+              <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                [style.width]="(uploadPercent | async) +'%'">
+              </div>
+            </div>
+
+            <!-- <label class="custom-file-label" for="">Image</label>
+            <input type="file" class="custom-file-input" accept=".png, .jpg" (change)="onUploadImage($event.target.files[0])" nbInput
+              fullWidth shape="rectangle" placeholder="Image"> -->
+            <input type="text" [value]="urlImage" name="image" style="display: none;">
+          </div>
+          <div class="col-md-6" id="active">
+
+
+            <div class="validation-checkboxes">
+              <!-- <nb-checkbox (checkedChange)="toggle($event)" status="success" [value]= "category.active">Active</nb-checkbox> -->
+              <label for="active">Active:</label>
+              <nb-checkbox (checkedChange)="toggle($event)" name="active" #active="ngModel" [ngModel]="category.active"
+                status="primary" [value]='category.active' [ngClass]="{'status-danger':!categoryActive,
+                            'status-success':categoryActive}">
+                <span [ngClass]="{'gfix-active': categoryActive,
+                                   'gfix-disabled': !categoryActive }">{{categoryActive}}</span></nb-checkbox>
+            </div>
+
+
+          </div>
+          <!-- <div style="background-color: black; border-radius: 5px; padding: 10px;">
+            <img [src]="category.image" alt="" width="60px">
+
+          </div> -->
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+          </div>
+          <div class="col-md-2" *ngIf="category.id">
+            <input class="btn btn-primary" type="submit" name="enviar" value="Enviar">
+          </div>
+          <div class="col-md-2" *ngIf="!category.id">
+            <input class="btn btn-primary" type="submit" name="enviar" value="Crear">
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
+          </div>
+          <div class="col-md-4">
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+
+  </nb-card>
+</div>
+
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit3()">
+
+  <label>
+      First Name:
+      <input type="text" formControlName="firstName">
+  </label>
+
+  <label>
+      Last Name:
+      <input type="text" formControlName="lastName">
+  </label>
+  <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+
+</form>

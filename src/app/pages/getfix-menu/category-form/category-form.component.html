@@ -1,0 +1,87 @@
+<!-- <pre>{{ category | json }}</pre> -->
+
+<div id="category-form">
+    <nb-card>
+        <nb-card-header></nb-card-header>
+        <nb-card-body>
+            <form [formGroup]="categoryForm" (ngSubmit)="onSubmit(categoryForm)">
+                <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="category.id"> -->
+                <label for="">Name:</label>
+                <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" name="name"
+                    formControlName="name">
+
+                <label for="">Description</label>
+                <textarea rows="2" nbInput fullWidth shape="rectangle" placeholder="Description" name="description"
+                    formControlName="description"></textarea>
+
+                <div class="row" style="padding: 10px 0px;">
+                    <div class="col-md-6" style="line-height: 3;">
+
+                        <label for="file" class="gfix-upload">
+                            <i class="fas fa-cloud-upload-alt"></i> Upload File
+                        </label>
+
+                        <input id="file" type='file' (change)="readURL($event.target.files[0]);" accept=".png, .jpg"
+                            name="image" data-buttonText="Your label here." style="display: none;" />
+                        <input type="hidden" name="fileHidden" formControlName="image" /> <!-- Validation Field -->
+                        {{newImageName}}
+                        <img id="blah" *ngIf="category.image || imageSrc; else noImage"
+                            [src]="imageSrc || category.image" alt="your image" height="100px"
+                            style="display:block; margin:auto; background-color: black; border-radius: 5px; padding: 10px;" />
+                        <ng-template #noImage>
+                            <img id="blah" [src]="'https://mdbootstrap.com/img/Photos/Others/placeholder.jpg'"
+                                alt="your image" width="100px"
+                                style="display:block; margin:auto; background-color: black; border-radius: 5px; padding: 10px;" />
+                        </ng-template>
+                        <div class="progress" *ngIf="uploadPercent">
+                            <div class="progress-bar progress-bar-striped bg-success" role="progressbar"
+                                [style.width]="(uploadPercent | async) +'%'">
+                            </div>
+                        </div>
+
+                        <!-- <label class="custom-file-label" for="">Image</label>
+              <input type="file" class="custom-file-input" accept=".png, .jpg" (change)="onUploadImage($event.target.files[0])" nbInput
+                fullWidth shape="rectangle" placeholder="Image"> -->
+                        <input type="text" [value]="urlImage" name="image" style="display: none;">
+                    </div>
+                    <div class="col-md-6" id="active">
+
+
+                        <div class="validation-checkboxes">
+                            <!-- <nb-checkbox (checkedChange)="toggle($event)" status="success" [value]= "category.active">Active</nb-checkbox> -->
+                            <label for="active">Active:</label>
+
+                            <nb-checkbox (checkedChange)="toggle($event)" name="active" formControlName="active"
+                                status="primary" [ngClass]="{'status-danger':!categoryActive,
+                              'status-success':categoryActive}">
+                                <span [ngClass]="{'gfix-active': categoryActive,
+                                     'gfix-disabled': !categoryActive }">{{categoryActive}}</span></nb-checkbox>
+                        </div>
+
+
+                    </div>
+                    <!-- <div style="background-color: black; border-radius: 5px; padding: 10px;">
+              <img [src]="category.image" alt="" width="60px">
+  
+            </div> -->
+                </div>
+                <div class="row">
+                    
+                    <div class="col-6 col-sm-6" *ngIf="category.id" style="text-align: end;">
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Enviar"
+                            [disabled]="!categoryForm.valid">
+                    </div>
+                    <div class="col-6 col-sm-6" *ngIf="!category.id"  style="text-align: end;">
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Crear"
+                            [disabled]="!categoryForm.valid">
+                    </div>
+                    <div class="col-6 col-sm-6"  style="text-align: initial;">
+                        <button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
+                    </div>
+                    
+                </div>
+            </form>
+        </nb-card-body>
+
+    </nb-card>
+</div>
