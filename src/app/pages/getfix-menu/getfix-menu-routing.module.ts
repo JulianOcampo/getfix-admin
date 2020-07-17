@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { GetfixMenuComponent } from './getfix-menu.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { BrandsComponent } from './brands/brands.component';
+import { ModelsComponent } from './models/models.component';
 
 
 const routes: Routes = [{
@@ -14,8 +15,12 @@ const routes: Routes = [{
       component: CategoriesComponent
     },
     {
-      path:'brands',
+      path: 'brands',
       component: BrandsComponent
+    },
+    {
+      path: 'models',
+      component: ModelsComponent
     }
   ]
 }];
@@ -30,5 +35,6 @@ export const routedComponents = [
   GetfixMenuComponent,
   CategoriesComponent,
   BrandsComponent,
+  ModelsComponent,
 
 ];

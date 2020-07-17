@@ -12,6 +12,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title:'Brands',
         link:'/pages/get-fix-menu/brands'
+      },
+      {
+        title:'Models',
+        link:'/pages/get-fix-menu/models'
       }
     ]
   },

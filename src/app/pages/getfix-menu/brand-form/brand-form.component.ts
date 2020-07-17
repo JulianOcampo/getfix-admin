@@ -27,8 +27,8 @@ export class BrandFormComponent {
   public imageEdit: any;
   public brandActive: boolean;
   public newImageName: string = 'Select a Image...';
-  pass: any;
 
+  public color1: string = '#2889e9';
 
   availablecategories: Array<any> = [];
 
@@ -65,23 +65,18 @@ export class BrandFormComponent {
         })
         console.log("this.selectcategories", this.selectcategories, "this.availablecategories", this.availablecategories, "this.brand.categoriesId", this.brand.categoriesId);
       })
-
-
-
     // this.selectBrands = this.brand.categoriesId
     //   .map(x =>
     //     ({
     //       id: x.slice(0, x.indexOf(":*")),
     //       name: x.slice(x.indexOf(":*") + 2)
     //     }));
-
-
   }
-
 
   close() {
     this.windowRef.close();
   }
+
   cancel() {
     this.windowRef.close();
 
@@ -94,6 +89,7 @@ export class BrandFormComponent {
   onSubmit2(a) {
     console.log("submit2", a)
   }
+
   createOrUptade(brand) {
     if (this.brand)
       console.log(brand)
@@ -144,6 +140,7 @@ export class BrandFormComponent {
         })
         return;
       }
+
       if (!this.brand.id) {
         console.log("--------------Creandooo [BRAND] ------------");
         task = this._commonService.uploadImage(filePath, file)
@@ -151,7 +148,6 @@ export class BrandFormComponent {
           x.ref.getDownloadURL().then(newImage => {
             this.urlImage = newImage;
             console.log("newImage", newImage)
-
             console.log("Creandooo...", this.imageEdit)
             let newCategory = this.brandForm.value;
             newCategory.image = newImage;
@@ -164,22 +160,15 @@ export class BrandFormComponent {
         // console.log("Creandooo...", this.imageEdit)
         console.log("brandForm", this.brandForm)
 
-
-
-
-
         return;
       }
-      // task.snapshotChanges().pipe(finalize(() =>   ref.getDownloadURL()))
-      //   .subscribe();
-      // console.log(task)
     }
   }
 
   onUploadImage(ev) {
     console.log(ev)
-
   }
+
   readURL(event): void {
     let file = event; // <--- File Object for future use.
     this.newImageName = file ? file.name : 'Select a Image...';
@@ -188,10 +177,8 @@ export class BrandFormComponent {
     this.imageEdit = event;
     if (event) {
       const file = event;
-
       const reader = new FileReader();
       reader.onload = e => this.imageSrc = reader.result;
-
       reader.readAsDataURL(file);
       console.log(this.imageSrc)
     }
@@ -200,8 +187,6 @@ export class BrandFormComponent {
   toggle(event) {
     this.brandActive = event;
   }
-
-
 
   onDrop(event: CdkDragDrop<string[]>) {
     console.log(event)
@@ -213,8 +198,11 @@ export class BrandFormComponent {
         event.previousIndex,
         event.currentIndex);
     }
-
-
   }
+
+  public onEventLog(event: string, data: any): void {
+    console.log(event, data);
+  }
+
 
 }

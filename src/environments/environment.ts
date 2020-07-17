@@ -22,6 +22,7 @@ export const environment = {
   firebaseRef: {
     category: '/Categories',
     brand: '/Brands',
+    model: '/Models',
   },
   uploadPath:{
     category: 'uploads/category_',

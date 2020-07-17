@@ -9,11 +9,13 @@ import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CategoryFormComponent } from './category-form/category-form.component';
 import { BrandFormComponent } from './brand-form/brand-form.component';
-
+import { ModelFormComponent } from './model-form/model-form.component';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
-  declarations: [...routedComponents, CategoryFormComponent, BrandFormComponent],
+  declarations: [...routedComponents, CategoryFormComponent, BrandFormComponent, ModelFormComponent],
   imports: [
+    ColorPickerModule,
     CommonModule,
     GetfixMenuRoutingModule,
     DragDropModule,

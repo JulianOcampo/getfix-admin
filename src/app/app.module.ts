@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { FormsModule as ngFormsModule, ReactiveFormsModule as ngReactiveFormsModule } from '@angular/forms';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 import {
@@ -35,6 +36,7 @@ import { environment } from '../environments/environment';
   imports: [
     ngFormsModule,
     ngReactiveFormsModule,
+    ColorPickerModule,
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,

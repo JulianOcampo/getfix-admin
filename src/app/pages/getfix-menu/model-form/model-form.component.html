@@ -1,9 +1,8 @@
-<div id="brand-form">
+<div id="model-form">
     <nb-card>
         <nb-card-header></nb-card-header>
         <nb-card-body>
-            <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
-                <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="brand.id"> -->
+            <form [formGroup]="modelForm" (ngSubmit)="onSubmit()">
                 <label for="">Name:</label>
                 <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" name="name"
                     formControlName="name">
@@ -22,7 +21,7 @@
                             name="image" data-buttonText="Your label here." style="display: none;" />
                         <input type="hidden" name="fileHidden" formControlName="image" /> <!-- Validation Field -->
                         {{newImageName}}
-                        <img id="blah" *ngIf="brand.image || imageSrc; else noImage" [src]="imageSrc || brand.image"
+                        <img id="blah" *ngIf="model.image || imageSrc; else noImage" [src]="imageSrc || model.image"
                             alt="your image" height="100px"
                             style="display:block; margin:auto; background-color: black; border-radius: 5px; padding: 10px;" />
                         <ng-template #noImage>
@@ -45,44 +44,22 @@
                         <div class="validation-checkboxes">
                             <label for="active">Active:</label>
                             <nb-checkbox (checkedChange)="toggle($event)" name="active" formControlName="active"
-                                status="primary" [ngClass]="{'status-danger':!brandActive,
-                              'status-success':brandActive}">
-                                <span [ngClass]="{'gfix-active': brandActive,
-                                     'gfix-disabled': !brandActive }">{{brandActive}}</span></nb-checkbox>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 col-sm-6">
-                        <p>Available</p>
-                        <div cdkDropList #moviesList="cdkDropList" [cdkDropListData]="availablecategories"
-                            [cdkDropListConnectedTo]="[doneMovieList]" class="movie-list"
-                            (cdkDropListDropped)="onDrop($event)">
-                            <div class="movie-block" *ngFor="let availablecategory of availablecategories" cdkDrag title="Drag to activate">
-                                {{availablecategory.name}}</div>
-                        </div>
-                    </div>
-
-                    <div class="col-6 col-sm-6">
-                        <p>Selected</p>
-                        <div cdkDropList #doneMovieList="cdkDropList" [cdkDropListData]="selectcategories"
-                            [cdkDropListConnectedTo]="[moviesList]" class="movie-list"
-                            (cdkDropListDropped)="onDrop($event)">
-                            <div class="movie-block" *ngFor="let selectcategory of selectcategories" cdkDrag title="Drag to disable">
-                                {{selectcategory.name}}
-                            </div>
+                                status="primary" [ngClass]="{'status-danger':!modelActive,
+                              'status-success':modelActive}">
+                                <span [ngClass]="{'gfix-active': modelActive,
+                                     'gfix-disabled': !modelActive }">{{modelActive}}</span></nb-checkbox>
                         </div>
                     </div>
                 </div>
                 <div class="row" style="padding-top: 15px;">
 
-                    <div class="col-6 col-sm-6" *ngIf="brand.id" style="text-align: end;">
+                    <div class="col-6 col-sm-6" *ngIf="model.id" style="text-align: end;">
                         <input class="btn btn-primary" type="submit" name="enviar" value="Enviar"
-                            [disabled]="!brandForm.valid">
+                            [disabled]="!modelForm.valid">
                     </div>
-                    <div class="col-6 col-sm-6" *ngIf="!brand.id" style="text-align: end;">
+                    <div class="col-6 col-sm-6" *ngIf="!model.id" style="text-align: end;">
                         <input class="btn btn-primary" type="submit" name="enviar" value="Crear"
-                            [disabled]="!brandForm.valid">
+                            [disabled]="!modelForm.valid">
                     </div>
                     <div class="col-6 col-sm-6" style="text-align: initial;">
                         <button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
@@ -90,6 +67,30 @@
 
                 </div>
 
+                <div class="row">
+                    <div class="col-md-5">
+                        <input [style.background]="color1" [(colorPicker)]="color1" [cpOutputFormat]="'hex'"
+                            (colorPickerOpen)="onEventLog('colorPickerOpen', $event)"
+                            (colorPickerClose)="onEventLog('colorPickerClose', $event)"
+                            (cpInputChange)="onEventLog('cpInputChange', $event)"
+                            (cpSliderDragStart)="onEventLog('cpSliderDragStart', $event)"
+                            (cpSliderDragEnd)="onEventLog('cpSliderDragEnd', $event)" />
+                    </div>
+
+                    <div class="col-md-7">
+                        <p>Usage:</p>
+                        <pre>
+                &lt;input [(colorPicker)]="color"
+                       [style.background]="color"/&gt;
+                      </pre>
+                        <p>Or:</p>
+                        <pre>
+                &lt;input [style.background]="color"
+                       [colorPicker]="color"
+                       (colorPickerChange)="color=$event"/&gt;
+                      </pre>
+                    </div>
+                </div>
             </form>
 
         </nb-card-body>

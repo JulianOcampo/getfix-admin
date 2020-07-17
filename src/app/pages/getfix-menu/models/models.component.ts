@@ -2,18 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { NbWindowService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
-import { BrandService } from '../../../services/brand.service';
-import { map } from 'rxjs/operators'
-import { BrandFormComponent } from '../brand-form/brand-form.component';
-
+import { ModelService } from '../../../services/model.service';
+import { map } from 'rxjs/operators';
+import { ModelFormComponent } from '../model-form/model-form.component'
 @Component({
-  selector: 'ngx-brands',
-  templateUrl: './brands.component.html',
-  styleUrls: ['./brands.component.scss']
+  selector: 'ngx-models',
+  templateUrl: './models.component.html',
+  styleUrls: ['./models.component.scss']
 })
-export class BrandsComponent implements OnInit  {
+export class ModelsComponent implements OnInit {
+
   settings = {
     mode: 'external',
+    title: 'sisa',
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
     },
@@ -30,8 +31,12 @@ export class BrandsComponent implements OnInit  {
         title: 'Name',
         type: 'string',
       },
-      description: {
-        title: 'Description',
+      brandName: {
+        title: 'Brand Name',
+        type: 'string',
+      },
+      categoryName: {
+        title: 'Category Name',
         type: 'string',
       },
       active: {
@@ -57,49 +62,40 @@ export class BrandsComponent implements OnInit  {
     },
   };
   source: LocalDataSource = new LocalDataSource();
-
   constructor(
-    private _brandService: BrandService,
-    private _windowService: NbWindowService,
-
+    private _modelService: ModelService,
+    private _windowService: NbWindowService
   ) { }
 
   ngOnInit(): void {
-    this.getBrands();
-
+    this.getModelList()
   }
 
-  getBrands() {
-    this._brandService.getBrandsList().snapshotChanges().pipe(
+  getModelList() {
+    this._modelService.getModelList().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
+          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+        )
       )
-    ).subscribe(brands => {
-      console.log(brands);
-      this.source.load(brands);
-      this.source.setPaging(1,15);
+    ).subscribe(models => {
+      console.log(models)
+      this.source.load(models);
+      this.source.setPaging(1, 15);
     })
   }
 
   onAdd(ev) {
     console.log("ADD->", ev)
-    this._windowService.open(BrandFormComponent, {
-      title: `Create Brand: `,
+    this._windowService.open(ModelFormComponent, {
+      title: `Create Category: `,
       context: { active: false }
     });
-  }
-
-  onEdit(ev) {
-    this._windowService.open(BrandFormComponent, {
-      title: `Edit Brand: `,
-      context: ev.data
-    });
-
-    console.log("work", ev)
   }
   userRowSelect(ev) {
     console.log(ev)
   }
-
+  customAction(ev) {
+    console.log(ev)
+  }
 }

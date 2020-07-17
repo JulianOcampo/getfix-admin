@@ -59,8 +59,8 @@ export class CategoriesComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
 
   constructor(
-    private windowService: NbWindowService,
-    private _categoryService: CategoryService
+    private _categoryService: CategoryService,
+    private _windowService: NbWindowService,
   ) { }
 
   ngOnInit(): void {
@@ -78,6 +78,7 @@ export class CategoriesComponent implements OnInit {
     ).subscribe(categories => {
       console.log(categories)
       this.source.load(categories);
+      this.source.setPaging(1,15);
     })
   }
 
@@ -100,14 +101,14 @@ export class CategoriesComponent implements OnInit {
 
   onAdd(ev) {
     console.log("ADD->", ev)
-    this.windowService.open(CategoryFormComponent, {
+    this._windowService.open(CategoryFormComponent, {
       title: `Create Category: `,
       context: { active: false }
     });
   }
 
   onEdit(ev) {
-    this.windowService.open(CategoryFormComponent, {
+    this._windowService.open(CategoryFormComponent, {
       title: `Edit Category: `,
       context: ev.data
     });
