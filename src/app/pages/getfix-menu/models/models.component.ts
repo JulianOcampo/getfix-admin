@@ -5,6 +5,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { ModelService } from '../../../services/model.service';
 import { map } from 'rxjs/operators';
 import { ModelFormComponent } from '../model-form/model-form.component'
+import { Model } from '../../../models/model';
 @Component({
   selector: 'ngx-models',
   templateUrl: './models.component.html',
@@ -28,22 +29,22 @@ export class ModelsComponent implements OnInit {
     columns: {
 
       name: {
-        title: 'Name',
-        type: 'string',
-      },
-      brandName: {
-        title: 'Brand Name',
+        title: 'Model Name',
         type: 'string',
       },
       categoryName: {
         title: 'Category Name',
         type: 'string',
       },
+      brandName: {
+        title: 'Brand Name',
+        type: 'string',
+      },
       active: {
         title: 'Active',
         type: 'html',
         valuePrepareFunction: (cell, row) => {
-          console.log("este es el active", row.active)
+          // console.log("este es el active", row.active)
           let handler = row.active;
           if (handler)
             return `<i class="fas fa-check-circle"></i>`
@@ -89,8 +90,16 @@ export class ModelsComponent implements OnInit {
     console.log("ADD->", ev)
     this._windowService.open(ModelFormComponent, {
       title: `Create Category: `,
-      context: { active: false }
+      context: [{ active: false, categoryId: '' }]
     });
+  }
+  onEdit(ev: Model) {
+    this._windowService.open(ModelFormComponent, {
+      title: `Edit Category: `,
+      context: [ev],
+    });
+
+    console.log("work", ev)
   }
   userRowSelect(ev) {
     console.log(ev)

@@ -25,21 +25,24 @@ nb-card-body {
   flex: 1 0 33%;
 }
 @media only screen and (min-width: 300px) and (max-width: 700px) {
-  #brand-form {
+  .gfix-form nb-card-body {
     overflow-y: scroll;
-    max-height: 350px;
+    max-height: 300px;
+    min-width: 315px;
   }
 }
 @media only screen and (min-width: 700px) and (max-width: 1200px) {
-  #brand-form {
+  .gfix-form nb-card-body {
     overflow-y: scroll;
-    max-height: 450px;
+    max-height: 400px;
+    min-width: 700px;
   }
 }
 @media only screen and (min-width: 1000px) {
-  #brand-form {
+  .gfix-form nb-card-body {
     overflow-y: scroll;
-    max-height: 550px;
+    max-height: 500px;
+    min-width: 800px;
   }
 }
 
@@ -70,8 +73,12 @@ nb-card-body {
   flex: 1 0 33%;
 }
 
-#active {
+.gfix-center-flex {
   display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.gfix-center {
   justify-content: center;
   align-items: center;
 }
@@ -100,4 +107,30 @@ nb-card-body {
   background: #ffffff;
   border: 1px solid #598bff;
   border-radius: 0.375rem;
+}
+nb-card.inline-form-card nb-card-body {
+  padding-bottom: 0;
+}
+.form-inline [fullWidth] {
+  flex: 1;
+}
+
+.form-inline > * {
+  margin: 0 1.5rem 1.5rem 0;
+}
+
+.full-name-inputs,
+.validation-checkboxes {
+  display: flex;
+  margin: 0 -0.2rem;
+
+  > * {
+    margin: 0 0.3rem;
+  }
+}
+
+.gfix-fixed {
+  position: fixed;
+  width: 75%;
+  top: 0px;
 }

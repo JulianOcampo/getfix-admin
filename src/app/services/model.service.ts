@@ -13,12 +13,19 @@ export class ModelService {
   constructor(
     private db: AngularFirestore,
   ) {
-    this.modelRef = this.db.collection(this.refPath);
+    this.modelRef = this.db.collection(this.refPath, ref => ref.orderBy('name'));
   }
 
   getModelList(): AngularFirestoreCollection<Model> {
     return this.modelRef;
   }
 
-  
+  createModel(model: Model): Promise<any> {
+    return this.modelRef.add(model);
+  }
+
+  updateModel(key: string, value: any): Promise<any> {
+    return this.modelRef.doc(key).update(value);
+  }
+
 }

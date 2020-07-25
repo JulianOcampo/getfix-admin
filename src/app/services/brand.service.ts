@@ -10,11 +10,12 @@ export class BrandService {
 
   private refPath = environment.firebaseRef.brand;
   private brandRef: AngularFirestoreCollection<Brand>;
+  private brandByModelRef: AngularFirestoreCollection<Brand>;
 
   constructor(
     private db: AngularFirestore,
   ) {
-    this.brandRef = this.db.collection(this.refPath);
+    this.brandRef = this.db.collection(this.refPath, ref => ref.orderBy('name'));
   }
 
   getBrandsList(): AngularFirestoreCollection<Brand> {
@@ -27,6 +28,11 @@ export class BrandService {
 
   createBrand(brand: Brand): Promise<any> {
     return this.brandRef.add(brand);
+  }
+
+  getBrandByModel(categoryId: string) {
+    this.brandByModelRef = this.db.collection(this.refPath, ref => ref.where('categoriesId', 'array-contains', categoryId))
+    return this.brandByModelRef;
   }
 
 

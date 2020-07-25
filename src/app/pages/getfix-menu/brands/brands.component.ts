@@ -11,7 +11,7 @@ import { BrandFormComponent } from '../brand-form/brand-form.component';
   templateUrl: './brands.component.html',
   styleUrls: ['./brands.component.scss']
 })
-export class BrandsComponent implements OnInit  {
+export class BrandsComponent implements OnInit {
   settings = {
     mode: 'external',
     add: {
@@ -42,7 +42,7 @@ export class BrandsComponent implements OnInit  {
           let handler = row.active;
           if (handler)
             return `<i class="fas fa-check-circle"></i>`
-          return `<i class="fas fa-times-circle"></i>`
+          return `<i class="fas fa-times-circle" ></i>`
         },
         filter: {
           type: 'checkbox',
@@ -66,7 +66,6 @@ export class BrandsComponent implements OnInit  {
 
   ngOnInit(): void {
     this.getBrands();
-
   }
 
   getBrands() {
@@ -78,7 +77,7 @@ export class BrandsComponent implements OnInit  {
     ).subscribe(brands => {
       console.log(brands);
       this.source.load(brands);
-      this.source.setPaging(1,15);
+      this.source.setPaging(1, 15);
     })
   }
 

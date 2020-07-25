@@ -1,8 +1,7 @@
 <!-- <pre>{{ category | json }}</pre> -->
 
-<div id="category-form">
+<div class="gfix-form">
     <nb-card>
-        <nb-card-header></nb-card-header>
         <nb-card-body>
             <form [formGroup]="categoryForm" (ngSubmit)="onSubmit(categoryForm)">
                 <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="category.id"> -->
@@ -68,11 +67,11 @@
                 <div class="row">
                     
                     <div class="col-6 col-sm-6" *ngIf="category.id" style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Enviar"
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Update"
                             [disabled]="!categoryForm.valid">
                     </div>
                     <div class="col-6 col-sm-6" *ngIf="!category.id"  style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Crear"
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Create"
                             [disabled]="!categoryForm.valid">
                     </div>
                     <div class="col-6 col-sm-6"  style="text-align: initial;">

@@ -24,22 +24,25 @@ nb-card-body {
 .demo-items {
   flex: 1 0 33%;
 }
+
 @media only screen and (min-width: 300px) and (max-width: 700px) {
-  #brand-form {
+  .gfix-form nb-card-body {
     overflow-y: scroll;
-    max-height: 350px;
+    max-height: 320px;
+    
   }
 }
 @media only screen and (min-width: 700px) and (max-width: 1200px) {
-  #brand-form {
+  .gfix-form nb-card-body {
     overflow-y: scroll;
-    max-height: 450px;
+    max-height: 420px;
+
   }
 }
 @media only screen and (min-width: 1000px) {
-  #brand-form {
+  .gfix-form nb-card-body {
     overflow-y: scroll;
-    max-height: 550px;
+    max-height: 500px;
   }
 }
 
@@ -77,7 +80,7 @@ nb-card-body {
 }
 
 .gfix-active {
-  color: green;
+  color: #008000;
 }
 
 .gfix-disabled {
@@ -106,14 +109,12 @@ nb-card-body {
   max-width: 600px !important;
   text-align: center !important;
   padding: 0 20px !important;
- 
 }
 .container {
   width: 45% !important;
   margin: 0 25px 25px 0 !important;
   display: inline-block !important;
   vertical-align: top !important;
- 
 }
 .movie-list {
   width: 80% !important;
@@ -124,8 +125,6 @@ nb-card-body {
   border-radius: 4px !important;
   overflow: hidden !important;
   margin-top: 10px !important;
- 
-  
 }
 .movie-block {
   padding: 10px 10px !important;

@@ -11,11 +11,14 @@ export class CategoryService {
 
   private refPath = environment.firebaseRef.category;
   private categoryRef: AngularFirestoreCollection<Category>;
+
   constructor(
     private db: AngularFirestore,
     private storage: AngularFireStorage
   ) {
-    this.categoryRef = this.db.collection(this.refPath);
+    this.categoryRef = this.db.collection(this.refPath, ref => ref.orderBy('name'));
+    // this.categoryRef = this.db.collection(this.refPath, ref => ref.where('name', '==', 'PC / Laptop'));son
+
   }
 
   getCategoriesList(): AngularFirestoreCollection<Category> {

@@ -1,6 +1,5 @@
-<div id="brand-form">
+<div class="gfix-form">
     <nb-card>
-        <nb-card-header></nb-card-header>
         <nb-card-body>
             <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
                 <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="brand.id"> -->
@@ -58,7 +57,8 @@
                         <div cdkDropList #moviesList="cdkDropList" [cdkDropListData]="availablecategories"
                             [cdkDropListConnectedTo]="[doneMovieList]" class="movie-list"
                             (cdkDropListDropped)="onDrop($event)">
-                            <div class="movie-block" *ngFor="let availablecategory of availablecategories" cdkDrag title="Drag to activate">
+                            <div class="movie-block" *ngFor="let availablecategory of availablecategories" cdkDrag
+                                title="Drag to activate">
                                 {{availablecategory.name}}</div>
                         </div>
                     </div>
@@ -68,7 +68,8 @@
                         <div cdkDropList #doneMovieList="cdkDropList" [cdkDropListData]="selectcategories"
                             [cdkDropListConnectedTo]="[moviesList]" class="movie-list"
                             (cdkDropListDropped)="onDrop($event)">
-                            <div class="movie-block" *ngFor="let selectcategory of selectcategories" cdkDrag title="Drag to disable">
+                            <div class="movie-block" *ngFor="let selectcategory of selectcategories" cdkDrag
+                                title="Drag to disable">
                                 {{selectcategory.name}}
                             </div>
                         </div>
@@ -77,11 +78,11 @@
                 <div class="row" style="padding-top: 15px;">
 
                     <div class="col-6 col-sm-6" *ngIf="brand.id" style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Enviar"
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Update"
                             [disabled]="!brandForm.valid">
                     </div>
                     <div class="col-6 col-sm-6" *ngIf="!brand.id" style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Crear"
+                        <input class="btn btn-primary" type="submit" name="enviar" value="Create"
                             [disabled]="!brandForm.valid">
                     </div>
                     <div class="col-6 col-sm-6" style="text-align: initial;">

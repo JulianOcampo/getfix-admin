@@ -6,6 +6,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { environment } from '../../../../environments/environment'
 import { CategoryService } from '../../../services/category.service';
 import { CommonService } from '../../../services/common.service';
+import { AngularFireUploadTask } from '@angular/fire/storage';
+
+
 @Component({
   selector: 'ngx-category-form',
   templateUrl: './category-form.component.html',
@@ -94,7 +97,7 @@ export class CategoryFormComponent {
       file = this.imageEdit;
       filePath = this.category.id ? environment.uploadPath.category + this.category.id : environment.uploadPath.categoryBackup + id;
       // const ref = this._categoryService.getPathImage(filePath);
-      var task = null;
+      var task :AngularFireUploadTask;
       if (this.category.id) {
         task = this._commonService.uploadImage(filePath, file);
         this.uploadPercent = task.percentageChanges();

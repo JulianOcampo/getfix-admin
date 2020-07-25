@@ -1,10 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DragDropModule} from '@angular/cdk/drag-drop'
-
+import { DragDropModule } from '@angular/cdk/drag-drop'
+// import {
+//   NbActionsModule,
+//   NbButtonModule,
+//   NbCardModule,
+//   NbCheckboxModule,
+//   NbDatepickerModule, NbIconModule,
+//   NbInputModule,
+//   NbRadioModule,
+//   NbSelectModule,
+//   NbUserModule,
+// } from '@nebular/theme';
 import { GetfixMenuRoutingModule, routedComponents } from './getfix-menu-routing.module';
 import { FormsModule as ngFormsModule, ReactiveFormsModule as ngReactiveFormsModule } from '@angular/forms';
-import { NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule, NbCheckboxModule } from '@nebular/theme';
+import {
+  NbSelectModule,
+  NbCardModule,
+  NbIconModule,
+  NbInputModule,
+  NbTreeGridModule,
+  NbCheckboxModule,
+  NbButtonModule,
+} from '@nebular/theme';
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CategoryFormComponent } from './category-form/category-form.component';
@@ -28,6 +46,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
     ThemeModule,
     Ng2SmartTableModule,
     NbCheckboxModule,
+    NbSelectModule,
+    NbButtonModule,
   ]
 })
 export class GetfixMenuModule { }
