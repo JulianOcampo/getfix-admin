@@ -1,0 +1,15 @@
+<div *ngIf="(worker && quiz); else noWorker">
+
+    Welcome {{worker.fullName}}
+
+    <h1>{{ quiz.active }} Quiz</h1>
+    <div *ngFor="let question of quiz.questions">
+        <p>{{question.name}} </p>
+        <div *ngFor="let answer of question.answers" style="padding: 10px;">
+            <p> {{answer.name}} </p>
+        </div>
+    </div>
+</div>
+<ng-template #noWorker>
+    Cargando..
+</ng-template>

@@ -98,6 +98,7 @@ export class ModelFormComponent {
     private _categoryService: CategoryService,
     private _commonService: CommonService,
   ) {
+    
     var clientWithType = Object.assign(new Model(), this.windowRef.config.context);
     console.log("-------------------", this.windowRef.config.context[0])
     console.log("----------------------", clientWithType[0])

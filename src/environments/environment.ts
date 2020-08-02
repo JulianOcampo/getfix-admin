@@ -11,24 +11,27 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyBtfwYU2d7Oqt6UkVa95CdqqY5Eyi5uIW8",
-    authDomain: "firstproyect-911a0.firebaseapp.com",
-    databaseURL: "https://firstproyect-911a0.firebaseio.com",
-    projectId: "firstproyect-911a0",
-    storageBucket: "firstproyect-911a0.appspot.com",
-    messagingSenderId: "512789171538",
-    appId: "1:512789171538:web:d25215e5c6c03c4a307e8b"
+    apiKey: "AIzaSyDIrtIe2W0Fssbmjxtg85e_YxO17C6PIpA",
+    authDomain: "getfix24-e3383.firebaseapp.com",
+    databaseURL: "https://getfix24-e3383.firebaseio.com",
+    projectId: "getfix24-e3383",
+    storageBucket: "getfix24-e3383.appspot.com",
+    messagingSenderId: "473139809592",
+    appId: "1:473139809592:web:b870764f6c47dd12cdc5cd",
+    measurementId: "G-GEL6N9EQN7"
   },
   firebaseRef: {
     category: '/Categories',
     brand: '/Brands',
     model: '/Models',
+    worker: '/Workers',
+    course: '/Courses',
   },
-  uploadPath:{
+  uploadPath: {
     category: 'uploads/category_',
     brand: 'uploads/brand_',
-    categoryBackup:'backup/category_',
-    brandBackup:'backup/brand_',
+    categoryBackup: 'backup/category_',
+    brandBackup: 'backup/brand_',
   }
 
 };

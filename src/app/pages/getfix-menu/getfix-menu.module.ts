@@ -1,17 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DragDropModule } from '@angular/cdk/drag-drop'
-// import {
-//   NbActionsModule,
-//   NbButtonModule,
-//   NbCardModule,
-//   NbCheckboxModule,
-//   NbDatepickerModule, NbIconModule,
-//   NbInputModule,
-//   NbRadioModule,
-//   NbSelectModule,
-//   NbUserModule,
-// } from '@nebular/theme';
+
 import { GetfixMenuRoutingModule, routedComponents } from './getfix-menu-routing.module';
 import { FormsModule as ngFormsModule, ReactiveFormsModule as ngReactiveFormsModule } from '@angular/forms';
 import {

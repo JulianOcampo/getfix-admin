@@ -8,14 +8,14 @@ import { environment } from '../../environments/environment';
 })
 export class BrandService {
 
-  private refPath = environment.firebaseRef.brand;
+  private pathRef = environment.firebaseRef.brand;
   private brandRef: AngularFirestoreCollection<Brand>;
   private brandByModelRef: AngularFirestoreCollection<Brand>;
 
   constructor(
     private db: AngularFirestore,
   ) {
-    this.brandRef = this.db.collection(this.refPath, ref => ref.orderBy('name'));
+    this.brandRef = this.db.collection(this.pathRef, ref => ref.orderBy('name'));
   }
 
   getBrandsList(): AngularFirestoreCollection<Brand> {
@@ -31,7 +31,7 @@ export class BrandService {
   }
 
   getBrandByModel(categoryId: string) {
-    this.brandByModelRef = this.db.collection(this.refPath, ref => ref.where('categoriesId', 'array-contains', categoryId))
+    this.brandByModelRef = this.db.collection(this.pathRef, ref => ref.where('categoriesId', 'array-contains', categoryId))
     return this.brandByModelRef;
   }
 
