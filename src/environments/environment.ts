@@ -32,6 +32,11 @@ export const environment = {
     brand: 'uploads/brand_',
     categoryBackup: 'backup/category_',
     brandBackup: 'backup/brand_',
-  }
+  },
+  firebaseFunctionApi: {
+    url: 'https://us-central1-getfix24-e3383.cloudfunctions.net/api',
+    saveCourseResult: '/saveCourseResult'
+  },
+
 
 };

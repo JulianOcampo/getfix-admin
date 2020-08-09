@@ -1,14 +1,67 @@
 <div *ngIf="(worker && quiz); else noWorker">
 
-    Welcome {{worker.fullName}}
 
-    <h1>{{ quiz.active }} Quiz</h1>
-    <div *ngFor="let question of quiz.questions">
-        <p>{{question.name}} </p>
-        <div *ngFor="let answer of question.answers" style="padding: 10px;">
-            <p> {{answer.name}} </p>
-        </div>
+    <!-- <p>{{question.name}} </p> -->
+    <div class="col-md-12 col-lg-12 col-xxxl-12" style="padding: 0px;">
+        <nb-card size="medium">
+            <nb-card-body style="width: 100%;">
+                <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+                    <nb-stepper orientation="vertical" formArrayName="questionsAndAnswers" style="width: 100%;">
+                        <nb-step label="" *ngFor="let question of quiz.questions; let i = index"
+                            style="padding: 0px; width: 100%;" >
+                            <ng-container [formGroupName]="i">
+                                <div style="margin-left: -15px; ">
+                                    <div>
+                                        <p>
+                                            Welcome {{worker.fullName}} <br>
+                                            Please solve the next test <br>
+                                            title test: <strong>{{questionForm.value.name}}</strong>
+                                        </p>
+                                    </div>
+                                    <div style="padding-top: 20px;">
+                                        <h6> {{question.name}} </h6>
+                                        <nb-radio-group [name]="question.name" id="{{i}}" formControlName="answer">
+                                            <nb-radio *ngFor="let answer of question.answers"
+                                                (valueChange)="valueChange($event)" [value]="answer">
+
+                                                <span>{{answer.name}}</span>
+                                            </nb-radio>
+                                        </nb-radio-group>
+                                    </div>
+                                    <div style="padding-top: 15px;">
+                                        <button nbButton [disabled]="i==0" nbStepperPrevious
+                                            *ngIf="quiz.questions.length != i+1" style="margin: 5px;">prev</button>
+                                        <button nbButton [disabled]="quiz.questions.length == i+1" nbStepperNext
+                                            *ngIf="quiz.questions.length != i+1" style="margin: 5px;">next</button>
+                                        <input class="btn btn-primary" type="submit" name="send" value="Send"
+                                            *ngIf="quiz.questions.length == i+1" style=" width: 180px;">
+                                    </div>
+
+                                </div>
+                            </ng-container>
+                        </nb-step>
+                    </nb-stepper>
+                </form>
+                <!-- <nb-stepper orientation="vertical">
+                    <nb-step label="" *ngFor="let question of quiz.questions; let i = index">
+                        <h5> {{question.name}} </h5>
+                        <div *ngFor="let answer of question.answers">
+                            <p>
+                                {{answer.name}}
+                            </p>
+
+                        </div>
+                        <button nbButton [disabled]="i==0" nbStepperPrevious>prev</button>
+                        <button nbButton [disabled]="quiz.questions.length == i+1" nbStepperNext>next</button>
+                    </nb-step>
+                </nb-stepper> -->
+            </nb-card-body>
+        </nb-card>
     </div>
+    <!-- <div *ngFor="let answer of question.answers" style="padding: 10px;">
+            <p> {{answer.name}} </p>
+        </div> -->
+
 </div>
 <ng-template #noWorker>
     Cargando..
