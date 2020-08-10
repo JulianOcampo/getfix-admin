@@ -29,6 +29,10 @@ import { AngularFirestoreModule, SETTINGS } from '@angular/fire/firestore'
 import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth'
+import { NbFirebasePasswordStrategy, NbFirebaseAuthModule } from '@nebular/firebase-auth'
+import { NbAuthModule } from '@nebular/auth';
+
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -55,6 +59,80 @@ import { environment } from '../environments/environment';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     AngularFireStorageModule,
+    AngularFireAuthModule,
+    NbFirebaseAuthModule,
+    NbAuthModule.forRoot({
+      strategies: [
+        NbFirebasePasswordStrategy.setup({
+          name: 'password',
+          login: {
+            redirect: {
+              success: 'pages/get-fix-menu/categories',
+            },
+          },
+          register: {
+            redirect: {
+              success: 'pages/get-fix-menu/categories',
+            },
+          },
+          logout: {
+            redirect: {
+              success: 'auth/login',
+            },
+          },
+          requestPassword: {
+            redirect: {
+              success: 'auth/request-password',
+            },
+          },
+          resetPassword: {
+            redirect: {
+              success: 'auth/request-password',
+            },
+          },
+        }),
+      ],
+      forms: {
+        login: {
+          strategy: 'password',
+          rememberMe: true,
+          socialLinks: [],
+
+        },
+        register: {
+          strategy: 'password',
+          terms: true,
+          socialLinks: [],
+        },
+        logout: {
+          strategy: 'password',
+        },
+        requestPassword: {
+          strategy: 'password',
+          socialLinks: [],
+        },
+        resetPassword: {
+          strategy: 'password',
+          socialLinks: [],
+        },
+        validation: {
+          password: {
+            required: true,
+            minLength: 6,
+            maxLength: 50,
+          },
+          email: {
+            required: true,
+          },
+          fullName: {
+            required: false,
+            minLength: 4,
+            maxLength: 50,
+          },
+        },
+
+      }
+    })
 
   ],
   providers: [{ provide: SETTINGS, useValue: {} }],

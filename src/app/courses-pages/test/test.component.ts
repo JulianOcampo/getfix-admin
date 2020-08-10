@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Routes } from '@angular/router'
+import { ActivatedRoute, Routes,Router } from '@angular/router'
 import { WorkerService } from '../../services/worker.service';
 import { Worker } from '../../models/worker'
 import { CourseService } from '../../services/course.service';
@@ -7,9 +7,7 @@ import { Course } from '../../models/course';
 import { TimerService } from '../../services/timer.service';
 import { getLocaleTimeFormat } from '@angular/common';
 import { FormBuilder, FormArray } from '@angular/forms'
-import { Router } from '@angular/router'
-import { NbStepperComponent } from '@nebular/theme';
-
+import {  } from '@angular/router';
 @Component({
   selector: 'ngx-test',
   templateUrl: './test.component.html',
@@ -21,6 +19,8 @@ export class TestComponent implements OnInit {
   public questionPage: number = 0;
   public time: string;
   public timerHandler: any;
+
+
   radioGroupValue = 'Creative Style Sheets'
   questionForm = this.fb.group({
     courseId: [''],
@@ -37,13 +37,15 @@ export class TestComponent implements OnInit {
   })
 
   constructor(
+    private router: Router,
     private activatedRoute: ActivatedRoute,
     private _workerService: WorkerService,
     private _courseService: CourseService,
     private _timerService: TimerService,
     private fb: FormBuilder,
-    private router: Router,
-  ) { }
+  ) { 
+;
+  }
 
 
   ngOnInit() {
@@ -116,5 +118,7 @@ export class TestComponent implements OnInit {
       }
     )
   }
+
+ 
 
 }
