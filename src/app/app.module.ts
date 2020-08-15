@@ -15,6 +15,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { FormsModule as ngFormsModule, ReactiveFormsModule as ngReactiveFormsModule } from '@angular/forms';
 import { ColorPickerModule } from 'ngx-color-picker';
 
+//firebase
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
 import {
   NbChatModule,
@@ -135,7 +137,10 @@ import { environment } from '../environments/environment';
     })
 
   ],
-  providers: [{ provide: SETTINGS, useValue: {} }],
+  providers: [
+    { provide: SETTINGS, useValue: {} },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ],
 
   bootstrap: [AppComponent],
 })

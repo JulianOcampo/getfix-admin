@@ -57,7 +57,7 @@ export class TestComponent implements OnInit {
           .subscribe(_worker => {
             this.worker = { workerId: _worker.id, ..._worker.data() }
             console.log(this.worker)
-            if (this.worker.cursesAvailablesByCategoriesId.includes(params.categoryId)) {
+            if (this.worker.coursesAvailablesByCategoriesId.includes(params.categoryId)) {
               console.log('incluye id')
               this.router.navigate([`course/success`], { queryParams: { category: 'dsdsd', worker: 'djosjfosjf' } })
               return;
