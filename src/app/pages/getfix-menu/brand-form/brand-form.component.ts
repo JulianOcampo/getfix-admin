@@ -9,9 +9,6 @@ import { environment } from '../../../../environments/environment'
 import { CommonService } from '../../../services/common.service';
 import { AngularFireUploadTask } from '@angular/fire/storage';
 
-
-
-
 @Component({
   selector: 'ngx-brand-form',
   templateUrl: './brand-form.component.html',
@@ -85,9 +82,6 @@ export class BrandFormComponent {
 
     console.log(this.brand)
 
-  }
-  onSubmit2(a) {
-    console.log("submit2", a)
   }
 
   createOrUptade(brand) {

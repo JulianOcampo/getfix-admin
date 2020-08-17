@@ -7,7 +7,7 @@
                     formControlName="name">
 
                 <label for="description" class="label">Description:</label>
-                <textarea rows="2" nbInput fullWidth shape="rectangle" fieldSize="small" placeholder="Description"
+                <textarea rows="1" nbInput fullWidth shape="rectangle" fieldSize="small" placeholder="Description"
                     name="description" formControlName="description"></textarea>
                 <div class="row">
                     <div class="col-md-6 gfix-center">
@@ -209,16 +209,19 @@
                     </div>
                 </div>
 
-                <div class="row" style="padding-top: 15px;">
+                <div class="row"
+                    style="padding-top: 15px; position: fixed; bottom: 7px; width: 90%; text-align: center;">
                     <div class="col-6 col-md-6" *ngIf="model.id" style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Update"
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Update"
                             [disabled]="!modelForm.valid">
                     </div>
                     <div class="col-6 col-md-6" *ngIf="!model.id" style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Create">
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Create"
+                        [disabled]="!modelForm.valid">
                     </div>
                     <div class="col-6 col-md-6" style="text-align: initial;">
-                        <button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
+                        <button nbButton outline status="danger" size="small" type="button"
+                            (click)="cancel()">Cancel</button>
                     </div>
                 </div>
             </form>

@@ -25,18 +25,20 @@ export class CategoriesComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-
       name: {
         title: 'Name',
-        type: 'string',
+        type: 'text',
+        width: '30%',
       },
       description: {
         title: 'Description',
-        type: 'string',
+        type: 'text',
+        width: '60%',
       },
       active: {
         title: 'Active',
         type: 'html',
+        width: '10%',
         valuePrepareFunction: (cell, row) => {
           console.log("este es el active", row.active)
           let handler = row.active;

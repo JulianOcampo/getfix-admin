@@ -20,12 +20,14 @@
   <ngx-app>Loading...</ngx-app>
 
   <style>
+    div.connector {
+      margin: 0px !important;
+    }
     body>ngx-app>nb-auth>nb-layout>div>div>div>div>div>nb-layout-column>nb-card>nb-card-body>nb-auth-block>nb-request-password-page>section>p:nth-child(2)>a,
     body>ngx-app>nb-auth>nb-layout>div>div>div>div>div>nb-layout-column>nb-card>nb-card-body>nb-auth-block>nb-login>section,
     body>ngx-app>nb-auth>nb-layout>div>div>div>div>div>nb-layout-column>nb-card>nb-card-header>nav>a>nb-icon>svg>g>g>path {
       display: none;
     }
-
     @-webkit-keyframes spin {
       0% {
         transform: rotate(0)
@@ -35,7 +37,6 @@
         transform: rotate(360deg)
       }
     }
-
     @-moz-keyframes spin {
       0% {
         -moz-transform: rotate(0)

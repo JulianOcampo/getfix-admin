@@ -15,7 +15,7 @@ export class CourseService {
   private apiUrl = environment.firebaseFunctionApi.url;
   private SaveCourseResult = environment.firebaseFunctionApi.saveCourseResult;
   private refPath = environment.firebaseRef.course;
-  private courseRef: AngularFirestoreCollection<Course>
+  private courseRef: AngularFirestoreCollection<Course>;
 
   private handleError: HandleError;
   private httpOptions = {
@@ -31,8 +31,14 @@ export class CourseService {
     httpErrorHandler: HttpErrorHandler
   ) {
     this.handleError = httpErrorHandler.createHandleError('HeroesService');
+    this.courseRef = this.db.collection(this.refPath, ref => ref.orderBy('name'));
+
   }
 
+  getCourseList(): AngularFirestoreCollection<Course>{
+    return this.courseRef;
+
+  }
   getCourse(id: string): AngularFirestoreCollection<any> {
     this.courseRef = this.db.collection(this.refPath, ref => ref.where('categoryId', '==', id))
 

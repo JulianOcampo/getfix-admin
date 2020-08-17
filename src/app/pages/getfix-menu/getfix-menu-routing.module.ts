@@ -36,5 +36,4 @@ export const routedComponents = [
   CategoriesComponent,
   BrandsComponent,
   ModelsComponent,
-
 ];

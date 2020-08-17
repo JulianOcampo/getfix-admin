@@ -5,11 +5,11 @@
         <nb-card-body>
             <form [formGroup]="categoryForm" (ngSubmit)="onSubmit(categoryForm)">
                 <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="category.id"> -->
-                <label for="">Name:</label>
+                <label class="label" for="">Name:</label>
                 <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" name="name"
                     formControlName="name">
 
-                <label for="">Description</label>
+                <label class="label" for="">Description</label>
                 <textarea rows="2" nbInput fullWidth shape="rectangle" placeholder="Description" name="description"
                     formControlName="description"></textarea>
 
@@ -48,7 +48,7 @@
 
                         <div class="validation-checkboxes">
                             <!-- <nb-checkbox (checkedChange)="toggle($event)" status="success" [value]= "category.active">Active</nb-checkbox> -->
-                            <label for="active">Active:</label>
+                            <label class="label" for="active">Active:</label>
 
                             <nb-checkbox (checkedChange)="toggle($event)" name="active" formControlName="active"
                                 status="primary" [ngClass]="{'status-danger':!categoryActive,
@@ -64,20 +64,20 @@
   
             </div> -->
                 </div>
-                <div class="row">
-                    
-                    <div class="col-6 col-sm-6" *ngIf="category.id" style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Update"
+                <div class="row"
+                    style="padding-top: 15px; position: fixed; bottom: 7px; width: 90%; text-align: center;">
+                    <div class="col-6 col-md-6" *ngIf="category.id" style="text-align: end;">
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Update"
                             [disabled]="!categoryForm.valid">
                     </div>
-                    <div class="col-6 col-sm-6" *ngIf="!category.id"  style="text-align: end;">
-                        <input class="btn btn-primary" type="submit" name="enviar" value="Create"
+                    <div class="col-6 col-md-6" *ngIf="!category.id" style="text-align: end;">
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Create"
                             [disabled]="!categoryForm.valid">
                     </div>
-                    <div class="col-6 col-sm-6"  style="text-align: initial;">
-                        <button class="btn btn-danger" type="button" (click)="cancel()">Cancel</button>
+                    <div class="col-6 col-md-6" style="text-align: initial;">
+                        <button nbButton outline status="danger" size="small" type="button"
+                            (click)="cancel()">Cancel</button>
                     </div>
-                    
                 </div>
             </form>
         </nb-card-body>

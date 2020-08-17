@@ -1,0 +1,90 @@
+<div class="gfix-form">
+    <nb-card>
+        <nb-card-body>
+            <form [formGroup]="courseForm" (ngSubmit)="onSubmit()">
+                <label class="label" for="">Name:</label>
+                <input type="text" nbInput fullWidth fieldSize="small" shape="rectangle" placeholder="Name" name="name"
+                    formControlName="name">
+
+                <div class="row"
+                    style="padding-top: 15px; position: fixed; bottom: 7px; width: 90%; text-align: center;">
+                    <div class="col-6 col-md-6" *ngIf="course.id" style="text-align: end;">
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Update"
+                            [disabled]="!courseForm.valid">
+                    </div>
+                    <div class="col-6 col-md-6" *ngIf="!course.id" style="text-align: end;">
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Create"
+                            [disabled]="!courseForm.valid">
+                    </div>
+                    <div class="col-6 col-md-6" style="text-align: initial;">
+                        <button nbButton outline status="danger" size="small" type="button"
+                            (click)="cancel()">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 gfix-center">
+                        <label for="categoryId" class="label">Category:</label> <br>
+                        <nb-select formControlName="categoryId" (selectedChange)="onChange($event)" size="small"
+                            [selected]="course.categoryId" placeholder="Choose a Category" [ngStyle]="{'width':'100%'}">
+
+                            <nb-option *ngFor="let category of categoriesByCourse; let i =index" [value]="category.id">
+                                {{i+1 +' - '+category.name}}
+                            </nb-option>
+                        </nb-select> <br>
+                    </div>
+                    <div class="col-md-6 gfix-center ">
+                        <label for="active" class="label">Active:</label>
+                        <div class="validation-checkboxes">
+                            <nb-checkbox (checkedChange)="toggle($event)" name="active" formControlName="active"
+                                style="width: 100%; text-align: center;" status="primary" [ngClass]="{'status-danger':!courseActive,
+                              'status-success':courseActive}">
+                                <span [ngClass]="{'gfix-active': courseActive,
+                                     'gfix-disabled': !courseActive }">{{courseActive}}</span></nb-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="accordion-container col-md-12 col-lg-12 col-xxxl-12">
+                        <nb-accordion multi formArrayName="questions">
+                            <nb-accordion-item *ngFor="let question1 of questions.controls; let i = index"
+                                [formGroupName]="i">
+
+                                <nb-accordion-item-header style="padding-bottom: 4px;padding-top: 4px;">
+                                    <div class="col-sm-3 col-form-label" style="align-items: center;
+                                    display: inline-flex;">
+                                        <i class="fas fa-window-close fa-2x" (click)="removeCourse(i)"
+                                            style="cursor: pointer; color: #dc3545; padding-right: 5px;"></i>
+                                        <label class="label " for="">Question Name:</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input type="text" nbInput fullWidth fieldSize="small" shape="rectangle"
+                                            placeholder="Name" name="name" formControlName="name" (click)="nada()">
+                                    </div>
+                                    <span class="col-sm-1 label"> {{i+1}}</span>
+
+
+                                </nb-accordion-item-header>
+                                <nb-accordion-item-body formArrayName="answers">
+                                    <!-- {{question1.value.answers[0] | json}} -->
+                                    <div *ngFor="let answer of question1.controls.answers.controls; let in = index"
+                                        [formGroupName]="in">
+                                        <input type="text" nbInput fullWidth fieldSize="small" shape="rectangle"
+                                            placeholder="Name" name="name" formControlName="name">
+                                        <!-- {{in}} -- {{answer.value.name}} -->
+                                    </div>
+                                </nb-accordion-item-body>
+                            </nb-accordion-item>
+
+
+                        </nb-accordion>
+
+                    </div>
+                </div>
+
+
+            </form>
+
+        </nb-card-body>
+    </nb-card>
+</div>

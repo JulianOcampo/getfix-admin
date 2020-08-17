@@ -17,6 +17,15 @@ const routes: Routes = [{
         .then(m => m.GetfixMenuModule),
     },
     {
+      path: 'get-fix-courses',
+      loadChildren: () => import('./getfix-course/getfix-course.module')
+      .then(m => m.GetfixCourseModule),
+    },
+    {
+      path: 'get-fix-courses',
+      component: ECommerceComponent,
+    },
+    {
       path: 'dashboard',
       component: ECommerceComponent,
     },

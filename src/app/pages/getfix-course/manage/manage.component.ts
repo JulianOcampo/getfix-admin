@@ -1,21 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { NbWindowService } from '@nebular/theme';
-
+import { ManageFormComponent } from '../manage-form/manage-form.component';
 import { LocalDataSource } from 'ng2-smart-table';
-import { ModelService } from '../../../services/model.service';
+import { CourseService } from '../../../services/course.service';
 import { map } from 'rxjs/operators';
-import { ModelFormComponent } from '../model-form/model-form.component'
-import { Model } from '../../../models/model';
+import { Course } from '../../../models/course';
+
 @Component({
-  selector: 'ngx-models',
-  templateUrl: './models.component.html',
-  styleUrls: ['./models.component.scss']
+  selector: 'ngx-manage',
+  templateUrl: './manage.component.html',
+  styleUrls: ['./manage.component.scss']
 })
-export class ModelsComponent implements OnInit {
+export class ManageComponent implements OnInit {
 
   settings = {
     mode: 'external',
-    title: 'Models',
+    title: 'Manage Courses',
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
     },
@@ -27,28 +27,28 @@ export class ModelsComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-
       name: {
-        title: 'Model Name',
+        title: 'Course Name',
         type: 'text',
-        width: '30%',
+        width: '35%',
       },
       categoryName: {
         title: 'Category Name',
         type: 'text',
-        width: '30%',
+        width: '35%',
+
       },
-      brandName: {
-        title: 'Brand Name',
+      totalQuestions: {
+        title: 'Total Questions',
         type: 'text',
-        width: '30%',
+        sortDirection: 'desc',
+        width: '20%',
       },
       active: {
         title: 'Active',
         type: 'html',
         width: '10%',
         valuePrepareFunction: (cell, row) => {
-          // console.log("este es el active", row.active)
           let handler = row.active;
           if (handler)
             return `<i class="fas fa-check-circle"></i>`
@@ -67,39 +67,40 @@ export class ModelsComponent implements OnInit {
     },
   };
   source: LocalDataSource = new LocalDataSource();
+
   constructor(
-    private _modelService: ModelService,
-    private _windowService: NbWindowService
+    private _windowService: NbWindowService,
+    private _courseService: CourseService,
   ) { }
 
   ngOnInit(): void {
-    this.getModelList()
+    this.getCourses();
   }
 
-  getModelList() {
-    this._modelService.getModelList().snapshotChanges().pipe(
+  
+  getCourses() {
+    this._courseService.getCourseList().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(models => {
-      console.log(models)
-      this.source.load(models);
+        ))
+    ).subscribe(courses => {
+      console.log(courses)
+      this.source.load(courses);
       this.source.setPaging(1, 15);
     })
   }
 
   onAdd(ev) {
     console.log("ADD->", ev)
-    this._windowService.open(ModelFormComponent, {
-      title: `Create Category: `,
-      context: [{ active: false, categoryId: '' }]
+    this._windowService.open(ManageFormComponent, {
+      title: `Create Course: `,
+      context: [{ active: false, courseId: '' }]
     });
   }
-  onEdit(ev: Model) {
-    this._windowService.open(ModelFormComponent, {
-      title: `Edit Model: `,
+  onEdit(ev: Course) {
+    this._windowService.open(ManageFormComponent, {
+      title: `Edit Category: `,
       context: [ev],
     });
 

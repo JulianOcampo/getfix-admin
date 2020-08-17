@@ -99,11 +99,11 @@ export class ModelFormComponent {
     private _commonService: CommonService,
   ) {
     
-    var clientWithType = Object.assign(new Model(), this.windowRef.config.context);
+    var modelWithType = Object.assign(new Model(), this.windowRef.config.context);
     console.log("-------------------", this.windowRef.config.context[0])
-    console.log("----------------------", clientWithType[0])
-    // console.log(clientWithType)
-    this.model = clientWithType[0];
+    console.log("----------------------", modelWithType[0])
+    // console.log(modelWithType)
+    this.model = modelWithType[0];
     // console.log(this.model)
     this.modelModified = this.windowRef.config.context;
     this.modelActive = this.model.active;
@@ -355,8 +355,6 @@ export class ModelFormComponent {
   onChange(ev) {
     this.getBrandsByModel(ev)
     console.log(ev)
-
-
   }
 
 }

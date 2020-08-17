@@ -12,4 +12,9 @@ export class AccordionComponent {
   toggle() {
     this.accordion.toggle();
   }
+
+  form(ev) {
+    console.log(ev)
+  }
+
 }

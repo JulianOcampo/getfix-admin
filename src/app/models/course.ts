@@ -1,6 +1,9 @@
 export class Course {
+    id: string;
     active: boolean;
+    name: string;
     categoryId: string;
+    categoryImage: string;
     questions: Array<Questions>;
 }
 
