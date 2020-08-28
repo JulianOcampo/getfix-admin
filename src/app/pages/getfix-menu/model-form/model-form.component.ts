@@ -9,6 +9,7 @@ import { CommonService } from '../../../services/common.service';
 import { AngularFireUploadTask } from '@angular/fire/storage';
 import { Model } from '../../../models/model';
 import { ModelService } from '../../../services/model.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'ngx-model-form',
@@ -75,6 +76,7 @@ export class ModelFormComponent {
     brandId: [''],
     colors: this.fb.array([
       // this.fb.group({
+      //   id: ['],
       //   name: [''],
       //   hexaValue: ['']
       // })
@@ -98,7 +100,6 @@ export class ModelFormComponent {
     private _categoryService: CategoryService,
     private _commonService: CommonService,
   ) {
-    
     var modelWithType = Object.assign(new Model(), this.windowRef.config.context);
     console.log("-------------------", this.windowRef.config.context[0])
     console.log("----------------------", modelWithType[0])
@@ -120,6 +121,7 @@ export class ModelFormComponent {
     if (this.model.colors) {
       this.model.colors.forEach(val => {
         this.colors.push(this.fb.group({
+          id: [val.id],
           name: [val.name],
           hexaValue: [val.hexaValue]
         }))
@@ -152,7 +154,7 @@ export class ModelFormComponent {
 
   addIssue() {
     this.issues.push(this.fb.group({
-      id: ['ojojojojoijojojojo'],
+      id: [uuidv4()],
       title: [''],
       description: [''],
       price: [100],
@@ -162,6 +164,7 @@ export class ModelFormComponent {
 
   addColor() {
     this.colors.push(this.fb.group({
+      id: [uuidv4()],
       name: [''],
       hexaValue: ['']
     }))
@@ -171,6 +174,7 @@ export class ModelFormComponent {
     if (this.model.colors) {
       this.model.colors.forEach(val => {
         this.colors.push(this.fb.group({
+          id: [val.id],
           name: [val.name],
           hexaValue: [val.hexaValue]
         }))
@@ -236,15 +240,31 @@ export class ModelFormComponent {
       filePath = this.model.id ? environment.uploadPath.brand + this.model.id : environment.uploadPath.brandBackup + id;
       var task: AngularFireUploadTask;
       if (this.model.id) {
-        console.log("-------------Actualizando [BRAND] con Imagen");
+        console.log("-------------Actualizando [MODEL] con Imagen");
+        task = this._commonService.uploadImage(filePath, file);
+        this.uploadPercent = task.percentageChanges();
+        task.then(t => {
+          t.ref.getDownloadURL()
+            .then(newImage => {
+              console.log("newImage", newImage)
 
+              this.urlImage = newImage;
+              let newModel = this.modelForm.value;
+              delete newModel.image;
+              // console.log("this.category.id, { image: newImage, ...this.categoryForm.value}", this.category.id, + "image:" + newImage, ...this.categoryForm.value)
+              this._modelService.updateModel(this.model.id, { image: newImage, ...newModel })
+                .then(res => console.log("Actualizado de forma correcta", res))
+                .catch(err => console.log("Error al actualizar", err))
+            })
+        })
 
         return;
       }
 
       if (!this.model.id) {
         console.log("--------------Creandooo [BRAND] ------------");
-        task = this._commonService.uploadImage(filePath, file)
+        task = this._commonService.uploadImage(filePath, file);
+        this.uploadPercent = task.percentageChanges();
         task.then(x => {
           x.ref.getDownloadURL().then(newImage => {
             this.urlImage = newImage;
@@ -303,6 +323,7 @@ export class ModelFormComponent {
 
       console.log(this.colors)
       this.colors.setControl(i, this.fb.group({
+        id: [uuidv4()],
         hexaValue: [data],
         name: [name],
       }))

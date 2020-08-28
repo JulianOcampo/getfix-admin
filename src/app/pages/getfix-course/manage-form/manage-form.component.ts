@@ -102,6 +102,10 @@ export class ManageFormComponent {
     this.courseActive = event;
   }
 
+  toggleChange(event, control) {
+    console.log(event, control)
+  }
+
   onChange(ev) {
     console.log(ev)
   }

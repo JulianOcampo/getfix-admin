@@ -34,7 +34,7 @@ export class CategoryService {
   }
 
   deleteCategory(id: string): Promise<any> {
-    return this.categoryRef.doc(id).delete()
+    return this.categoryRef.doc(id).delete();
   }
 
   getCategory(id: string): AngularFirestoreDocument<any> {

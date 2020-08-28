@@ -113,6 +113,7 @@ export class BrandFormComponent {
     }
 
     if (this.imageEdit) {
+      console.log("imageEdit", this.imageEdit);
       file = this.imageEdit;
       filePath = this.brand.id ? environment.uploadPath.brand + this.brand.id : environment.uploadPath.brandBackup + id;
       var task: AngularFireUploadTask;
@@ -137,7 +138,8 @@ export class BrandFormComponent {
 
       if (!this.brand.id) {
         console.log("--------------Creandooo [BRAND] ------------");
-        task = this._commonService.uploadImage(filePath, file)
+        task = this._commonService.uploadImage(filePath, file);
+        this.uploadPercent = task.percentageChanges();
         task.then(x => {
           x.ref.getDownloadURL().then(newImage => {
             this.urlImage = newImage;

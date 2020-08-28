@@ -87,8 +87,8 @@
                         <div class="col-md-6" *ngFor="let color of colors.controls; let i=index">
                             <div class="row" [formGroupName]="i">
                                 <div class="col-md-6">
-                                    <label for="name2" class="label">Color Name</label>
-                                    <input fieldSize="small" type="text" nbInput fullWidth id="name2"
+                                    <label for="name_{{i}}" class="label">Color Name</label>
+                                    <input fieldSize="small" type="text" nbInput fullWidth id="name_{{i}}"
                                         placeholder="title" formControlName="name">
                                 </div>
 

@@ -13,6 +13,7 @@ export class Model {
 }
 
 class colors {
+    id: string;
     name: string;
     hexaValue: string;
 }

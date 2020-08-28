@@ -71,6 +71,9 @@
                                         [formGroupName]="in">
                                         <input type="text" nbInput fullWidth fieldSize="small" shape="rectangle"
                                             placeholder="Name" name="name" formControlName="name">
+                                        <nb-checkbox (checkedChange)="toggleChange($event,answer)" name="active"
+                                            formControlName="isAnswer" style="width: 100%; text-align: center;"
+                                            status="primary" ></nb-checkbox>
                                         <!-- {{in}} -- {{answer.value.name}} -->
                                     </div>
                                 </nb-accordion-item-body>

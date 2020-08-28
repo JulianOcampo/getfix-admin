@@ -27,5 +27,10 @@ export class ModelService {
   updateModel(key: string, value: any): Promise<any> {
     return this.modelRef.doc(key).update(value);
   }
+  
+
+  deleteCategory(id: string): Promise<any> {
+    return this.modelRef.doc(id).delete();
+  }
 
 }

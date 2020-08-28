@@ -100,8 +100,19 @@ export class BrandsComponent implements OnInit {
 
     console.log("work", ev)
   }
+
   userRowSelect(ev) {
     console.log(ev)
+  }
+
+  onDeleteConfirm(event): void {
+    console.log(event)
+    if (window.confirm('Are you sure you want to delete?')) {
+      console.log("BORRAR:", event.data.id)
+      this._brandService.deleteCategory(event.data.id)
+    } else {
+      console.log("BORRAR Descartado")
+    }
   }
 
 }

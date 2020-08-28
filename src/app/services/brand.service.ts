@@ -35,5 +35,8 @@ export class BrandService {
     return this.brandByModelRef;
   }
 
+  deleteCategory(id: string): Promise<any> {
+    return this.brandRef.doc(id).delete();
+  }
 
 }

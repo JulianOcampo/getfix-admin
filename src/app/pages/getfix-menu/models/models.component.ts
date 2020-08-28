@@ -93,7 +93,7 @@ export class ModelsComponent implements OnInit {
   onAdd(ev) {
     console.log("ADD->", ev)
     this._windowService.open(ModelFormComponent, {
-      title: `Create Category: `,
+      title: `Create Model: `,
       context: [{ active: false, categoryId: '' }]
     });
   }
@@ -108,7 +108,18 @@ export class ModelsComponent implements OnInit {
   userRowSelect(ev) {
     console.log(ev)
   }
+
   customAction(ev) {
     console.log(ev)
+  }
+
+  onDeleteConfirm(event): void {
+    console.log(event)
+    if (window.confirm('Are you sure you want to delete?')) {
+      console.log("BORRAR:", event.data.id)
+      this._modelService.deleteCategory(event.data.id)
+    } else {
+      console.log("BORRAR Descartado")
+    }
   }
 }
