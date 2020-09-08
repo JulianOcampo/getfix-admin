@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-md-12 col-lg-4 col-xxxl-4">
+        <nb-card size="medium">
+            <nb-card-header >User</nb-card-header>
+            <nb-card-body>
+                <div class=".col-md-6 .offset-md-3" *ngIf="!user; else tmpUser">
+                    Cargando...
+                </div>
+                <ng-template #tmpUser>
+
+                    <div class="container" style="text-align: center;">
+                        <img [src]="user.profileImage" alt="profileImage" width="150px" height="150px"
+                            style="border-radius: 80px;box-shadow: 0 0 5px 0 rgba(0,0,0,.52); border: 1px solid #1e3e9e;"><br>
+                        <p style="padding-top: 5px;">{{user.fullName}}</p>
+                    </div>
+                    <hr>
+                    <label class="label">Phone number</label>
+                    <p>{{user.phoneNumber}}</p>
+                    <label class="label">Email</label>
+                    <p>{{user.email}}</p>
+                    <label class="label">Identification Number</label>
+                    <p>{{user.identificationNumber}}</p>
+
+                </ng-template>
+            </nb-card-body>
+        </nb-card>
+    </div>
+
+    <div class="col-md-12 col-lg-8 col-xxxl-8">
+        <nb-card size="medium">
+            <!-- <nb-card-header>Details</nb-card-header> -->
+            <nb-card-body>
+                <div class=".col-md-6 .offset-md-3" *ngIf="!user; else tmpDetails">
+                    Cargando...
+                </div>
+                <ng-template #tmpDetails>
+
+                    <nb-tabset>
+                        <nb-tab tabTitle="Services Request">
+                            <ng2-smart-table [settings]="settings" [source]="source" (custom)="customAction($event)"
+                                (userRowSelect)=" userRowSelect($event)" (create)="onAdd($event)"
+                                (edit)="onDetails($event.data)" (delete)="onDeleteConfirm($event)">
+                            </ng2-smart-table>
+                        </nb-tab>
+                    </nb-tabset>
+
+                </ng-template>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

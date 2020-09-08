@@ -16,6 +16,10 @@ export class WorkerService {
     this.workerRef = this.db.collection(this.pathRef)
   }
 
+  getWorkerList(): AngularFirestoreCollection<Worker> {
+    return this.workerRef;
+  }
+
   getWorker(id: string): AngularFirestoreDocument<any> {
     return this.workerRef.doc(id);
   }

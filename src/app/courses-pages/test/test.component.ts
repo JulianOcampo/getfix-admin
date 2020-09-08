@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Routes,Router } from '@angular/router'
+import { ActivatedRoute, Routes, Router } from '@angular/router'
 import { WorkerService } from '../../services/worker.service';
 import { Worker } from '../../models/worker'
 import { CourseService } from '../../services/course.service';
@@ -7,7 +7,7 @@ import { Course } from '../../models/course';
 import { TimerService } from '../../services/timer.service';
 import { getLocaleTimeFormat } from '@angular/common';
 import { FormBuilder, FormArray } from '@angular/forms'
-import {  } from '@angular/router';
+import { } from '@angular/router';
 @Component({
   selector: 'ngx-test',
   templateUrl: './test.component.html',
@@ -43,8 +43,8 @@ export class TestComponent implements OnInit {
     private _courseService: CourseService,
     private _timerService: TimerService,
     private fb: FormBuilder,
-  ) { 
-;
+  ) {
+    ;
   }
 
 
@@ -57,7 +57,8 @@ export class TestComponent implements OnInit {
           .subscribe(_worker => {
             this.worker = { workerId: _worker.id, ..._worker.data() }
             console.log(this.worker)
-            if (this.worker.coursesAvailablesByCategoriesId.includes(params.categoryId)) {
+            if (this.worker.coursesAvailablesByCategoriesId.includes(params.categoryId + '-*true')
+              || this.worker.coursesAvailablesByCategoriesId.includes(params.categoryId + '-*false')) {
               console.log('incluye id')
               this.router.navigate([`course/success`], { queryParams: { category: 'dsdsd', worker: 'djosjfosjf' } })
               return;
@@ -119,6 +120,6 @@ export class TestComponent implements OnInit {
     )
   }
 
- 
+
 
 }

@@ -51,8 +51,8 @@ export class ManageComponent implements OnInit {
         valuePrepareFunction: (cell, row) => {
           let handler = row.active;
           if (handler)
-            return `<i class="fas fa-check-circle"></i>`
-          return `<i class="fas fa-times-circle"></i>`
+            return `<div class="text-center"> <i  class="fas fa-check-circle btn-success"></i> </div>`
+          return ` <div  class="text-center"> <i class="fas fa-times-circle btn-danger" ></i> </div>`
         },
         filter: {
           type: 'checkbox',
@@ -77,7 +77,7 @@ export class ManageComponent implements OnInit {
     this.getCourses();
   }
 
-  
+
   getCourses() {
     this._courseService.getCourseList().snapshotChanges().pipe(
       map(changes =>

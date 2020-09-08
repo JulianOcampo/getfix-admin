@@ -7,3 +7,8 @@
 .cdk-drag-animating{transition:transform 250ms cubic-bezier(0, 0, 0.2, 1);}
 .movie-block:last-child{border:none;}
 .movie-list.cdk-drop-list-dragging .movie-block:not(.cdk-drag-placeholder){transition:transform 250ms cubic-bezier(0, 0, 0.2, 1);}
+
+
+.ng-star-inserted{
+    text-align: center;
+}

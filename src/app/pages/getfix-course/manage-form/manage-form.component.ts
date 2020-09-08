@@ -120,4 +120,9 @@ export class ManageFormComponent {
   onSubmit() {
     console.log(this.courseForm)
   }
+
+  stopDefAction(event) {
+    console.log(event)
+    event.preventDefault();
+  }
 }

@@ -26,6 +26,8 @@ export const environment = {
     model: '/Models',
     worker: '/Workers',
     course: '/Courses',
+    user: '/Users',
+    serviceRequest: '/ServiceRequests',
   },
   uploadPath: {
     category: 'uploads/category_',

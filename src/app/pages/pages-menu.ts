@@ -10,16 +10,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'keypad-outline',
     children: [
       {
-        title:'Categories',
+        title: 'Categories',
         link: '/pages/get-fix-menu/categories'
       },
       {
-        title:'Brands',
-        link:'/pages/get-fix-menu/brands'
+        title: 'Brands',
+        link: '/pages/get-fix-menu/brands'
       },
       {
-        title:'Models',
-        link:'/pages/get-fix-menu/models'
+        title: 'Models',
+        link: '/pages/get-fix-menu/models'
       }
     ]
   },
@@ -28,24 +28,32 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'edit-2-outline',
     children: [
       {
-        title:'Manage',
+        title: 'Manage',
         link: '/pages/get-fix-courses/manage',
       },
       {
-        title:'Configurations',
-        link:'/pages/get-fix-courses/configurations'
+        title: 'Configurations',
+        link: '/pages/get-fix-courses/configurations'
       },
     ]
   },
   {
-    title: 'GETFIX-USERS',
+    title: 'MANAGEMENT',
     group: true,
   },
   {
-    title: 'E-commerce',
-    icon: 'shopping-cart-outline',
-    link: '/pages/dashboard',
-    home: true,
+    title: 'Getfix-People',
+    icon: 'person-outline',
+    children: [
+      {
+        title: 'Users',
+        link: '/pages/get-fix-customers/users',
+      },
+      {
+        title: 'Workers',
+        link: '/pages/get-fix-customers/workers'
+      },
+    ]
   },
   {
     title: 'IoT Dashboard',

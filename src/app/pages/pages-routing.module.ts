@@ -19,11 +19,12 @@ const routes: Routes = [{
     {
       path: 'get-fix-courses',
       loadChildren: () => import('./getfix-course/getfix-course.module')
-      .then(m => m.GetfixCourseModule),
+        .then(m => m.GetfixCourseModule),
     },
     {
-      path: 'get-fix-courses',
-      component: ECommerceComponent,
+      path: 'get-fix-customers',
+      loadChildren: () => import('./getfix-customers/getfix-customers.module')
+        .then(m => m.GetfixCustomersModule),
     },
     {
       path: 'dashboard',

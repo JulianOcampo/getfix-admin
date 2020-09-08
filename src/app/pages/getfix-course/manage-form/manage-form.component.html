@@ -59,7 +59,7 @@
                                     </div>
                                     <div class="col-sm-8">
                                         <input type="text" nbInput fullWidth fieldSize="small" shape="rectangle"
-                                            placeholder="Name" name="name" formControlName="name" (click)="nada()">
+                                            placeholder="Name" name="name" formControlName="name" (click)="stopDefAction($event)">
                                     </div>
                                     <span class="col-sm-1 label"> {{i+1}}</span>
 
@@ -70,7 +70,7 @@
                                     <div *ngFor="let answer of question1.controls.answers.controls; let in = index"
                                         [formGroupName]="in">
                                         <input type="text" nbInput fullWidth fieldSize="small" shape="rectangle"
-                                            placeholder="Name" name="name" formControlName="name">
+                                            placeholder="Name" name="name" formControlName="name" >
                                         <nb-checkbox (checkedChange)="toggleChange($event,answer)" name="active"
                                             formControlName="isAnswer" style="width: 100%; text-align: center;"
                                             status="primary" ></nb-checkbox>
