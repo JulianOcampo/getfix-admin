@@ -27,6 +27,11 @@ const routes: Routes = [{
         .then(m => m.GetfixCustomersModule),
     },
     {
+      path: 'service-request',
+      loadChildren: () => import('./getfix-request/getfix-request.module')
+        .then(m => m.GetfixRequestModule),
+    },
+    {
       path: 'dashboard',
       component: ECommerceComponent,
     },

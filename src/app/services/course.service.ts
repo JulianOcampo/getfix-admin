@@ -15,6 +15,7 @@ export class CourseService {
   private apiUrl = environment.firebaseFunctionApi.url;
   private SaveCourseResult = environment.firebaseFunctionApi.saveCourseResult;
   private refPath = environment.firebaseRef.course;
+  private workerRefPath = environment.firebaseRef.worker;
   private courseRef: AngularFirestoreCollection<Course>;
 
   private handleError: HandleError;
@@ -35,21 +36,27 @@ export class CourseService {
 
   }
 
-  getCourseList(): AngularFirestoreCollection<Course>{
+  getCourseList(): AngularFirestoreCollection<Course> {
     return this.courseRef;
 
   }
+
   getCourse(id: string): AngularFirestoreCollection<any> {
     this.courseRef = this.db.collection(this.refPath, ref => ref.where('categoryId', '==', id))
 
     return this.courseRef;
   }
 
+  getScore(workerId: string, categoryId: string): AngularFirestoreCollection<any> {
+    return this.db.collection(`${this.workerRefPath + '/' + workerId  + this.refPath}`,
+      ref => ref.where('categoryId', '==', categoryId).where('score', '>=', 3))
+  }
+
   sendCourseResult(courseResult: CourseResult): Observable<any> {
-    return this.http.post(this.apiUrl + this.SaveCourseResult, { courseInfo: courseResult }, { observe: 'response', ...this.httpOptions })
-      .pipe(
-        catchError(this.handleError('deleteCourse'))
-      )
+    return this.http.post(this.apiUrl + this.SaveCourseResult, { courseInfo: courseResult }, { observe: 'body', ...this.httpOptions })
+    // .pipe(
+    //   catchError(this.handleError('deleteCourse'))
+    // )
   }
 
 }

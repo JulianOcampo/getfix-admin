@@ -8,6 +8,7 @@ import { TimerService } from '../../services/timer.service';
 import { getLocaleTimeFormat } from '@angular/common';
 import { FormBuilder, FormArray } from '@angular/forms'
 import { } from '@angular/router';
+import { first, map } from 'rxjs/operators';
 @Component({
   selector: 'ngx-test',
   templateUrl: './test.component.html',
@@ -49,21 +50,22 @@ export class TestComponent implements OnInit {
 
 
   ngOnInit() {
-    this.activatedRoute.params.subscribe(
+    this.activatedRoute.params.pipe(first()).subscribe(
       params => {
         console.log(params.categoryId)
         console.log(params.wokerId)
         this._workerService.getWorker(params.wokerId).get()
+          .pipe(first())
           .subscribe(_worker => {
             this.worker = { workerId: _worker.id, ..._worker.data() }
             console.log(this.worker)
-            if (this.worker.coursesAvailablesByCategoriesId.includes(params.categoryId + '-*true')
-              || this.worker.coursesAvailablesByCategoriesId.includes(params.categoryId + '-*false')) {
+            if (this.worker.coursesAvailablesByCategoriesId.filter(val => val.id == params.categoryId).length > 0) {
               console.log('incluye id')
-              this.router.navigate([`course/success`], { queryParams: { category: 'dsdsd', worker: 'djosjfosjf' } })
+              this.router.navigate([`course/success`], { queryParams: { categoryId: params.categoryId, workerId: this.worker.workerId } })
               return;
             } else {
               this._courseService.getCourse(params.categoryId).get()
+                .pipe(first())
                 .subscribe(_course => {
                   this.quiz = _course.docs[0].data()
 
@@ -104,18 +106,23 @@ export class TestComponent implements OnInit {
   stopTime() {
     clearInterval(this.timerHandler);
   }
-
   valueChange($ev) {
     console.log($ev)
   }
   onSubmit() {
     console.log(this.worker)
     console.log(this.questionForm.value)
-    this._courseService.sendCourseResult(this.questionForm.value).subscribe(
+    this._courseService.sendCourseResult(this.questionForm.value).pipe(
+      first()
+    ).subscribe(
       response => {
         console.log(response)
         // this.router.navigate([`${response.body.categoryId}/worker/${response.body.workerId}/success`])
-        this.router.navigate([`course/success`], { queryParams: { category: 'dsdsd', worker: 'djosjfosjf' } })
+        this.router.navigate([`course/success`], { queryParams: { categoryId: response.body.courseInfo.categoryId, workerId: response.body.courseInfo.workerId } })
+      }, err => {
+        console.log(err.error)
+        this.router.navigate([`course/success`],
+          { queryParams: { categoryId: err.error.body.courseInfo.categoryId, workerId: err.error.body.courseInfo.workerId, error: true, score: parseFloat(err.error.score).toFixed(2) } })
       }
     )
   }

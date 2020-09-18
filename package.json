@@ -44,6 +44,7 @@
     "@angular/platform-browser-dynamic": "^9.0.4",
     "@angular/router": "^9.0.4",
     "@asymmetrik/ngx-leaflet": "3.0.1",
+    "@lottiefiles/lottie-player": "^0.5.1",
     "@nebular/auth": "^6.0.0",
     "@nebular/eva-icons": "5.0.0",
     "@nebular/firebase-auth": "^6.0.0",

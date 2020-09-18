@@ -5,7 +5,7 @@
  */
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
@@ -71,6 +71,7 @@ import { environment } from '../environments/environment';
             redirect: {
               success: 'pages/get-fix-menu/categories',
             },
+            // defaultMessages:['Login Successfully!'],
           },
           register: {
             redirect: {
@@ -120,7 +121,7 @@ import { environment } from '../environments/environment';
         validation: {
           password: {
             required: true,
-            minLength: 6,
+            minLength: 5,
             maxLength: 50,
           },
           email: {
@@ -141,8 +142,8 @@ import { environment } from '../environments/environment';
     { provide: SETTINGS, useValue: {} },
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
-
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
 }

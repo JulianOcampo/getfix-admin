@@ -1,2 +1,31 @@
-<p>test-sent works!</p>
-su test ha sido enviado
+<div *ngIf="failedQuiz==2">
+    <div>
+        <p>Hello: <b>{{worker.fullName}}</b> </p>
+        <p>Congrats! You are aprove de quiz of, <b>{{quiz.name}}</b> please back to Getfix for recive requests!</p>
+        <p>Score: <b>{{quizScore}}</b> </p>
+    </div>
+    <div class="row">
+        <div class="col-md-4 offset-md-4 col-sm-3 offset-sm-3">
+            <lottie-player style="width: 320px" src="https://assets4.lottiefiles.com/packages/lf20_aW7962.json"
+                background="transparent" speed="1" loop autoplay>
+            </lottie-player>
+        </div>
+    </div>
+</div>
+<div *ngIf="failedQuiz==1;">
+    <div >
+        <p>Hello: <b>{{worker.fullName}}</b> </p>
+        <p>You are reprove de quiz of, <b>{{quiz.name}}</b> please try again!</p>
+        <p>Score: <b>{{quizScore}}</b> </p>
+    </div>
+    <div class="row">
+        <div class="col-md-4 offset-md-4 col-sm-3 offset-sm-3">
+            <lottie-player style="width: 320px" src="https://assets7.lottiefiles.com/packages/lf20_ovM1tN.json"
+                background="transparent" speed="1" loop autoplay>
+            </lottie-player>
+        </div>
+    </div>
+</div>
+<div *ngIf="failedQuiz==0;">
+    Cargando.........
+</div>

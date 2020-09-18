@@ -52,7 +52,8 @@
               "node_modules/echarts/dist/echarts.min.js",
               "node_modules/echarts/dist/extension/bmap.min.js",
               "node_modules/chart.js/dist/Chart.min.js",
-              "node_modules/uuid/dist/umd/uuid.min.js"
+              "node_modules/uuid/dist/umd/uuid.min.js",
+              "node_modules/@lottiefiles/lottie-player/dist/lottie-player.js"
             ]
           },
           "configurations": {

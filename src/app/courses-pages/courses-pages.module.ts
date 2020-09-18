@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CoursesPagesComponent } from './courses-pages.component';
 import { CoursesPagesRoutingModule } from './courses-pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { routedComponents } from './courses-pages-routing.module';
 import { FormsModule as ngFormsModule, ReactiveFormsModule as ngReactiveFormsModule } from '@angular/forms';
 import { TestSentComponent } from './test-sent/test-sent.component';
-
 
 
 @NgModule({
@@ -32,5 +31,6 @@ import { TestSentComponent } from './test-sent/test-sent.component';
   ],
   exports: [],
   declarations: [CoursesPagesComponent, ...routedComponents],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CoursesPagesModule { }

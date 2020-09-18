@@ -1,5 +1,7 @@
 <div *ngIf="(worker && quiz); else noWorker">
 
+  
+
 
     <!-- <p>{{question.name}} </p> -->
     <div class="col-md-12 col-lg-12 col-xxxl-12" style="padding: 0px;">
@@ -8,14 +10,14 @@
                 <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
                     <nb-stepper orientation="vertical" formArrayName="questionsAndAnswers" style="width: 100%;">
                         <nb-step label="" *ngFor="let question of quiz.questions; let i = index"
-                            style="padding: 0px; width: 100%;" >
+                            style="padding: 0px; width: 100%;">
                             <ng-container [formGroupName]="i">
                                 <div style="margin-left: -15px; ">
                                     <div>
                                         <p>
                                             Welcome {{worker.fullName}} <br>
                                             Please solve the next test <br>
-                                            title test: <strong>{{questionForm.value.name}}</strong>
+                                            title test: <strong>{{questionForm.value.courseName}}</strong>
                                         </p>
                                     </div>
                                     <div style="padding-top: 20px;">
@@ -66,4 +68,3 @@
 <ng-template #noWorker>
     Cargando..
 </ng-template>
-

@@ -56,6 +56,20 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ]
   },
   {
+    title: 'Getfix-Request',
+    icon: 'person-outline',
+    children: [
+      {
+        title: 'Service Request',
+        link: '/pages/service-request/all',
+      },
+      {
+        title: 'Service Request Cancel',
+        link: '/pages/service-request/canceled'
+      },
+    ]
+  },
+  {
     title: 'IoT Dashboard',
     icon: 'home-outline',
     link: '/pages/iot-dashboard',
