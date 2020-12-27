@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { GetfixMenuComponent } from './getfix-menu/getfix-menu.component';
+import { AdminProfileComponent } from './admin-profile/admin-profile.component';
 
 const routes: Routes = [{
   path: '',
@@ -30,10 +31,22 @@ const routes: Routes = [{
       path: 'service-request',
       loadChildren: () => import('./getfix-request/getfix-request.module')
         .then(m => m.GetfixRequestModule),
+    }, {
+      path: 'get-fix-location',
+      loadChildren: () => import('./getfix-location/getfix-location.module')
+        .then(m => m.GetfixLocationModule)
+    }, {
+      path: 'get-fix-management',
+      loadChildren: () => import('./getfix-management/getfix-management.module')
+        .then(m => m.GetfixManagementModule)
     },
     {
       path: 'dashboard',
       component: ECommerceComponent,
+    },
+    {
+      path: 'admin-profile',
+      component: AdminProfileComponent,
     },
     {
       path: 'iot-dashboard',
@@ -91,7 +104,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'get-fix-menu/categories',
       pathMatch: 'full',
     },
     {

@@ -1,0 +1,264 @@
+<div class="row">
+    <div class="col-12">
+        <nb-card size="large">
+            <nb-card-header>
+                {{titleHeader}}
+            </nb-card-header>
+            <nb-card-body>
+                <div style="height: 15em;">
+                    <div class="row" style="position: relative;">
+                        <div class="col-12 profile-background-image"
+                            [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}"> </div>
+                        <div class="col-12" style="position: absolute; top: 4rem;">
+                            <div class="container" style="text-align: center;">
+                                <img id="" class="custom-profile-image-show img-fluid" [src]="adminInfo.image"
+                                    alt="image" width="150px" height="150px"
+                                    *ngIf="adminInfo.image; else noImageProfile">
+
+                                <ng-template #noImageProfile>
+                                    <img id="" class="custom-profile-image-show img-fluid" [src]="adminImage"
+                                        alt="your image" alt="image" />
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <nb-card>
+                    <nb-card-body>
+                        <div class="row">
+                            <div class="col-6">
+                                <label class="label">Correo</label>
+                                <p class="profile-p">{{adminInfo.email}}</p>
+                            </div>
+                            <div class="col-6">
+                                <label class="label">Telefono</label>
+                                <p class="profile-p">{{adminInfo.phoneNumber}}</p>
+
+                            </div>
+                            <div class="col-6">
+                                <label class="label">Nombre</label>
+                                <p class="profile-p">{{adminInfo.name}}</p>
+
+                            </div>
+                            <div class="col-6">
+                                <label class="label">Apellido</label>
+                                <p class="profile-p">{{adminInfo.lastName}}</p>
+
+                            </div>
+
+                        </div>
+                        <div class="row ">
+                            <div class="col-lg-3 col-sm-1">
+                            </div>
+                            <div class="col-lg-3 col-sm-5 separator ">
+                                <button nbButton fullWidth size="small" status="primary"
+                                    (click)="editAdminProfile($event)"><i class="nb-edit"></i>editar
+                                    informacion</button>
+                            </div>
+                            <div class="col-lg-3 col-sm-5 separator">
+                                <button nbButton fullWidth size="small" status="primary"
+                                    (click)="editAdminCredentials($event)"><i class="nb-edit"></i>cambiar
+                                    credenciales</button>
+                            </div>
+                            <div class="col-lg-3 col-sm-1">
+                            </div>
+                        </div>
+                    </nb-card-body>
+                </nb-card>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+
+
+
+<ng-template #dialog let-data let-ref="_dialogRef">
+    <div class="chill-dialog">
+        <form [formGroup]="profileForm">
+
+            <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
+                <nb-card-header>{{ data.title}}</nb-card-header>
+                <nb-card-body>
+                    <div class="form-group row">
+                        <div class="col-md-4 col-sm-12 profile-image ">
+                            <div class="row">
+                                <div class="profile-image-source separator col-12">
+                                    <input id="profileImage" type='file' (change)="readURL($event.target);"
+                                        fieldSize="small" accept=".png, .jpg" name="image"
+                                        data-buttonText="Your label here." style="display: none;" />
+                                    <input type="hidden" name="fileHidden" formControlName="image" />
+
+                                    <img id="" class="custom-profile-image img-fluid" [src]="profileForm.value.image"
+                                        alt="image" width="150px" height="150px"
+                                        (click)="selectInputFile('profileImage')"
+                                        *ngIf="profileForm.value.image; else noImageProfile">
+
+                                    <ng-template #noImageProfile>
+                                        <img id="" class="custom-profile-image img-fluid"
+                                            (click)="selectInputFile('profileImage')" [src]="adminImage"
+                                            alt="your image" alt="image" />
+                                    </ng-template>
+                                </div>
+                                <div class="profile-image-button separator col-12">
+                                    <button nbButton size="tiny" status="primary" type="button"
+                                        (click)="selectInputFile('profileImage')">
+                                        <nb-icon icon="upload"></nb-icon>Seleccione
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-8 col-sm-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="email" class="label">Correo</label>
+                                    <div class="">
+                                        <input type="email" nbInput fieldSize="small" fullWidth id="email"
+                                            disabled="disabled" placeholder="Correo electronico"
+                                            formControlName="email">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="name" class="label">Nombre</label>
+                                    <div class="">
+                                        <input type="text" nbInput fieldSize="small" fullWidth id="name"
+                                            placeholder="Nombre" formControlName="name">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="lastName" class="label">Apellido</label>
+                                    <div class="">
+                                        <input type="text" nbInput fieldSize="small" fullWidth id="lastName"
+                                            placeholder="Apellido" formControlName="lastName">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="phoneNumber" class="label">Telefono</label>
+                                    <div class="">
+                                        <input type="tel" nbInput fieldSize="small" fullWidth id="phoneNumber"
+                                            placeholder="Telefono" formControlName="phoneNumber">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="row">
+                        <div class="col-12 center-buttons">
+                            <button nbButton size="tiny" type="submit" status="primary" (click)="updateProfile()"
+                                [disabled]="!profileForm.valid">
+                                <nb-icon icon="paper-plane"></nb-icon>Actualizar
+                            </button>
+                            <button nbButton size="tiny" status="primary" type="button" (click)="closeEditProfile()">
+                                <nb-icon icon="close"></nb-icon>Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </form>
+    </div>
+</ng-template>
+
+
+
+<ng-template #dialogCredentials let-data let-ref="_dialogCredentialsRef">
+    <div class="chill-dialog">
+        <form [formGroup]="credentialsForm">
+
+            <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
+                <nb-card-header>{{ data.title}}</nb-card-header>
+                <nb-card-body>
+                    <div class="form-group row">
+                        <div class="col-md-4 col-sm-4 forgot-password-lottie">
+                            <div>
+                                <lottie-player style="width: 200px" src="../../assets/getFix/lotties/lock.json"
+                                    background="transparent" speed="0.4" loop autoplay>
+                                </lottie-player>
+                            </div>
+                            <a class="forgot-password label" routerLink="/auth/request-password">Olvido su
+                                contraseña?</a>
+                        </div>
+                        <div class="col-md-8 col-sm-8">
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="email" class="label">Correo electronico</label>
+                                    <div class="">
+                                        <input type="email" nbInput fieldSize="small" fullWidth id="email"
+                                            disabled="disabled" placeholder="Correo electronico"
+                                            formControlName="email">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+
+                                    <label for="email" class="label">Contraseña actual</label>
+                                    <div class="">
+                                        <input type="email" nbInput fieldSize="small" fullWidth id="email"
+                                            placeholder="Contraseña actual" formControlName="oldPassword">
+                                    </div>
+                                    <label class="label text-danger"
+                                        *ngIf="credentialsForm.controls['oldPassword'].hasError('required')">
+                                        * Requerido
+                                    </label>
+                                </div>
+                                <div class="col-12">
+
+                                    <label for="name" class="label">Contraseña Nueva</label>
+                                    <div class="">
+                                        <input type="text" nbInput fieldSize="small" fullWidth id="name"
+                                            placeholder="Contraseña Nueva" formControlName="newPassword">
+                                    </div>
+                                    <label class="label text-danger"
+                                        *ngIf="credentialsForm.controls['newPassword'].hasError('required')">
+                                        * Requerido
+                                    </label>
+                                    <label class="label text-danger"
+                                        *ngIf="credentialsForm.controls['newPassword'].hasError('minlength')">
+                                        * Longitud Minima (6)
+                                    </label>
+                                </div>
+                                <div class="col-12">
+
+                                    <label for="lastName" class="label">Confirme Contraseña</label>
+                                    <div class="">
+                                        <input type="text" nbInput fieldSize="small" fullWidth id="lastName"
+                                            placeholder="Confirme Contraseña" formControlName="confirmNewPassword">
+                                    </div>
+                                    <label class="label text-danger"
+                                        *ngIf="credentialsForm.controls['confirmNewPassword'].hasError('required')">
+                                        * Requerido
+                                    </label>
+                                    <label class="label text-danger"
+                                        *ngIf="credentialsForm.controls['confirmNewPassword'].hasError('NoPassswordMatch')">
+                                        * Las contraseñas no coinciden
+                                    </label>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+                <nb-card-footer>
+                    <div class="row">
+                        <div class="col-12 center-buttons">
+                            <button nbButton size="tiny" type="submit" status="primary" (click)="updateCredentials()"
+                                [disabled]="!credentialsForm.valid">
+                                <nb-icon icon="paper-plane"></nb-icon>Actualizar
+                            </button>
+                            <button nbButton size="tiny" status="primary" type="button"
+                                (click)="closeEditCredentials()">
+                                <nb-icon icon="close"></nb-icon>Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </nb-card-footer>
+            </nb-card>
+        </form>
+    </div>
+</ng-template>

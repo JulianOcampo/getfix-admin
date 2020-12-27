@@ -8,8 +8,9 @@ import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 
+
 @NgModule({
-  imports: [ 
+  imports: [
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,

@@ -13,6 +13,8 @@ import {
   NbCheckboxModule,
   NbButtonModule,
   NbTabsetModule,
+  NbSpinnerModule,
+
 } from '@nebular/theme';
 
 @NgModule({
@@ -29,6 +31,7 @@ import {
     NbCheckboxModule,
     NbButtonModule,
     NbTabsetModule,
+    NbSpinnerModule,
     ThemeModule
   ]
 })

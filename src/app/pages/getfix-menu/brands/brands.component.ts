@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
 import { BrandService } from '../../../services/brand.service';
@@ -12,6 +12,9 @@ import { BrandFormComponent } from '../brand-form/brand-form.component';
   styleUrls: ['./brands.component.scss']
 })
 export class BrandsComponent implements OnInit {
+  source: LocalDataSource = new LocalDataSource();
+  doingSomething: boolean = false;
+
   settings = {
     mode: 'external',
     add: {
@@ -59,12 +62,11 @@ export class BrandsComponent implements OnInit {
       },
     },
   };
-  source: LocalDataSource = new LocalDataSource();
 
   constructor(
     private _brandService: BrandService,
     private _windowService: NbWindowService,
-
+    private _toastrService: NbToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -72,12 +74,14 @@ export class BrandsComponent implements OnInit {
   }
 
   getBrands() {
+    this.doingSomething = true;
     this._brandService.getBrandsList().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() }))
       )
     ).subscribe(brands => {
+      this.doingSomething = false;
       console.log(brands);
       this.source.load(brands);
       this.source.setPaging(1, 15);
@@ -106,13 +110,27 @@ export class BrandsComponent implements OnInit {
   }
 
   onDeleteConfirm(event): void {
+    this.doingSomething = true;
     console.log(event)
     if (window.confirm('Are you sure you want to delete?')) {
       console.log("BORRAR:", event.data.id)
       this._brandService.deleteCategory(event.data.id)
+        .finally(() => {
+          this.doingSomething = false;
+          this.showToast(`${event.data.name} deleted!`, 'top-right', 'success');
+        })
     } else {
       console.log("BORRAR Descartado")
+      this.doingSomething = false;
+
     }
+  }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
   }
 
 }

@@ -28,6 +28,9 @@ export const environment = {
     course: '/Courses',
     user: '/Users',
     serviceRequest: '/ServiceRequests',
+    admin: '/Admin',
+    uploadPathAdminProfile: '/UploadsAdminProfile',
+    uploadProfile: '/Profile',
   },
   uploadPath: {
     category: 'uploads/category_',
@@ -39,6 +42,4 @@ export const environment = {
     url: 'https://us-central1-getfix24-e3383.cloudfunctions.net/api',
     saveCourseResult: '/saveCourseResult'
   },
-
-
 };

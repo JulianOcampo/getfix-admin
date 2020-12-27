@@ -1,0 +1,17 @@
+<div class="form-group row" style="margin-left: 0px;">
+  <div class="col-6">
+    <input style="height:40px;" placeholder="Search for location" nbInput fieldSize="medium" fullWidth autocorrect="off"
+      autocapitalize="off" spellcheck="off" type="text" class="form-control search-location" #search>
+  </div>
+
+  <div class="col-6">
+    <nb-select (selectedChange)="onChange($event)" size="medium" fullWidth [selected]=""
+      placeholder="Choose a Worker Status">
+
+      <nb-option *ngFor="let workerstate of defaultWorkerStatus; let i =index" [value]="workerstate">
+        {{workerstate.description}}
+      </nb-option>
+    </nb-select>
+  </div>
+
+</div>

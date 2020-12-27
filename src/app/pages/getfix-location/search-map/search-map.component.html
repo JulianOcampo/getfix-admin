@@ -1,0 +1,7 @@
+<nb-card>
+  <nb-card-header>Search Workers</nb-card-header>
+  <nb-card-body>
+    <ngx-search (positionChanged)="setPosition($event)" (workerStatusChanged)=setWorkerStatus($event)></ngx-search>
+    <ngx-map [searchedPosition]="searchedPosition" [selectedWorkerStatus]="selectedWorkerStatus"></ngx-map>
+  </nb-card-body>
+</nb-card>

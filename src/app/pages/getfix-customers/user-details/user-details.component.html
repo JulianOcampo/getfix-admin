@@ -1,10 +1,10 @@
 <div class="row">
     <div class="col-md-12 col-lg-4 col-xxxl-4">
         <nb-card size="medium">
-            <nb-card-header >User</nb-card-header>
+            <nb-card-header>User</nb-card-header>
             <nb-card-body>
                 <div class=".col-md-6 .offset-md-3" *ngIf="!user; else tmpUser">
-                    Cargando...
+                    Loading...
                 </div>
                 <ng-template #tmpUser>
 
@@ -18,9 +18,10 @@
                     <p>{{user.phoneNumber}}</p>
                     <label class="label">Email</label>
                     <p>{{user.email}}</p>
-                    <label class="label">Identification Number</label>
-                    <p>{{user.identificationNumber}}</p>
-
+                    <label class="label">Total Services</label>
+                    <p>{{userHistory.length}}</p>
+                    <label class="label">Total Spend</label>
+                    <p>{{userTotalSpending}}</p>
                 </ng-template>
             </nb-card-body>
         </nb-card>
@@ -31,12 +32,12 @@
             <!-- <nb-card-header>Details</nb-card-header> -->
             <nb-card-body>
                 <div class=".col-md-6 .offset-md-3" *ngIf="!user; else tmpDetails">
-                    Cargando...
+                    Loading...
                 </div>
                 <ng-template #tmpDetails>
 
                     <nb-tabset>
-                        <nb-tab tabTitle="Services Request">
+                        <nb-tab tabTitle="History">
                             <ng2-smart-table [settings]="settings" [source]="source" (custom)="customAction($event)"
                                 (userRowSelect)=" userRowSelect($event)" (create)="onAdd($event)"
                                 (edit)="onDetails($event.data)" (delete)="onDeleteConfirm($event)">

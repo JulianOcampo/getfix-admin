@@ -13,6 +13,8 @@ import {
   NbCheckboxModule,
   NbButtonModule,
   NbAccordionModule,
+  NbTooltipModule,
+  NbSpinnerModule,
 } from '@nebular/theme';
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -22,7 +24,7 @@ import { ManageFormComponent } from './manage-form/manage-form.component';
   declarations: [
     ...routedComponents,
     ManageFormComponent,
-    
+
   ],
   imports: [
     CommonModule,
@@ -39,6 +41,9 @@ import { ManageFormComponent } from './manage-form/manage-form.component';
     NbSelectModule,
     NbButtonModule,
     NbAccordionModule,
+    NbTooltipModule,
+    NbSpinnerModule,
+
   ]
 })
 export class GetfixCourseModule { }

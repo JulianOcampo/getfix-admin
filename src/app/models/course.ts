@@ -3,6 +3,7 @@ export class Course {
     active: boolean;
     name: string;
     categoryId: string;
+    categoryName: string;
     categoryImage: string;
     questions: Array<Questions>;
 }

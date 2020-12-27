@@ -9,6 +9,7 @@ export class GetfixRequestsService {
   private serviceReqRefPath = environment.firebaseRef.serviceRequest;
   private brandReqRefPath = environment.firebaseRef.brand;
   private userRefEn = environment.firebaseRef.user;
+  private workerRefEn = environment.firebaseRef.worker;
   private serviceReqRef: AngularFirestoreCollection<any>;
   private brandReqRef: AngularFirestoreDocument<any>;
 
@@ -18,9 +19,15 @@ export class GetfixRequestsService {
   }
 
   getUserHistory(userId: string): AngularFirestoreCollection<any> {
-    let userRef = this.db.doc(this.userRefEn + '/' + userId).ref;    
+    let userRef = this.db.doc(this.userRefEn + '/' + userId).ref;
+
     this.serviceReqRef = this.db.collection(this.serviceReqRefPath, ref => ref.where('refUserId', '==', userRef));
     return this.serviceReqRef;
+  }
+
+  getWorkerHistory(workerId: string): AngularFirestoreCollection<any> {
+    let workerRef = this.db.doc(this.workerRefEn + '/' + workerId).ref;
+    return this.db.collection(this.serviceReqRefPath, ref => ref.where('refWorkerId', '==', workerRef));
   }
 
   getBrandId(refBrandId: DocumentReference): AngularFirestoreDocument<any> {

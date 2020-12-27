@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NbWindowRef } from '@nebular/theme';
+import { NbToastrService, NbWindowRef } from '@nebular/theme';
 import { BrandService } from '../../../services/brand.service';
 import { Observable } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -24,6 +24,7 @@ export class BrandFormComponent {
   public imageEdit: any;
   public brandActive: boolean;
   public newImageName: string = 'Select a Image...';
+  doingSomething: boolean = false;
 
   public color1: string = '#2889e9';
 
@@ -43,6 +44,7 @@ export class BrandFormComponent {
     private _brandService: BrandService,
     private _categoryService: CategoryService,
     private _commonService: CommonService,
+    private _toastrService: NbToastrService,
   ) {
     this.brand = this.windowRef.config.context;
     this.brandModified = this.windowRef.config.context;
@@ -51,7 +53,7 @@ export class BrandFormComponent {
       ...this.brand,
     })
     console.log(this.brand.categoriesId)
-
+    this.doingSomething = true;
     this._categoryService.getCategoriesList().get()
       .subscribe(categories => {
         categories.forEach(category => {
@@ -61,6 +63,8 @@ export class BrandFormComponent {
             this.availablecategories.push({ id: category.id, name: category.data().name })
         })
         console.log("this.selectcategories", this.selectcategories, "this.availablecategories", this.availablecategories, "this.brand.categoriesId", this.brand.categoriesId);
+        this.doingSomething = false;
+
       })
     // this.selectBrands = this.brand.categoriesId
     //   .map(x =>
@@ -93,6 +97,7 @@ export class BrandFormComponent {
     // console.log(this.brand)
     // console.log("submit", brand.form.value)
     // console.log("submit", brand.value)
+    this.doingSomething = true;
     const id = Math.random().toString(36).substring(2);
     var file = null;
     var filePath = null;
@@ -107,8 +112,18 @@ export class BrandFormComponent {
       console.log("-------------------Actualizando [BRAND] sin imagen-------------------");
       console.log("this.brand.id, data", this.brand.id, data)
       this._brandService.updateBrand(this.brand.id, data)
-        .then(res => console.log("Actualizado de forma correcta", res))
-        .catch(err => console.log("Error al actualizar", err))
+        .then(res => {
+          console.log("Actualizado de forma correcta", res)
+          this.showToast(`${this.brandForm.value.name} updated!`, 'top-right', 'success');
+        })
+        .catch(err => {
+          console.log("Error al actualizar", err)
+          this.showToast(`${this.brandForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+        })
+        .finally(() => {
+          this.doingSomething = false;
+          this.windowRef.close();
+        })
       return;
     }
 
@@ -129,8 +144,17 @@ export class BrandFormComponent {
               let newBrand = this.brandForm.value;
               newBrand.image = newImage;
               this._brandService.updateBrand(this.brand.id, { ...newBrand, categoriesId: selectedCategories })
-                .then(res => console.log("Actualizado de forma correcta", res))
-                .catch(err => console.log("Error al actualizar", err))
+                .then(res => {
+                  console.log("Actualizado de forma correcta", res)
+                  this.showToast(`${this.brandForm.value.name} updated!`, 'top-right', 'success');
+                })
+                .catch(err => {
+                  console.log("Error al actualizar", err)
+                  this.showToast(`${this.brandForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+                }).finally(() => {
+                  this.doingSomething = false;
+                  this.windowRef.close();
+                })
             })
         })
         return;
@@ -149,8 +173,18 @@ export class BrandFormComponent {
             newCategory.image = newImage;
             // console.log("{ image: newImage, ...this.categoryForm.value }",{ image: newImage, ...this.categoryForm.value })
             this._brandService.createBrand({ ...newCategory, categoriesId: selectedCategories })
-              .then(res => console.log("actualizado de forma correcta", res))
-              .catch(err => console.log("error al actualizar", err))
+              .then(res => {
+                console.log("actualizado de forma correcta", res)
+                this.showToast(`${this.brandForm.value.name} created!`, 'top-right', 'success');
+              })
+              .catch(err => {
+                console.log("error al actualizar", err)
+                this.showToast(`${this.brandForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+              })
+              .finally(() => {
+                this.doingSomething = false;
+                this.windowRef.close();
+              })
           })
         })
         // console.log("Creandooo...", this.imageEdit)
@@ -198,6 +232,13 @@ export class BrandFormComponent {
 
   public onEventLog(event: string, data: any): void {
     console.log(event, data);
+  }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
   }
 
 

@@ -23,6 +23,9 @@ export const environment = {
     course: '/Courses',
     user: '/Users',
     serviceRequest: '/ServiceRequests',
+    admin: '/Admin',
+    uploadPathAdminProfile: '/UploadsAdminProfile',
+    uploadProfile: '/Profile'
   },
   uploadPath: {
     category: 'uploads/category_',

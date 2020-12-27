@@ -1,5 +1,5 @@
 <div class="gfix-form">
-    <nb-card>
+    <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
         <nb-card-body>
             <form [formGroup]="modelForm" (ngSubmit)="onSubmit()">
                 <label for="name" class="label">Name:</label>
@@ -69,7 +69,8 @@
                                 status="primary" [ngClass]="{'status-danger':!modelActive,
                               'status-success':modelActive}">
                                 <span [ngClass]="{'gfix-active': modelActive,
-                                     'gfix-disabled': !modelActive }">{{modelActive}}</span></nb-checkbox>
+                                     'gfix-disabled': !modelActive }">{{modelActive}}</span>
+                            </nb-checkbox>
                         </div>
                     </div>
                 </div>
@@ -100,13 +101,13 @@
                                     <label for="color_{{i}}" class="label">Color</label> <br>
                                     <input formControlName="hexaValue" fieldSize="small" id="color_{{i}}" nbInput
                                         [ngStyle]="{'background':color.value.hexaValue, 'border-radius': '50px', 'width':'60px', 'cursor':'pointer','color':'rgb(255 255 255 / 0%)' }"
-                                        [cpAlphaChannel]="'always'" [(colorPicker)]="color.value.hexaValue"
+                                        [cpAlphaChannel]="'disabled'" [(colorPicker)]="color.value.hexaValue"
                                         [cpOutputFormat]="'hex'"
                                         (colorPickerOpen)="onEventLog('colorPickerOpen', $event)"
                                         (colorPickerClose)="onEventLog('colorPickerClose', $event, i, color.value.name)"
                                         (cpInputChange)="onEventLog('cpInputChange', $event)"
                                         (cpSliderDragStart)="onEventLog('cpSliderDragStart', $event)"
-                                        (cpSliderDragEnd)="onEventLog('cpSliderDragEnd', $event)" />
+                                        (cpSliderDragEnd)="onEventLog('cpSliderDragEnd', $event)" autocomplete="off" />
 
                                 </div>
                                 <div class="col-md-3">
@@ -217,7 +218,7 @@
                     </div>
                     <div class="col-6 col-md-6" *ngIf="!model.id" style="text-align: end;">
                         <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Create"
-                        [disabled]="!modelForm.valid">
+                            [disabled]="!modelForm.valid">
                     </div>
                     <div class="col-6 col-md-6" style="text-align: initial;">
                         <button nbButton outline status="danger" size="small" type="button"

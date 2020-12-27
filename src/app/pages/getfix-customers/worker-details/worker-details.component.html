@@ -1,1 +1,60 @@
-<p>worker-details works!</p>
+<div class="row">
+    <div class="col-md-12 col-lg-4 col-xxxl-4">
+        <nb-card size="medium">
+            <nb-card-header>Worker</nb-card-header>
+            <nb-card-body>
+                <div class=".col-md-6 .offset-md-3" *ngIf="!worker; else tmpWorker">
+                    Loading...
+                </div>
+                <ng-template #tmpWorker>
+
+                    <div class="container" style="text-align: center;">
+                        <img [src]="worker.profileImage" alt="profileImage" width="150px" height="150px"
+                            style="border-radius: 80px;box-shadow: 0 0 5px 0 rgba(0,0,0,.52); border: 1px solid #1e3e9e;"><br>
+                        <p style="padding-top: 5px;">{{worker.fullName}}</p>
+                    </div>
+                    <hr>
+                    <label class="label">Phone number</label>
+                    <p>{{worker.phoneNumber}}</p>
+                    <label class="label">Email</label>
+                    <p>{{worker.email}}</p>
+                    <label class="label">Identification Number</label>
+                    <p>{{worker.identificationNumber}}</p>
+
+                </ng-template>
+            </nb-card-body>
+        </nb-card>
+    </div>
+
+    <div class="col-md-12 col-lg-8 col-xxxl-8">
+        <nb-card size="medium">
+            <!-- <nb-card-header>Details</nb-card-header> -->
+            <nb-card-body>
+                <div class=".col-md-6 .offset-md-3" *ngIf="!worker; else tmpDetails">
+                    Loading...
+                </div>
+                <ng-template #tmpDetails>
+
+                    <nb-tabset (changeTab)="changeTab($event)">
+                        <nb-tab tabTitle="History" [nbSpinner]="loading" nbSpinnerStatus="info">
+                            <ng2-smart-table [settings]="settings" [source]="source" (custom)="customAction($event)"
+                                (create)="onAdd($event)" (edit)="onDetails($event.data)"
+                                (delete)="onDeleteConfirm($event)">
+                            </ng2-smart-table>
+                        </nb-tab>
+                        <nb-tab tabTitle="Information" [nbSpinner]="loading" nbSpinnerStatus="info">
+                            <label class="label">Validate Credentials <a [href]="worker.certificate" target="_blank"
+                                    rel="noopener noreferrer"> open</a> </label>
+                            <ng2-smart-table [settings]="settingsCourses" [source]="sourceCourses"
+                                (custom)="customAction($event)" (edit)="onDetails($event.data)">
+                            </ng2-smart-table>
+                        </nb-tab>
+                    </nb-tabset>
+
+
+
+                </ng-template>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

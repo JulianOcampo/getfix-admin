@@ -1,5 +1,5 @@
 <div class="gfix-form">
-    <nb-card>
+    <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
         <nb-card-body>
             <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
                 <label class="label" for="">Name:</label>
@@ -42,7 +42,8 @@
                                 status="primary" [ngClass]="{'status-danger':!brandActive,
                               'status-success':brandActive}">
                                 <span [ngClass]="{'gfix-active': brandActive,
-                                     'gfix-disabled': !brandActive }">{{brandActive}}</span></nb-checkbox>
+                                     'gfix-disabled': !brandActive }">{{brandActive}}</span>
+                            </nb-checkbox>
                         </div>
                     </div>
                 </div>

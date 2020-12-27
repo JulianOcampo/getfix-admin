@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { CategoryFormComponent } from '../category-form/category-form.component';
 import { CategoryService } from '../../../services/category.service';
@@ -11,6 +11,9 @@ import { map } from 'rxjs/operators'
   styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent implements OnInit {
+
+  doingSomething: boolean = false;
+  source: LocalDataSource = new LocalDataSource();
 
   settings = {
     mode: 'external',
@@ -58,15 +61,16 @@ export class CategoriesComponent implements OnInit {
       },
     },
   };
-  source: LocalDataSource = new LocalDataSource();
 
   constructor(
     private _categoryService: CategoryService,
     private _windowService: NbWindowService,
+    private _toastrService: NbToastrService,
   ) { }
 
   ngOnInit(): void {
     this.getCategories();
+
 
   }
 
@@ -80,17 +84,24 @@ export class CategoriesComponent implements OnInit {
     ).subscribe(categories => {
       console.log(categories)
       this.source.load(categories);
-      this.source.setPaging(1, 15);
+      this.source.setPaging(1, 5);
+
     })
   }
 
   onDeleteConfirm(event): void {
     console.log(event)
+    this.doingSomething = true;
     if (window.confirm('Are you sure you want to delete?')) {
       console.log("BORRAR:", event.data.id)
       this._categoryService.deleteCategory(event.data.id)
+        .finally(() => {
+          this.doingSomething = false;
+          this.showToast(`${event.data.name} deleted!`, 'top-right', 'success');
+        })
     } else {
       console.log("BORRAR Descartado")
+      this.doingSomething = false;
     }
   }
 
@@ -116,5 +127,12 @@ export class CategoriesComponent implements OnInit {
     });
 
     console.log("work", ev)
+  }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
   }
 }

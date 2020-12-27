@@ -6,7 +6,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Getfix-Menu',
+    title: 'Menu',
     icon: 'keypad-outline',
     children: [
       {
@@ -24,7 +24,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ]
   },
   {
-    title: 'Getfix-Courses',
+    title: 'Courses',
     icon: 'edit-2-outline',
     children: [
       {
@@ -42,7 +42,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Getfix-People',
+    title: 'GetFix-People',
     icon: 'person-outline',
     children: [
       {
@@ -56,6 +56,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ]
   },
   {
+    "icon": "person-outline",
+    "title": "Perfil",
+    "link": "/pages/admin-profile",
+    "pathMatch": "full",
+  },
+  {
     title: 'Getfix-Request',
     icon: 'person-outline',
     children: [
@@ -67,6 +73,26 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Service Request Cancel',
         link: '/pages/service-request/canceled'
       },
+    ]
+  },
+  {
+    title: 'Getfix-location',
+    icon: 'map-outline',
+    children: [
+      {
+        title: 'Workers',
+        link: '/pages/get-fix-location/workers',
+      }
+    ]
+  },
+  {
+    title: 'Getfix-management',
+    icon: 'map-outline',
+    children: [
+      {
+        title: 'Workers pendig for acept',
+        link: '/pages/get-fix-management/workers-pending',
+      }
     ]
   },
   {

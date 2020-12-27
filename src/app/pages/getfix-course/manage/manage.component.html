@@ -4,7 +4,8 @@
     </nb-card-header>
     <nb-card-body>
         <ng2-smart-table [settings]="settings" [source]="source" (custom)="customAction($event)"
-        (userRowSelect)=" userRowSelect($event)" (create)="onAdd($event)" (edit)="onEdit($event.data)" >
+            (userRowSelect)=" userRowSelect($event)" (create)="onAdd($event)" (edit)="onEdit($event.data)"
+            (delete)="onDeleteConfirm($event)">
         </ng2-smart-table>
     </nb-card-body>
 </nb-card>

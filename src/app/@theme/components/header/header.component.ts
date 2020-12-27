@@ -3,13 +3,15 @@ import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeServ
 
 import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
-import { map, takeUntil } from 'rxjs/operators';
+import { first, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { Observable, of } from 'rxjs';
 import { catchError, share, take } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbAuthService, NbAuthToken } from '@nebular/auth';
+import { LocalStorageService } from '../../../services/local-storage.service';
+import { AdminService } from '../../../services/admin.service';
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
@@ -22,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
+  adminInfo: any;
 
   themes = [
     {
@@ -54,7 +57,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private authService: NbAuthService,
     private router: Router,
-
+    private _localStorage: LocalStorageService,
+    private _adminService: AdminService,
   ) {
     this.userToken$ = this.authService.onTokenChange();
     this.isAuthenticated$ = this.authService.isAuthenticated();
@@ -63,6 +67,36 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    of(this._localStorage.getAdminItem('admin_info')).subscribe(data => {
+      this.adminInfo = data;
+    });
+
+
+    this.userToken$ = this.authService.onTokenChange();
+    this.isAuthenticated$ = this.authService.isAuthenticated();
+    this.isAuthenticated$.pipe(
+      first()
+    ).subscribe(
+      res => {
+        console.log(res)
+        this.userToken$.pipe(
+          first()
+        ).subscribe(
+          user => {
+            console.log(user)
+            console.log(user.getPayload().user_id)
+            this._adminService.getAdminInfo(user.getPayload().user_id).valueChanges()
+              .pipe()
+              .subscribe(
+                data => {
+                  this.adminInfo = data;
+                }
+              )
+          }
+        )
+      }
+    )
+
     this.currentTheme = this.themeService.currentTheme;
 
     this.userService.getUsers()

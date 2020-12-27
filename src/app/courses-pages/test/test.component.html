@@ -1,12 +1,13 @@
 <div *ngIf="(worker && quiz); else noWorker">
 
-  
+
 
 
     <!-- <p>{{question.name}} </p> -->
     <div class="col-md-12 col-lg-12 col-xxxl-12" style="padding: 0px;">
-        <nb-card size="medium">
-            <nb-card-body style="width: 100%;">
+        <nb-card size="large" [nbSpinner]="loading" nbSpinnerStatus="primary" nbSpinnerSize="medium"
+            [nbSpinnerMessage]="defaultMessage">
+            <nb-card-body style="width: 100%; padding-right: 5px;">
                 <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
                     <nb-stepper orientation="vertical" formArrayName="questionsAndAnswers" style="width: 100%;">
                         <nb-step label="" *ngFor="let question of quiz.questions; let i = index"
@@ -66,5 +67,5 @@
 
 </div>
 <ng-template #noWorker>
-    Cargando..
+    Loading...
 </ng-template>

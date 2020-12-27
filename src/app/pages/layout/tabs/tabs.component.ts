@@ -37,6 +37,8 @@ export class TabsComponent {
     {
       title: 'Route tab #2',
       route: '/pages/layout/tabs/tab2',
+      badgeText: "99+",
+      badgeStatus: "danger"
     },
   ];
 

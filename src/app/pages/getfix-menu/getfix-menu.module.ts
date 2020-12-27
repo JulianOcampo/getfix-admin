@@ -12,6 +12,7 @@ import {
   NbTreeGridModule,
   NbCheckboxModule,
   NbButtonModule,
+  NbSpinnerModule,
 } from '@nebular/theme';
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -38,6 +39,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     NbCheckboxModule,
     NbSelectModule,
     NbButtonModule,
+    NbSpinnerModule,
   ]
 })
 export class GetfixMenuModule { }

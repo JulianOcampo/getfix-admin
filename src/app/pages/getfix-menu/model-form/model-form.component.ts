@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NbWindowRef } from '@nebular/theme';
+import { NbToastrService, NbWindowRef } from '@nebular/theme';
 import { BrandService } from '../../../services/brand.service';
 import { Observable } from 'rxjs';
 import { FormBuilder, Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
@@ -26,17 +26,12 @@ export class ModelFormComponent {
   public modelActive: boolean;
   public newImageName: string = 'Select a Image...';
   public color1: string = '#2889e9';
-
-  control = this.fb.control([
-    'some', 'value'
-  ])
+  doingSomething: boolean = false;
 
   skills = this.fb.array(['melo']);
   group = this.fb.group(this.skills)
-
   public categoriesByModel: Array<any> = [];
   public brandsByModel: Array<any> = [];
-
   public selectedCountriesControl = new FormControl();
 
   countries = [
@@ -46,6 +41,10 @@ export class ModelFormComponent {
     { name: 'New York', abbrev: 'NY' },
     { name: 'Pennsylvania', abbrev: 'PA' },
   ];
+
+  control = this.fb.control([
+    'some', 'value'
+  ])
 
   profileForm = this.fb.group({
     firstName: ['', Validators.required],
@@ -88,6 +87,8 @@ export class ModelFormComponent {
       //   description: [''],
       //   price: [200],
       //   active: [true],
+      //   issueImage: [''],
+      //   proofImage: [''],
       // })
     ])
   })
@@ -99,6 +100,7 @@ export class ModelFormComponent {
     private _modelService: ModelService,
     private _categoryService: CategoryService,
     private _commonService: CommonService,
+    private _toastrService: NbToastrService,
   ) {
     var modelWithType = Object.assign(new Model(), this.windowRef.config.context);
     console.log("-------------------", this.windowRef.config.context[0])
@@ -135,6 +137,8 @@ export class ModelFormComponent {
           description: [val.description],
           price: [val.price],
           active: [val.active],
+          issueImage: [''],
+          proofImage: [''],
         }))
       });
     }
@@ -159,6 +163,8 @@ export class ModelFormComponent {
       description: [''],
       price: [100],
       active: [false],
+      issueImage: [''],
+      proofImage: ['']
     }))
   }
 
@@ -216,6 +222,8 @@ export class ModelFormComponent {
     // console.log(this.brand)
     // console.log("submit", brand.form.value)
     // console.log("submit", brand.value)
+    this.doingSomething = true;
+
     const id = Math.random().toString(36).substring(2);
     var file = null;
     var filePath = null;
@@ -229,8 +237,18 @@ export class ModelFormComponent {
       newModel.brandName = brandFilter[0].name;
       console.log(this.model.id, newModel)
       this._modelService.updateModel(this.model.id, newModel)
-        .then(res => console.log("Actualizado de forma correcta", res))
-        .catch(err => console.log("Error al actualizar", err))
+        .then(res => {
+          console.log("Actualizado de forma correcta", res);
+          this.showToast(`${this.modelForm.value.name} updated!`, 'top-right', 'success');
+        })
+        .catch(err => {
+          console.log("Error al actualizar", err);
+          this.showToast(`${this.modelForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+        })
+        .finally(() => {
+          this.windowRef.close();
+          this.doingSomething = false;
+        })
       // console.log(this.modelForm)
       return;
     }
@@ -253,8 +271,19 @@ export class ModelFormComponent {
               delete newModel.image;
               // console.log("this.category.id, { image: newImage, ...this.categoryForm.value}", this.category.id, + "image:" + newImage, ...this.categoryForm.value)
               this._modelService.updateModel(this.model.id, { image: newImage, ...newModel })
-                .then(res => console.log("Actualizado de forma correcta", res))
-                .catch(err => console.log("Error al actualizar", err))
+                .then(res => {
+                  console.log("Actualizado de forma correcta", res);
+                  this.showToast(`${this.modelForm.value.name} updated!`, 'top-right', 'success');
+                })
+                .catch(err => {
+                  console.log("Error al actualizar", err);
+                  this.showToast(`${this.modelForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+
+                })
+                .finally(() => {
+                  this.windowRef.close();
+                  this.doingSomething = false;
+                })
             })
         })
 
@@ -276,12 +305,21 @@ export class ModelFormComponent {
             // console.log(newModel)
             // console.log("{ image: newImage, ...this.categoryForm.value }", { image: newImage, ...this.modelForm.value })
             this._modelService.createModel({ ...newModel })
-              .then(res => console.log("actualizado de forma correcta", res))
-              .catch(err => console.log("error al actualizar", err))
+              .then(res => {
+                console.log("creado de forma correcta", res);
+                this.showToast(`${this.modelForm.value.name} created!`, 'top-right', 'success');
+
+              })
+              .catch(err => {
+                console.log("error al crear", err);
+                this.showToast(`${this.modelForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+              })
+              .finally(() => {
+                this.windowRef.close();
+                this.doingSomething = false;
+              })
           })
         })
-
-        // console.log("Creandooo...", this.imageEdit)
         console.log("brandForm", this.modelForm)
         return;
       }
@@ -338,16 +376,19 @@ export class ModelFormComponent {
   }
 
   getCategoriesByModel() {
+    this.doingSomething = true;
     this._categoryService.getCategoriesList().get()
       .subscribe(categories => {
         categories.forEach(category => {
           this.categoriesByModel.push({ id: category.id, ...category.data() });
+          this.doingSomething = false;
           // console.log(category.data())
         })
       })
   }
 
   getBrandsByModel(categoryId: string) {
+    this.doingSomething = true;
     this.brandsByModel = this.brandsByModel.filter(data => false);
     this.modelForm.controls['brandId'].reset();
 
@@ -359,6 +400,7 @@ export class ModelFormComponent {
             brandId: this.model.brandId,
             brandName: this.model.brandName,
           })
+          this.doingSomething = false;
         })
       })
     this.modelForm.patchValue({
@@ -377,5 +419,13 @@ export class ModelFormComponent {
     this.getBrandsByModel(ev)
     console.log(ev)
   }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
+  }
+
 
 }

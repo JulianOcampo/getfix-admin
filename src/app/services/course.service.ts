@@ -48,15 +48,31 @@ export class CourseService {
   }
 
   getScore(workerId: string, categoryId: string): AngularFirestoreCollection<any> {
-    return this.db.collection(`${this.workerRefPath + '/' + workerId  + this.refPath}`,
+    return this.db.collection(`${this.workerRefPath + '/' + workerId + this.refPath}`,
       ref => ref.where('categoryId', '==', categoryId).where('score', '>=', 3))
   }
 
   sendCourseResult(courseResult: CourseResult): Observable<any> {
     return this.http.post(this.apiUrl + this.SaveCourseResult, { courseInfo: courseResult }, { observe: 'body', ...this.httpOptions })
-    // .pipe(
-    //   catchError(this.handleError('deleteCourse'))
-    // )
+  }
+
+  getCourseListByWorker(workerId: string): AngularFirestoreCollection<any> {
+    return this.db.collection(this.workerRefPath).doc(workerId).collection(this.refPath);
+  }
+
+  createCourse(courseData: any): Promise<any> {
+    return this.db.collection(this.refPath).add({
+      ...courseData
+    })
+  }
+
+  updateCourse(courseId: string, courseData: any) {
+    return this.db.collection(this.refPath).doc(courseId).update({
+      ...courseData
+    })
+  }
+  deleteCourse(courseId: string,) {
+    return this.db.collection(this.refPath).doc(courseId).delete()
   }
 
 }

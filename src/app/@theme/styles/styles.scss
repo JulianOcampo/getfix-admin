@@ -34,3 +34,12 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+nb-layout-footer > nav {
+  padding-top: 10px !important;
+  padding-bottom: 0px !important;
+}
+nb-layout-header > nav {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}

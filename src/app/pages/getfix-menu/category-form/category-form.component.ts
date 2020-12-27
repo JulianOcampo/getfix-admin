@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NbWindowRef } from '@nebular/theme';
+import { NbToastrService, NbWindowRef } from '@nebular/theme';
 import { finalize } from 'rxjs/operators'
 import { Observable } from 'rxjs';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -23,6 +23,7 @@ export class CategoryFormComponent {
   public imageEdit: any;
   public categoryActive: boolean;
   public newImageName: string = 'Select a Image...';
+  doingSomething: boolean = false;
   categoryForm = this.fb.group({
     name: ['', Validators.required],
     description: ['', Validators.required],
@@ -34,10 +35,13 @@ export class CategoryFormComponent {
     private fb: FormBuilder,
     private _categoryService: CategoryService,
     private _commonService: CommonService,
+    private _toastrService: NbToastrService,
+
   ) {
 
     this.category = this.windowRef.config.context;
     this.categoryModified = this.windowRef.config.context;
+
     // if (this.category.active)
     this.categoryActive = this.category.active;
     // else this.categoryActive = false;
@@ -76,6 +80,7 @@ export class CategoryFormComponent {
     // this._categoryService.updateCategory()
   }
   onSubmit(category) {
+    this.doingSomething = true;
     console.log(this.category)
     // console.log("submit", category.form.value)
     console.log("submit", category.value)
@@ -87,8 +92,18 @@ export class CategoryFormComponent {
       console.log(this.category)
       console.log("this.category.id, this.categoryForm.value", this.category.id, this.categoryForm.value)
       this._categoryService.updateCategory(this.category.id, this.categoryForm.value)
-        .then(res => console.log("Actualizado de forma correcta", res))
-        .catch(err => console.log("Error al actualizar", err))
+        .then(res => {
+          console.log("Actualizado de forma correcta", res);
+          this.showToast(`${this.categoryForm.value.name} updated!`, 'top-right', 'success');
+        })
+        .catch(err => {
+          console.log("Error al actualizar", err);
+          this.showToast(`${this.categoryForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+        })
+        .finally(() => {
+          this.doingSomething = false;
+          this.windowRef.close();
+        })
       return;
     }
 
@@ -97,7 +112,7 @@ export class CategoryFormComponent {
       file = this.imageEdit;
       filePath = this.category.id ? environment.uploadPath.category + this.category.id : environment.uploadPath.categoryBackup + id;
       // const ref = this._categoryService.getPathImage(filePath);
-      var task :AngularFireUploadTask;
+      var task: AngularFireUploadTask;
       if (this.category.id) {
         task = this._commonService.uploadImage(filePath, file);
         this.uploadPercent = task.percentageChanges();
@@ -112,8 +127,18 @@ export class CategoryFormComponent {
               delete newCategory.image;
               // console.log("this.category.id, { image: newImage, ...this.categoryForm.value}", this.category.id, + "image:" + newImage, ...this.categoryForm.value)
               this._categoryService.updateCategory(this.category.id, { image: newImage, ...newCategory })
-                .then(res => console.log("Actualizado de forma correcta", res))
-                .catch(err => console.log("Error al actualizar", err))
+                .then(res => {
+                  console.log("Actualizado de forma correcta", res);
+                  this.showToast(`${this.categoryForm.value.name} updated!`, 'top-right', 'success');
+                })
+                .catch(err => {
+                  console.log("Error al actualizar", err);
+                  this.showToast(`${this.categoryForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+                })
+                .finally(() => {
+                  this.doingSomething = false;
+                  this.windowRef.close();
+                })
             })
         })
         return;
@@ -131,8 +156,19 @@ export class CategoryFormComponent {
             delete newCategory.image;
             // console.log("{ image: newImage, ...this.categoryForm.value }",{ image: newImage, ...this.categoryForm.value })
             this._categoryService.createCategory({ image: newImage, ...newCategory })
-              .then(res => console.log("actualizado de forma correcta", res))
-              .catch(err => console.log("error al actualizar", err))
+              .then(res => {
+                console.log("Creado de forma correcta", res);
+                this.showToast(`${this.categoryForm.value.name} created!`, 'top-right', 'success');
+
+              })
+              .catch(err => {
+                console.log("error al actualizar", err);
+                this.showToast(`${this.categoryForm.value.name} somethig happening, try again!`, 'top-right', 'danger');
+              })
+              .finally(() => {
+                this.doingSomething = false;
+                this.windowRef.close();
+              })
           })
         })
 
@@ -175,6 +211,13 @@ export class CategoryFormComponent {
 
   toggle(event) {
     this.categoryActive = event;
+  }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
   }
 
 

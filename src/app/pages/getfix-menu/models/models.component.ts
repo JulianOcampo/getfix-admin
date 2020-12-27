@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
 import { ModelService } from '../../../services/model.service';
@@ -51,7 +51,7 @@ export class ModelsComponent implements OnInit {
           // console.log("este es el active", row.active)
           let handler = row.active;
           if (handler)
-          return `<div class="text-center" > <i  class="fas fa-check-circle btn-success"></i> </div>`
+            return `<div class="text-center" > <i  class="fas fa-check-circle btn-success"></i> </div>`
           return ` <div  class="text-center" > <i class="fas fa-times-circle btn-danger" ></i> </div>`
         },
         filter: {
@@ -67,9 +67,12 @@ export class ModelsComponent implements OnInit {
     },
   };
   source: LocalDataSource = new LocalDataSource();
+  doingSomething: boolean = false;
+
   constructor(
     private _modelService: ModelService,
-    private _windowService: NbWindowService
+    private _windowService: NbWindowService,
+    private _toastrService: NbToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -115,11 +118,25 @@ export class ModelsComponent implements OnInit {
 
   onDeleteConfirm(event): void {
     console.log(event)
+    this.doingSomething = true;
     if (window.confirm('Are you sure you want to delete?')) {
       console.log("BORRAR:", event.data.id)
       this._modelService.deleteCategory(event.data.id)
+        .finally(() => {
+          this.doingSomething = false;
+          this.showToast(`${event.data.name} deleted!`, 'top-right', 'success');
+        })
     } else {
       console.log("BORRAR Descartado")
+      this.doingSomething = false;
+
     }
+  }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
   }
 }

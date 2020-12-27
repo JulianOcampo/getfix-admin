@@ -9,6 +9,7 @@ import { getLocaleTimeFormat } from '@angular/common';
 import { FormBuilder, FormArray } from '@angular/forms'
 import { } from '@angular/router';
 import { first, map } from 'rxjs/operators';
+import { CategoryService } from '../../services/category.service';
 @Component({
   selector: 'ngx-test',
   templateUrl: './test.component.html',
@@ -20,13 +21,14 @@ export class TestComponent implements OnInit {
   public questionPage: number = 0;
   public time: string;
   public timerHandler: any;
-
-
+  loading: boolean = false;
+  defaultMessage = '\n Processing'
   radioGroupValue = 'Creative Style Sheets'
   questionForm = this.fb.group({
     courseId: [''],
     categoryId: [''],
     workerId: [''],
+    categoryName: [''],
     courseName: [''],
     duration: ['300000'],
     questionsAndAnswers: this.fb.array([
@@ -43,6 +45,7 @@ export class TestComponent implements OnInit {
     private _workerService: WorkerService,
     private _courseService: CourseService,
     private _timerService: TimerService,
+    private _categoryService: CategoryService,
     private fb: FormBuilder,
   ) {
     ;
@@ -57,6 +60,10 @@ export class TestComponent implements OnInit {
         this._workerService.getWorker(params.wokerId).get()
           .pipe(first())
           .subscribe(_worker => {
+            if (!_worker.exists) {
+              this.router.navigate([`course/notfound`]);
+              return;
+            }
             this.worker = { workerId: _worker.id, ..._worker.data() }
             console.log(this.worker)
             if (this.worker.coursesAvailablesByCategoriesId.filter(val => val.id == params.categoryId).length > 0) {
@@ -66,7 +73,16 @@ export class TestComponent implements OnInit {
             } else {
               this._courseService.getCourse(params.categoryId).get()
                 .pipe(first())
-                .subscribe(_course => {
+                .subscribe(async _course => {
+                  debugger
+                  if (_course.size == 0 || !_course.docs[0]) {
+                    this.router.navigate([`course/notfound`])
+                    return;
+                  }
+                  debugger
+                  var _category = await this._categoryService.getCategory(params.categoryId).get().toPromise()
+
+
                   this.quiz = _course.docs[0].data()
 
                   this.questionForm.patchValue({
@@ -74,6 +90,7 @@ export class TestComponent implements OnInit {
                     courseName: this.quiz.name,
                     categoryId: this.quiz.categoryId,
                     workerId: this.worker.workerId,
+                    categoryName: _category.data().name,
                   })
                   this.quiz.questions.forEach(element => {
                     this.questionsAndAnswers.push(this.fb.group({
@@ -110,6 +127,7 @@ export class TestComponent implements OnInit {
     console.log($ev)
   }
   onSubmit() {
+    this.loading = true;
     console.log(this.worker)
     console.log(this.questionForm.value)
     this._courseService.sendCourseResult(this.questionForm.value).pipe(

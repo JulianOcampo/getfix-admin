@@ -1,0 +1,85 @@
+@media only screen and (min-width: 300px) and (max-width: 70px) {
+}
+@media only screen and (min-width: 770px) and (max-width: 1200px) {
+    .left-profile {
+        padding-right: 0px;
+    }
+    .right-profile {
+        padding-left: 0px;
+    }
+}
+@media only screen and (min-width: 1000px) {
+    .left-profile {
+        padding-right: 0px;
+    }
+
+    .right-profile {
+        padding-left: 0px;
+    }
+}
+
+.profile-background-image {
+    position: absolute;
+    background-image: url(https://firebasestorage.googleapis.com/v0/b/chill-da5bf.appspot.com/o/Hastalamadrelogo.png?alt=media&token=10e55148-fd93-498e-ae78-f6e132ba68eb);
+    background-repeat: repeat-x;
+    border-radius: 4px;
+    height: 12rem;
+    background-size: contain;
+    background-origin: content-box;
+}
+
+.custom-profile-image-show {
+    cursor: default;
+    border-radius: 80px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.52);
+    border: 1px solid #ee0000;
+    height: 150px;
+    width: 150px;
+}
+.custom-profile-image-show:hover {
+    width: 155px;
+    height: 155px;
+}
+
+.separator {
+    padding-top: 10px;
+}
+
+.profile-image {
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.custom-profile-image {
+    border-radius: 80px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.52);
+    border: 1px solid #ee0000;
+    height: 150px;
+    width: 150px;
+    cursor: pointer;
+}
+.center-buttons {
+    gap: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.profile-p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chill-dialog {
+    width: 750px;
+    height: 100%;
+}
+.forgot-password {
+    cursor: pointer;
+    text-align: center;
+}
+
+.forgot-password-lottie {
+    display: grid;
+    align-content: center;
+}

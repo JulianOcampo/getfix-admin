@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowService } from '@nebular/theme';
 import { ManageFormComponent } from '../manage-form/manage-form.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { CourseService } from '../../../services/course.service';
@@ -30,19 +30,19 @@ export class ManageComponent implements OnInit {
       name: {
         title: 'Course Name',
         type: 'text',
-        width: '35%',
+        width: '44%',
       },
       categoryName: {
         title: 'Category Name',
         type: 'text',
-        width: '35%',
+        width: '34%',
 
       },
       totalQuestions: {
         title: 'Total Questions',
         type: 'text',
         sortDirection: 'desc',
-        width: '20%',
+        width: '10%',
       },
       active: {
         title: 'Active',
@@ -71,6 +71,7 @@ export class ManageComponent implements OnInit {
   constructor(
     private _windowService: NbWindowService,
     private _courseService: CourseService,
+    private _toastrService: NbToastrService,
   ) { }
 
   ngOnInit(): void {
@@ -82,7 +83,7 @@ export class ManageComponent implements OnInit {
     this._courseService.getCourseList().snapshotChanges().pipe(
       map(changes =>
         changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
+          ({ id: c.payload.doc.id, ...c.payload.doc.data(), totalQuestions: c.payload.doc.data().questions.length })
         ))
     ).subscribe(courses => {
       console.log(courses)
@@ -106,10 +107,29 @@ export class ManageComponent implements OnInit {
 
     console.log("work", ev)
   }
+  onDeleteConfirm(event) {
+    console.log(event.data.id)
+    if (window.confirm(`Are you shure to delete test #: ${event.data.name} ?`)) {
+      this._courseService.deleteCourse(event.data.id)
+        .then(() => {
+          console.log('Eliminado con exito')
+          this.showToast(`${event.data.name} deleted!`, 'top-right', 'success');
+        })
+    }
+
+  }
   userRowSelect(ev) {
     console.log(ev)
   }
   customAction(ev) {
     console.log(ev)
   }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
+  }
+
 }

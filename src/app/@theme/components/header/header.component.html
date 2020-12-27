@@ -4,8 +4,8 @@
       <nb-icon icon="menu-2-outline"></nb-icon>
     </a>
     <div style="background-color: #dae2ff99; border-radius: 5px; padding: 5px; border: 1px solid #3366ff;">
-      <a class="logo" href="#" (click)="navigateHome()"><img src="../../../../assets/getFix/Grupo 3.png" width="60px" alt=""
-          srcset=""></a>
+      <a class="logo" href="#" (click)="navigateHome()"><img src="../../../../assets/getFix/Grupo 3.png" width="60px"
+          alt="" srcset=""></a>
     </div>
   </div>
   <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">
@@ -16,13 +16,14 @@
 <div class="header-container">
   <nb-actions size="small">
 
-    <nb-action class="control-item">
+    <!-- <nb-action class="control-item">
       <nb-search type="rotate-layout"></nb-search>
     </nb-action>
     <nb-action class="control-item" icon="email-outline"></nb-action>
-    <nb-action class="control-item" icon="bell-outline"></nb-action>
+    <nb-action class="control-item" icon="bell-outline"></nb-action> -->
     <nb-action class="user-action" *nbIsGranted="['view', 'user']">
-      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="user?.name" [picture]="user?.picture">
+      <nb-user [nbContextMenu]="userMenu" [onlyPicture]="userPictureOnly" [name]="adminInfo?.name"
+        [picture]="adminInfo?.image">
       </nb-user>
     </nb-action>
   </nb-actions>

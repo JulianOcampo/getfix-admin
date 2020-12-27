@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PagesMenuService } from '../../../services/pages-menu.service';
 
 @Component({
   selector: 'ngx-services',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ServicesComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _pagesMenuService: PagesMenuService,
+  ) { }
 
   ngOnInit(): void {
+  }
+  change() {
+    // this._pagesMenuService.MENU_ITEMS[0].ba = "cambio"
   }
 
 }

@@ -86,3 +86,16 @@ $nb-themes: nb-register-theme((
   slide-out-shadow-color: 0 4px 14px 0 #8f9bb3,
   slide-out-shadow-color-rtl: 0 4px 14px 0 #8f9bb3,
 ), dark, dark);
+nb-accordion-item-header {
+  padding: 12px !important;
+}
+nb-layout-column {
+  padding: 1rem !important;
+}
+form > nb-card {
+  margin-bottom: 1rem !important;
+}
+nb-card-body > div {
+  padding: 0rem !important;
+}
+

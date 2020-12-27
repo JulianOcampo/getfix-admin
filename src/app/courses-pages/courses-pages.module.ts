@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CoursesPagesComponent } from './courses-pages.component';
 import { CoursesPagesRoutingModule } from './courses-pages-routing.module';
 import { ThemeModule } from '../@theme/theme.module';
-import { NbMenuModule, NbCardModule, NbLayoutModule, NbSelectModule, NbIconModule, NbStepperModule, NbButtonModule, NbInputModule, NbRadioModule } from '@nebular/theme';
+import { NbMenuModule, NbCardModule, NbLayoutModule, NbSelectModule, NbIconModule, NbStepperModule, NbButtonModule, NbInputModule, NbRadioModule, NbSpinnerModule } from '@nebular/theme';
 
 import { TestComponent } from './test/test.component';
 import { CommonModule } from '@angular/common';
@@ -27,7 +27,7 @@ import { TestSentComponent } from './test-sent/test-sent.component';
     ngReactiveFormsModule,
     NbInputModule,
     NbRadioModule,
-
+    NbSpinnerModule,
   ],
   exports: [],
   declarations: [CoursesPagesComponent, ...routedComponents],

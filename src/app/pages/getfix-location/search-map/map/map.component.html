@@ -1,0 +1,9 @@
+<google-map [center]="center" [zoom]="zoom" width="100%" height="25rem" (mapClick)="addMarker($event)">
+  <map-marker #marker1 [position]="position" [options]="{ animation:animation}"
+    (mapClick)="openInfoWindow(marker1)" (mapPosition_changed)="cl(marker1)" (mapMouseout)="closeInfoWindows(marker1)"
+    (mapMouseover)="openInfoWindow(marker1)" (mapRightclick)="cl(marker1)">
+  </map-marker>
+  <map-marker #marker *ngFor="let markerPosition of markerPositions" [position]="markerPosition" [options]="{icon:image, animation:animation}"
+    (mapClick)="openInfoWindow(marker)"></map-marker>
+  <map-info-window>Info Window content{{melo}}</map-info-window>
+</google-map>

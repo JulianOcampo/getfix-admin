@@ -23,4 +23,8 @@ export class WorkerService {
   getWorker(id: string): AngularFirestoreDocument<any> {
     return this.workerRef.doc(id);
   }
+
+  getWorkerByStatus(status: number): AngularFirestoreCollection<Worker> {
+    return this.db.collection(this.pathRef, ref => ref.where('workerStatus', '==', status));
+  }
 }

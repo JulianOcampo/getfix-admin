@@ -6,6 +6,7 @@ import { GetfixRequestsService } from '../../../services/getfix-requests.service
 import { map, first } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Observable } from 'rxjs';
+import { OrderRequesDocument } from '../../../models/order-request-document';
 
 @Component({
   selector: 'ngx-user-details',
@@ -15,6 +16,7 @@ import { Observable } from 'rxjs';
 export class UserDetailsComponent implements OnInit {
   public user: any;
   public userHistory: Array<any> = [];
+  public userTotalSpending: number = 0;
   settings = {
     mode: 'external',
     title: 'Models',
@@ -35,14 +37,19 @@ export class UserDetailsComponent implements OnInit {
     // },
     columns: {
       workerFullName: {
-        title: 'Worker Name',
+        title: 'Worker',
         type: 'text',
-        width: '40%',
+        width: '30%',
       },
-      brandName: {
-        title: 'Brand Name',
+      categoryType: {
+        title: 'Category',
         type: 'text',
-        width: '40%',
+        width: '25%',
+      },
+      brandType: {
+        title: 'Brand',
+        type: 'text',
+        width: '25%',
       },
       totalPrice: {
         title: 'Total Price',
@@ -55,7 +62,7 @@ export class UserDetailsComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private _userService: UserService,
-    private _getfixReqServicie: GetfixRequestsService,
+    private _getfixReqService: GetfixRequestsService,
   ) { }
 
   ngOnInit(): void {
@@ -67,52 +74,32 @@ export class UserDetailsComponent implements OnInit {
         ).subscribe(res => {
           this.user = { id: res.id, ...res.data() };
           console.log(this.user)
-          this._getfixReqServicie.getUserHistory(this.user.id).get().pipe(
+          this._getfixReqService.getUserHistory(this.user.id).get().pipe(
             first(),
+            map(history => history.docs.map(h =>
+            ({
+              id: h.id,
+              workerFullName: h.data().worker.fullName,
+              totalPrice: h.data().serviceRepair.totalPrice,
+              brandType: h.data().serviceRepair.brandType,
+              categoryType: h.data().serviceRepair.categoryType,
+              ...Object.assign(new OrderRequesDocument, h.data())
+            })))
           ).subscribe(
-            res => {
-              res.forEach(data => {
-                console.log(data.data())
-                this.userHistory.push({
-                  id: data.id, workerFullName: data.data().workerDetails.fullName,
-                  brandName: data.data().serviceRepair.brandType, totalPrice: data.data().serviceRepair.totalPrice, ...data.data()
-                })
-              })
+            history => {
+              this.userHistory = history;
+
+              this.userHistory.forEach(element => {
+                this.userTotalSpending = +element.totalPrice + this.userTotalSpending;
+
+              });
               console.log(this.userHistory)
-              this.source.load(this.userHistory);
-              this.source.setPaging(1, 15);
+              console.log(history)
+              this.source.load(history);
+              this.source.setPaging(1, 5);
             }
           )
-          // this._getfixReqServicie.getUserHistory(this.user.id).get()
-          //   .subscribe(
-          //     res => {
-          //       let i = 0;
-          //       res.forEach(x => {
-          //         console.log(x.data())
-          //         console.log("lllllllllllllllll", x.data().refBrandId.id)
-          //         this._getfixReqServicie.getBrandId(x.data().refBrandId).get().pipe(
-          //           first()
-          //         ).subscribe(y => {
-          //           this.userHistory.push({ fullName: this.user.fullName, brandName: y.data().name })
-
-          //           console.log("yyyyyyyyyyy", y.data())
-          //           console.log(this.userHistory)
-          //           this.source.load(this.userHistory);
-          //           this.source.setPaging(1, 15);
-          //         })
-          //         i++;
-          //       })
-          //       console.log("...............", this.userHistory)
-
-
-
-          //     }
-          //   )
-
         })
-
-
-
       }
     )
   }
@@ -125,7 +112,6 @@ export class UserDetailsComponent implements OnInit {
         // return chats.first(chat => chat.id === selectedRoomId)
       })
     )
-
   }
 
   gethistory(userId: string) {

@@ -1,7 +1,7 @@
 <!-- <pre>{{ category | json }}</pre> -->
 
 <div class="gfix-form">
-    <nb-card>
+    <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
         <nb-card-body>
             <form [formGroup]="categoryForm" (ngSubmit)="onSubmit(categoryForm)">
                 <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="category.id"> -->
@@ -54,7 +54,8 @@
                                 status="primary" [ngClass]="{'status-danger':!categoryActive,
                               'status-success':categoryActive}">
                                 <span [ngClass]="{'gfix-active': categoryActive,
-                                     'gfix-disabled': !categoryActive }">{{categoryActive}}</span></nb-checkbox>
+                                     'gfix-disabled': !categoryActive }">{{categoryActive}}</span>
+                            </nb-checkbox>
                         </div>
 
 
