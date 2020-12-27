@@ -32,5 +32,5 @@ export class CoursesPagesRoutingModule { }
 
 export const routedComponents = [
   TestComponent,
-  TestSentComponent
+  TestSentComponent,
 ];
