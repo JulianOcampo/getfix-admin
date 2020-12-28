@@ -1,6 +1,6 @@
 import { firestore } from "firebase";
 
-export class OrderRequesDocument {
+export class ServiceRequesDocument {
     id: string;
     bill: Bill;
     dateEnd: firestore.Timestamp;
@@ -18,7 +18,6 @@ export class OrderRequesDocument {
     stateService: number;
     user: User;
     worker: Worker;
-
 }
 
 class Bill {

@@ -13,7 +13,8 @@ import { CloseScrollStrategy } from '@angular/cdk/overlay';
 export class UserService {
   private userRefPath = environment.firebaseRef.user;
   private userRef: AngularFirestoreCollection<User>;
-  private user: any;
+  public users: Array<User> = [];
+
   constructor(
     private db: AngularFirestore,
     private _getfixReqServicie: GetfixRequestsService,
@@ -26,42 +27,8 @@ export class UserService {
     return this.userRef;
   }
 
-  getUser2(id: string): AngularFirestoreDocument<any> {
+  getUser(id: string): AngularFirestoreDocument<any> {
     return this.userRef.doc(id);
-  }
-  getUser(id: string) {
-    this.userRef.doc(id).get()
-      .subscribe(
-        _user => {
-          this.user = { id: _user.id, ..._user.data() }
-          console.log(this.user)
-          this._getfixReqServicie.getUserHistory(this.user.id).snapshotChanges().pipe(
-            map(history =>
-              history.map(h =>
-                ({ id: h.payload.doc.id, ...h.payload.doc.data() })
-
-              )
-            )
-          ).subscribe(
-            _userHistory => {
-              return _userHistory;
-              console.log(_userHistory)
-            }
-          )
-
-        }
-      );
-  }
-  getUser1(id: string): Observable<any> {
-    console.log(id)
-    return this.observeDocument(this.userRef.doc(id));
-
-  }
-  observeDocument(ref: AngularFirestoreDocument<any>): Observable<any> {
-    return Observable.create(observable => {
-      const unsubscribeFn = observable.next(ref.get().subscribe(val => val.data()))
-      return unsubscribeFn;
-    })
   }
 
 

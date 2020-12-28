@@ -66,11 +66,14 @@ export class UsersComponent implements OnInit {
         },
       },
     },
+    pager: {
+      perPage: 10
+    }
   };
   source: LocalDataSource = new LocalDataSource();
 
   constructor(
-    private _userService: UserService,
+    public _userService: UserService,
     private router: Router,
   ) { }
 
@@ -78,19 +81,9 @@ export class UsersComponent implements OnInit {
     this.getUserList();
   }
 
- 
+
   getUserList() {
-    this._userService.getUsersList().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(users => {
-      console.log(users);
-      this.source.load(users);
-      this.source.setPaging(1, 15);
-    })
+    this._userService.users
   }
 
   onAdd(ev) {
@@ -101,8 +94,12 @@ export class UsersComponent implements OnInit {
     console.log("work", ev)
     this.router.navigate(['/pages/get-fix-customers/user/' + ev.id]);
   }
+
+  rowSelect(ev: any) {
+    this.source = ev.source;
+  }
+
   userRowSelect(ev) {
-    console.log(ev)
   }
 
   customAction(ev) {
@@ -111,7 +108,6 @@ export class UsersComponent implements OnInit {
 
   onDeleteConfirm(event): void {
     console.log(event)
-
   }
 
 }

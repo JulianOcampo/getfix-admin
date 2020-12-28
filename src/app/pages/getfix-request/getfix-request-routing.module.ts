@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GetfixRequestComponent } from './getfix-request.component';
+import { ServicesCanceledByClientComponent } from './services-canceled-by-client/services-canceled-by-client.component';
 import { ServicesComponent } from './services/services.component';
 
 
@@ -12,6 +13,15 @@ const routes: Routes = [{
       path: 'all',
       component: ServicesComponent
     },
+    {
+      path: 'canceled-by-client',
+      component: ServicesCanceledByClientComponent
+    },
+    {
+      path: 'canceled-by-worker',
+      component: ServicesCanceledByClientComponent
+    },
+
   ]
 }];
 
@@ -24,4 +34,6 @@ export class GetfixRequestRoutingModule { }
 export const routedComponents = [
   GetfixRequestComponent,
   ServicesComponent,
+  ServicesCanceledByClientComponent,
+  ServicesCanceledByClientComponent,
 ];

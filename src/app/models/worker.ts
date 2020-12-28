@@ -12,6 +12,8 @@ export class Worker {
     profileImage: string;
     workerStatus: string;
     g: GeoPoint;
+    error: boolean;
+
 }
 class GeoPoint {
     geohash: string;

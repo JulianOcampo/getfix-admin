@@ -3,8 +3,9 @@
         Users
     </nb-card-header>
     <nb-card-body>
-        <ng2-smart-table [settings]="settings" [source]="source" (custom)="customAction($event)"
-            (userRowSelect)=" userRowSelect($event)" (create)="onAdd($event)" (edit)="onDetails($event.data)"
+        <ng2-smart-table [settings]="settings" (rowSelect)="rowSelect($event)"
+            [source]="_workerService.workers" (custom)="customAction($event)"
+            (userRowSelect)=" userRowSelect()" (create)="onAdd($event)" (edit)="onDetails($event.data)"
             (delete)="onDeleteConfirm($event)">
         </ng2-smart-table>
     </nb-card-body>

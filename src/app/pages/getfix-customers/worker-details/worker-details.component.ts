@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LocalDataSource } from 'ng2-smart-table';
 import { first, map } from 'rxjs/operators';
-import { OrderRequesDocument } from '../../../models/order-request-document';
+import { ServiceRequesDocument } from '../../../models/service-request-document';
 import { GetfixRequestsService } from '../../../services/getfix-requests.service';
 import { WorkerService } from '../../../services/worker.service';
 import { Worker } from '../../../models/worker'
@@ -131,7 +131,7 @@ export class WorkerDetailsComponent implements OnInit {
                   totalPrice: h.data().serviceRepair.totalPrice,
                   brandType: h.data().serviceRepair.brandType,
                   categoryType: h.data().serviceRepair.categoryType,
-                  ...Object.assign(new OrderRequesDocument, h.data())
+                  ...Object.assign(new ServiceRequesDocument, h.data())
                 })))
               ).subscribe(
                 history => {

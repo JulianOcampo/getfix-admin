@@ -64,44 +64,36 @@ export class WorkersComponent implements OnInit {
         },
       },
     },
+    pager: {
+      perPage: 10
+    }
   };
-  source: LocalDataSource = new LocalDataSource();
+  source: LocalDataSource;
 
   constructor(
-    private _workerService: WorkerService,
+    public _workerService: WorkerService,
     private router: Router,
   ) {
 
   }
 
   ngOnInit(): void {
-    this.getWorkerList();
-  }
-
-  getWorkerList() {
-    this._workerService.getWorkerList().snapshotChanges().pipe(
-      map(changes =>
-        changes.map(c =>
-          ({ id: c.payload.doc.id, ...c.payload.doc.data() })
-        )
-      )
-    ).subscribe(workers => {
-      console.log(workers);
-      this.source.load(workers);
-      this.source.setPaging(1, 15);
-    })
   }
 
   onAdd(ev) {
     console.log("ADD->", ev)
-
   }
+
   onDetails(ev: Worker) {
     console.log("work", ev)
     this.router.navigate(['/pages/get-fix-customers/worker/' + ev.id]);
   }
-  userRowSelect(ev) {
-    console.log(ev)
+  
+  rowSelect(ev: any) {
+    this.source = ev.source
+  }
+
+  userRowSelect() {
   }
 
   customAction(ev) {
@@ -110,7 +102,6 @@ export class WorkersComponent implements OnInit {
 
   onDeleteConfirm(event): void {
     console.log(event)
-
   }
 
 

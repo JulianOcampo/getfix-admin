@@ -6,7 +6,7 @@ import { GetfixRequestsService } from '../../../services/getfix-requests.service
 import { map, first } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Observable } from 'rxjs';
-import { OrderRequesDocument } from '../../../models/order-request-document';
+import { ServiceRequesDocument } from '../../../models/service-request-document';
 
 @Component({
   selector: 'ngx-user-details',
@@ -69,7 +69,7 @@ export class UserDetailsComponent implements OnInit {
     this.activatedRoute.params.subscribe(
       params => {
         console.log(params)
-        this._userService.getUser2(params.id).get().pipe(
+        this._userService.getUser(params.id).get().pipe(
           first()
         ).subscribe(res => {
           this.user = { id: res.id, ...res.data() };
@@ -83,7 +83,7 @@ export class UserDetailsComponent implements OnInit {
               totalPrice: h.data().serviceRepair.totalPrice,
               brandType: h.data().serviceRepair.brandType,
               categoryType: h.data().serviceRepair.categoryType,
-              ...Object.assign(new OrderRequesDocument, h.data())
+              ...Object.assign(new ServiceRequesDocument, h.data())
             })))
           ).subscribe(
             history => {
@@ -104,15 +104,7 @@ export class UserDetailsComponent implements OnInit {
     )
   }
 
-  getUser1() {
-    console.log("********")
-    const a = this._userService.getUser1("36KbewoX0jh4M7nxicpwOmqWu552").pipe(
-      map((a) => {
-        return a;
-        // return chats.first(chat => chat.id === selectedRoomId)
-      })
-    )
-  }
+
 
   gethistory(userId: string) {
 

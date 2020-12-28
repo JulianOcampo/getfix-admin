@@ -1,2 +1,12 @@
-<p>services works!</p>
-<button (click)="change()"></button>
+<nb-card>
+    <nb-card-header>
+        Services request
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" (rowSelect)="rowSelect($event)"
+            [source]="_serviceRequestService.serviceRequest" (custom)="customAction($event)"
+            (userRowSelect)="userRowSelect($event)" (create)="onAdd($event)" (edit)="onDetails($event.data)"
+            (delete)="onDeleteConfirm($event)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
 import { environment } from '../../environments/environment';
+import { ServiceRequesDocument } from '../models/service-request-document';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class GetfixRequestsService {
   private workerRefEn = environment.firebaseRef.worker;
   private serviceReqRef: AngularFirestoreCollection<any>;
   private brandReqRef: AngularFirestoreDocument<any>;
-
+  serviceRequest: Array<ServiceRequesDocument> = [];
+  serviceRequestCanceledByClient: Array<ServiceRequesDocument> = [];
+  serviceRequestCanceledByWorker: Array<ServiceRequesDocument> = [];
   constructor(
     private db: AngularFirestore,
   ) {
@@ -32,5 +35,9 @@ export class GetfixRequestsService {
 
   getBrandId(refBrandId: DocumentReference): AngularFirestoreDocument<any> {
     return this.brandReqRef = this.db.doc(refBrandId);
+  }
+
+  getServicesRequest(): AngularFirestoreCollection<ServiceRequesDocument> {
+    return this.db.collection(this.serviceReqRefPath);
   }
 }

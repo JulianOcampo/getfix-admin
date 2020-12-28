@@ -14,7 +14,6 @@ import {
   NbButtonModule,
   NbTabsetModule,
   NbSpinnerModule,
-
 } from '@nebular/theme';
 
 @NgModule({
