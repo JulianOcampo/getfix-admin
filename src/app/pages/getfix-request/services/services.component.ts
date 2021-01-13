@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { LocalDataSource } from 'ng2-smart-table';
-import { ServiceRequesDocument } from '../../../models/service-request-document';
+import { ServiceRequestDocument } from '../../../models/service-request-document';
+import { CommonService } from '../../../services/common.service';
 import { GetfixRequestsService } from '../../../services/getfix-requests.service';
-import { PagesMenuService } from '../../../services/pages-menu.service';
 
 @Component({
   selector: 'ngx-services',
@@ -56,6 +57,10 @@ export class ServicesComponent implements OnInit {
             return `Worker Started Fixing`
           else if (handler == 5)
             return `Service Completed`
+          else if (handler == 6)
+            return `Canceled by client`
+          else if (handler == 7)
+            return `Canceled by worker`
         },
         filter: {
           type: 'list',
@@ -68,6 +73,8 @@ export class ServicesComponent implements OnInit {
               { value: '3', title: 'Worker Arrived' },
               { value: '4', title: 'Worker Started Fixing' },
               { value: '5', title: 'Service Completed' },
+              { value: '6', title: 'Canceled by client' },
+              { value: '7', title: 'Canceled by worker' },
             ],
           },
         },
@@ -82,13 +89,19 @@ export class ServicesComponent implements OnInit {
       perPage: 10
     }
   };
-  source: LocalDataSource;
+  source: LocalDataSource = new LocalDataSource();
 
   constructor(
-    public _serviceRequestService: GetfixRequestsService,
+    private _commonService: CommonService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.source.load(this._commonService.serviceRequest);
+    this._commonService.sendServiceRequestObservable
+      .subscribe(serviceRequest => {
+        this.source.load(serviceRequest);
+      })
   }
 
 
@@ -96,17 +109,18 @@ export class ServicesComponent implements OnInit {
     console.log("ADD->", ev)
 
   }
-  onDetails(ev: ServiceRequesDocument) {
+
+  onDetails(ev: ServiceRequestDocument) {
     console.log("onDetails:", ev)
-    // this.router.navigate(['/pages/get-fix-customers/user/' + ev.id]);
+    this.router.navigate(['/pages/service-request/details/' + ev.id]);
   }
 
   rowSelect(ev: any) {
-    this.source = ev.source;
     console.log(ev)
   }
 
   userRowSelect(ev) {
+
   }
 
   customAction(ev) {

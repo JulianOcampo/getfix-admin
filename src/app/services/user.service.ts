@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { User } from '../models/user';
 import { GetfixRequestsService } from './getfix-requests.service';
 import { map } from 'rxjs/operators';
-import { Observable, of, observable } from 'rxjs';
+import { Observable, of, observable, Subject } from 'rxjs';
 import { CloseScrollStrategy } from '@angular/cdk/overlay';
 
 @Injectable({
@@ -15,9 +15,12 @@ export class UserService {
   private userRef: AngularFirestoreCollection<User>;
   public users: Array<User> = [];
 
+  private sendUsersSubject = new Subject<User[]>();
+
+  sendUsersObservable = this.sendUsersSubject.asObservable();
+
   constructor(
     private db: AngularFirestore,
-    private _getfixReqServicie: GetfixRequestsService,
   ) {
     this.userRef = this.db.collection(this.userRefPath);
   }
@@ -29,6 +32,11 @@ export class UserService {
 
   getUser(id: string): AngularFirestoreDocument<any> {
     return this.userRef.doc(id);
+  }
+
+  updateUsers(users: User[]) {
+    this.users = users;
+    this.sendUsersSubject.next(users);
   }
 
 

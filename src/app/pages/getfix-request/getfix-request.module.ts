@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { InViewportModule } from '@thisissoon/angular-inviewport';
 import { GetfixRequestRoutingModule, routedComponents } from './getfix-request-routing.module';
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
@@ -14,14 +14,16 @@ import {
   NbButtonModule,
   NbTabsetModule,
   NbSpinnerModule,
+  NbDialogModule,
 } from '@nebular/theme';
-import { ServicesCanceledByClientComponent } from './services-canceled-by-client/services-canceled-by-client.component';
-import { ServicesCanceledByWorkerComponent } from './services-canceled-by-worker/services-canceled-by-worker.component';
+import { GoogleMapsModule } from '@angular/google-maps';
+import { StatusCardModule } from '../shared/status-card/status-card.module';
 
 @NgModule({
-  declarations: [...routedComponents,],
+  declarations: [...routedComponents],
   imports: [
     CommonModule,
+    ThemeModule,
     GetfixRequestRoutingModule,
     Ng2SmartTableModule,
     NbSelectModule,
@@ -33,7 +35,11 @@ import { ServicesCanceledByWorkerComponent } from './services-canceled-by-worker
     NbButtonModule,
     NbTabsetModule,
     NbSpinnerModule,
-    ThemeModule
+    GoogleMapsModule,
+    InViewportModule,
+    NbDialogModule.forChild(),
+    StatusCardModule
+
   ]
 })
 export class GetfixRequestModule { }

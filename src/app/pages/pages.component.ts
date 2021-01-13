@@ -11,13 +11,15 @@ import { WorkerService } from '../services/worker.service';
 import { UserService } from '../services/user.service';
 import { GetfixRequestsService } from '../services/getfix-requests.service';
 import { formatDate } from '@angular/common';
+import { CommonService } from '../services/common.service';
+import { workers } from 'cluster';
 
 @Component({
   selector: 'ngx-pages',
   styleUrls: ['pages.component.scss'],
   template: `
   <ngx-one-column-layout >
-  <nb-menu [items]="menu" style="margin-top:-40px"></nb-menu>
+  <nb-menu [items]="menu" style="margin-top:-30px"></nb-menu>
   <router-outlet></router-outlet>
   </ngx-one-column-layout>
   `,
@@ -29,9 +31,12 @@ export class PagesComponent {
   adminInfo: any = {
     adminRoleId: ''
   };
-  statesForServiceRequest: Array<number> = [1, 2, 3, 4, 5,];
+  statesForServiceRequest: Array<number> = [1, 2, 3, 4, 5, 6, 7];
   statesForServiceRequestCanceledByClient: Array<number> = [6];
   statesForServiceRequestCanceledByWorker: Array<number> = [7];
+  statesForServiceRequestInProgress: Array<number> = [0, 1, 2];
+  statesForWorkersPendingToAccepted: Array<number> = [5];
+
   constructor(
     private authService: NbAuthService,
     private _adminService: AdminService,
@@ -39,8 +44,7 @@ export class PagesComponent {
     private _workerService: WorkerService,
     private _userService: UserService,
     public _serviceRequestService: GetfixRequestsService,
-
-
+    private _commonService: CommonService,
   ) {
     this.userToken$ = this.authService.onTokenChange();
     this.isAuthenticated$ = this.authService.isAuthenticated();
@@ -73,8 +77,37 @@ export class PagesComponent {
         changes.map(c =>
           ({ id: c.payload.doc.id, ...c.payload.doc.data() })
         ))
-    ).subscribe(data => {
-      this._workerService.workers = data
+    ).subscribe(workers => {
+      this._workerService.updateWorkers(workers);
+      this._workerService.updateWorkersPendingToAccepted(workers.filter(val => (this.statesForWorkersPendingToAccepted.includes(val.workerStatus))));
+
+      this._pagesMenuService.MENU_ITEMS.find((val, index) => {
+        if (val.children) {
+          val.children.find((data, i) => {
+            if ((data.title == 'Workers pendig for acept')) {
+              if ((this._workerService.workersPendingToAccepted.length > 0)) {
+                this._pagesMenuService.MENU_ITEMS[index].badge = {
+                  dotMode: true,
+                  status: 'warning',
+                }
+              } else {
+                this._pagesMenuService.MENU_ITEMS[index].badge = {}
+              }
+            }
+            if ((data.title == 'Workers pendig for acept')) {
+              if ((this._workerService.workersPendingToAccepted.length > 0)) {
+                this._pagesMenuService.MENU_ITEMS[index].children[i].badge =
+                {
+                  text: this._workerService.workersPendingToAccepted.length.toString(),
+                  status: 'danger',
+                }
+              } else if (data.title == 'Workers pendig for acept' && this._workerService.workersPendingToAccepted.length == 0) {
+                this._pagesMenuService.MENU_ITEMS[index].children[i].badge = {}
+              }
+            }
+          })
+        }
+      })
     });
     this._userService.getUsersList().snapshotChanges().pipe(
       map(changes =>
@@ -83,8 +116,8 @@ export class PagesComponent {
         )
       )
     ).subscribe(users => {
-      this._userService.users = users;
       console.log(users)
+      this._userService.updateUsers(users);
     })
 
 
@@ -101,44 +134,55 @@ export class PagesComponent {
         })
         )
       )).subscribe(servicesRequest => {
-        this._serviceRequestService.serviceRequest = servicesRequest.filter(val => (this.statesForServiceRequest.includes(val.stateService)));
-        this._serviceRequestService.serviceRequestCanceledByClient = servicesRequest.filter(val => (this.statesForServiceRequestCanceledByClient.includes(val.stateService)))
-        this._serviceRequestService.serviceRequestCanceledByWorker = servicesRequest.filter(val => (this.statesForServiceRequestCanceledByWorker.includes(val.stateService)))
-
+        this._commonService.updateServiceRequest(servicesRequest.filter(val => (this.statesForServiceRequest.includes(val.stateService))));
+        this._commonService.updateServiceRequestCanceledByClient(servicesRequest.filter(val => (this.statesForServiceRequestCanceledByClient.includes(val.stateService))));
+        this._commonService.updateServiceRequestCanceledByWorker(servicesRequest.filter(val => (this.statesForServiceRequestCanceledByWorker.includes(val.stateService))));
+        this._commonService.updateServiceRequestInProgress(servicesRequest.filter(val => (this.statesForServiceRequestInProgress.includes(val.stateService))));
 
         this._pagesMenuService.MENU_ITEMS.find((val, index) => {
           if (val.children) {
             val.children.find((data, i) => {
-              if ((data.title == 'Canceled by client' || data.title == 'Canceled by worker') && (this._serviceRequestService.serviceRequestCanceledByClient.length > 0 || this._serviceRequestService.serviceRequestCanceledByWorker.length > 0)) {
-                this._pagesMenuService.MENU_ITEMS[index].badge = {
-                  dotMode: true,
-                  status: 'warning',
+              if ((data.title == 'Canceled by client' || data.title == 'Canceled by worker')) {
+                if ((this._commonService.serviceRequestCanceledByClient.length > 0 || this._commonService.serviceRequestCanceledByWorker.length > 0)) {
+                  this._pagesMenuService.MENU_ITEMS[index].badge = {
+                    dotMode: true,
+                    status: 'warning',
+                  }
+                } else {
+                  this._pagesMenuService.MENU_ITEMS[index].badge = {}
                 }
-              } else {
-                this._pagesMenuService.MENU_ITEMS[index].badge = {}
               }
-              if (data.title == 'Canceled by client' && this._serviceRequestService.serviceRequestCanceledByClient.length > 0) {
-                this._pagesMenuService.MENU_ITEMS[index].children[i].badge =
-                {
-                  text: this._serviceRequestService.serviceRequestCanceledByClient.length.toString(),
-                  status: 'danger',
+
+              if (data.title == 'Canceled by client') {
+                if (this._commonService.serviceRequestCanceledByClient.length > 0) {
+                  this._pagesMenuService.MENU_ITEMS[index].children[i].badge =
+                  {
+                    text: this._commonService.serviceRequestCanceledByClient.length.toString(),
+                    status: 'danger',
+                  }
+                } else if (data.title == 'Canceled by client' && this._commonService.serviceRequestCanceledByClient.length == 0) {
+                  this._pagesMenuService.MENU_ITEMS[index].children[i].badge = {}
                 }
-              } else if (data.title == 'Canceled by client' && this._serviceRequestService.serviceRequestCanceledByClient.length == 0) {
-                this._pagesMenuService.MENU_ITEMS[index].children[i].badge = {}
               }
-              if (data.title == 'Canceled by worker' && this._serviceRequestService.serviceRequestCanceledByWorker.length > 0) {
-                this._pagesMenuService.MENU_ITEMS[index].children[i].badge =
-                {
-                  text: this._serviceRequestService.serviceRequestCanceledByWorker.length.toString(),
-                  status: 'danger',
+
+              if (data.title == 'Canceled by worker') {
+                if (this._commonService.serviceRequestCanceledByWorker.length > 0) {
+                  this._pagesMenuService.MENU_ITEMS[index].children[i].badge =
+                  {
+                    text: this._commonService.serviceRequestCanceledByWorker.length.toString(),
+                    status: 'danger',
+                  }
+                } else if (data.title == 'Canceled by worker' && this._commonService.serviceRequestCanceledByWorker.length == 0) {
+                  this._pagesMenuService.MENU_ITEMS[index].children[i].badge = {}
                 }
-              } else if (data.title == 'Canceled by worker' && this._serviceRequestService.serviceRequestCanceledByWorker.length == 0) {
-                this._pagesMenuService.MENU_ITEMS[index].children[i].badge = {}
               }
+
             })
           }
         })
       })
+
+
   }
 
 

@@ -68,7 +68,7 @@ export class WorkersComponent implements OnInit {
       perPage: 10
     }
   };
-  source: LocalDataSource;
+  source: LocalDataSource= new LocalDataSource;
 
   constructor(
     public _workerService: WorkerService,
@@ -78,6 +78,11 @@ export class WorkersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.source.load(this._workerService.workers)
+    this._workerService.sendWorkersObservable.pipe()
+      .subscribe(workers => {
+        this.source.load(workers);
+      })
   }
 
   onAdd(ev) {
@@ -88,7 +93,7 @@ export class WorkersComponent implements OnInit {
     console.log("work", ev)
     this.router.navigate(['/pages/get-fix-customers/worker/' + ev.id]);
   }
-  
+
   rowSelect(ev: any) {
     this.source = ev.source
   }

@@ -123,9 +123,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.onContecxtItemSelection(event.item.title);
       });
   }
+
   onContecxtItemSelection(title: string) {
     if (title.includes('Log out')) {
+      localStorage.removeItem('admin_info');
+      localStorage.removeItem('restaurantBranchIdSelected');
       this.logout();
+    } else if (title.includes('Profile')) {
+      this.router.navigate(['pages/admin-profile']);
     }
     console.log('click', title);
   }

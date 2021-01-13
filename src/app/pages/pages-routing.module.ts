@@ -7,11 +7,17 @@ import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { GetfixMenuComponent } from './getfix-menu/getfix-menu.component';
 import { AdminProfileComponent } from './admin-profile/admin-profile.component';
+import { GetfixDashboardModule } from './getfix-dashboard/getfix-dashboard.module';
+import { GetfixDashboardComponent } from './getfix-dashboard/getfix-dashboard.component';
 
 const routes: Routes = [{
   path: '',
   component: PagesComponent,
   children: [
+    {
+      path: 'dashboard',
+      component: GetfixDashboardComponent,
+    },
     {
       path: 'get-fix-menu',
       loadChildren: () => import('./getfix-menu/getfix-menu.module')
@@ -41,7 +47,7 @@ const routes: Routes = [{
         .then(m => m.GetfixManagementModule)
     },
     {
-      path: 'dashboard',
+      path: 'dashboard-2',
       component: ECommerceComponent,
     },
     {

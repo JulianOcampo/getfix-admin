@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-xxxl-3 col-lg-4 col-md-6" *ngFor="let statusCard of statusCards">
+        <a [routerLink]="statusCard.link ? statusCard.link:'/pages/dashboard'">
+            <ngx-status-card [title]="statusCard.title" [cardClass]="statusCard.cardClass" [type]="statusCard.type"
+                [subtitle]="statusCard.subtitle" [on]="true">
+                <i [ngClass]="statusCard.iconClass"></i>
+            </ngx-status-card>
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <nb-card>
+            <nb-card-header>Services in progress</nb-card-header>
+            <nb-card-body>
+                <ng2-smart-table [settings]="settings" (rowSelect)="rowSelect($event)" [source]="source"
+                    (custom)="customAction($event)" (userRowSelect)="userRowSelect($event)" (create)="onAdd($event)"
+                    (edit)="onDetails($event.data)" (delete)="onDeleteConfirm($event)">
+                </ng2-smart-table>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-6 col-xl-6 col-md-12 col-sm-6">
+        <nb-card>
+            <nb-card-header>Total Customers</nb-card-header>
+            <nb-card-body>
+                <ngx-echarts-bar-getfix></ngx-echarts-bar-getfix>
+            </nb-card-body>
+        </nb-card>
+    </div>
+    <div class="col-lg-6 col-xl-6 col-md-12 col-sm-6">
+        <nb-card>
+            <nb-card-header>Worker States</nb-card-header>
+            <nb-card-body>
+                <ngx-echarts-pie-getfix></ngx-echarts-pie-getfix>
+            </nb-card-body>
+        </nb-card>
+    </div>
+</div>

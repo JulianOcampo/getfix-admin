@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit {
   @ViewChild('search', { static: true })
   searchElementRef: ElementRef;
   workerStatusInfo: Array<WorkerStatusInfo> = [
+    { description: 'All', value: -1 },
     { description: 'Available', value: 0 },
     { description: 'Busy', value: 1 },
     { description: 'InService', value: 2 },
@@ -25,6 +26,8 @@ export class SearchComponent implements OnInit {
   constructor(private ngZone: NgZone) { }
 
   ngOnInit() {
+    this.workerStatusChanged.emit(this.workerStatusInfo[0]);
+
     const autocomplete = new google.maps.places.Autocomplete(
       this.searchElementRef.nativeElement, { types: ['address'] },
     );

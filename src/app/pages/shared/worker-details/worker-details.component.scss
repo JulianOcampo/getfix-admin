@@ -1,0 +1,11 @@
+.custom-fixed-top {
+    position: sticky;
+    top: 76px;
+    z-index: 1;
+    border-top: 4px solid #3366ff;
+}
+
+.custom-dialog {
+    width: 500px;
+    height: 400px;
+}

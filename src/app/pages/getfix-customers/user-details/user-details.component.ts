@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../models/user';
 import { GetfixRequestsService } from '../../../services/getfix-requests.service';
 import { map, first } from 'rxjs/operators';
 import { LocalDataSource } from 'ng2-smart-table';
 import { Observable } from 'rxjs';
-import { ServiceRequesDocument } from '../../../models/service-request-document';
+import { ServiceRequestDocument } from '../../../models/service-request-document';
 
 @Component({
   selector: 'ngx-user-details',
@@ -63,6 +63,7 @@ export class UserDetailsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private _userService: UserService,
     private _getfixReqService: GetfixRequestsService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -83,7 +84,7 @@ export class UserDetailsComponent implements OnInit {
               totalPrice: h.data().serviceRepair.totalPrice,
               brandType: h.data().serviceRepair.brandType,
               categoryType: h.data().serviceRepair.categoryType,
-              ...Object.assign(new ServiceRequesDocument, h.data())
+              ...Object.assign(new ServiceRequestDocument, h.data())
             })))
           ).subscribe(
             history => {
@@ -113,9 +114,9 @@ export class UserDetailsComponent implements OnInit {
     console.log("ADD->", ev)
 
   }
-  onDetails(ev: User) {
+  onDetails(ev: ServiceRequestDocument) {
     console.log("work", ev)
-    // this.router.navigate(['/pages/get-fix-customers/user/' + ev.id]);
+    this.router.navigate(['/pages/service-request/details/' + ev.id]);
   }
   userRowSelect(ev) {
     console.log(ev)

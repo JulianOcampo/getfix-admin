@@ -78,14 +78,12 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getUserList();
+    this.source.load(this._userService.users);
+    this._userService.sendUsersObservable
+      .subscribe(users => {
+        this.source.load(users);
+      })
   }
-
-
-  getUserList() {
-    this._userService.users
-  }
-
   onAdd(ev) {
     console.log("ADD->", ev)
 

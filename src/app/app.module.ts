@@ -36,6 +36,9 @@ import { NbFirebasePasswordStrategy, NbFirebaseAuthModule } from '@nebular/fireb
 import { NbAuthModule } from '@nebular/auth';
 
 import { environment } from '../environments/environment';
+import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
+import { StatusCardModule } from './pages/shared/status-card/status-card.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -69,14 +72,17 @@ import { environment } from '../environments/environment';
           name: 'password',
           login: {
             redirect: {
-              success: 'pages/get-fix-menu/categories',
+              success: 'pages/dashboard',
             },
-            // defaultMessages:['Login Successfully!'],
+            defaultErrors: ['Something went wrong, please try again.'],
+            defaultMessages: ['You have been successfully registered.',],
           },
           register: {
             redirect: {
-              success: 'pages/get-fix-menu/categories',
+              success: 'pages/dashboard',
             },
+            defaultErrors: ['Something went wrong, please try again.'],
+            defaultMessages: ['You have been successfully registered.'],
           },
           logout: {
             redirect: {
@@ -100,7 +106,6 @@ import { environment } from '../environments/environment';
           strategy: 'password',
           rememberMe: true,
           socialLinks: [],
-
         },
         register: {
           strategy: 'password',
@@ -135,7 +140,11 @@ import { environment } from '../environments/environment';
         },
 
       }
-    })
+    }),
+    NgxEchartsModule.forRoot({
+      echarts
+    }),
+    StatusCardModule.forRoot(),
 
   ],
   providers: [

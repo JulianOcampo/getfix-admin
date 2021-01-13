@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { GetfixRequestComponent } from './getfix-request.component';
+import { ServiceDetailsComponent } from './service-details/service-details.component';
 import { ServicesCanceledByClientComponent } from './services-canceled-by-client/services-canceled-by-client.component';
+import { ServicesCanceledByWorkerComponent } from './services-canceled-by-worker/services-canceled-by-worker.component';
 import { ServicesComponent } from './services/services.component';
 
 
@@ -19,7 +21,11 @@ const routes: Routes = [{
     },
     {
       path: 'canceled-by-worker',
-      component: ServicesCanceledByClientComponent
+      component: ServicesCanceledByWorkerComponent
+    },
+    {
+      path: 'details/:id',
+      component: ServiceDetailsComponent
     },
 
   ]
@@ -35,5 +41,7 @@ export const routedComponents = [
   GetfixRequestComponent,
   ServicesComponent,
   ServicesCanceledByClientComponent,
-  ServicesCanceledByClientComponent,
+  ServicesCanceledByWorkerComponent,
+  ServiceDetailsComponent,
+
 ];

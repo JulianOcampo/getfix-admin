@@ -25,7 +25,8 @@ export const environment = {
     serviceRequest: '/ServiceRequests',
     admin: '/Admin',
     uploadPathAdminProfile: '/UploadsAdminProfile',
-    uploadProfile: '/Profile'
+    uploadProfile: '/Profile',
+    location: '/Location',
   },
   uploadPath: {
     category: 'uploads/category_',
@@ -35,6 +36,35 @@ export const environment = {
   },
   firebaseFunctionApi: {
     url: 'https://us-central1-getfix24-e3383.cloudfunctions.net/api',
-    saveCourseResult: '/saveCourseResult'
+    saveCourseResult: '/saveCourseResult',
+    sendMessageToDevice: '/sendMessageToDevice',
+    sendMail: '/sendMail',
+    workerStatus: '/workerStatus'
   },
+  constants: {
+    liveServiceTimer: 60,
+    workerStates: {
+      available: 0,
+      busy: 1,
+      inService: 2,
+      blocked: 3,
+      denyByAdmin: 4,
+      pendingRequestToWork: 5
+    },
+    notify: {
+      serviceAccepted: 'serviceaccepted',
+      workerArrived: 'workerarrived',
+      workerStartedFixing: 'workerstartedfixing',
+      canceledByClient: 'canceledbyclient',
+      canceledBWorker: 'canceledbyworker',
+      serviceCompleted: 'servicecompleted',
+      newService: 'newservice',
+      paymentCompleted: 'paymentcompleted',
+      paymentCanceled: 'paymentcanceled',
+      workerDenied: 'workerdenied',
+      workerDeniedSubject: 'We found a problem with your application',
+      workerApproved: 'workerapproved',
+      workerApprovedSubject: 'You have been approved',
+    }
+  }
 };

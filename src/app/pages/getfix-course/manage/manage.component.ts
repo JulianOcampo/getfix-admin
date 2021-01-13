@@ -95,13 +95,13 @@ export class ManageComponent implements OnInit {
   onAdd(ev) {
     console.log("ADD->", ev)
     this._windowService.open(ManageFormComponent, {
-      title: `Create Course: `,
+      title: `Create Test: `,
       context: [{ active: false, courseId: '' }]
     });
   }
   onEdit(ev: Course) {
     this._windowService.open(ManageFormComponent, {
-      title: `Edit Category: `,
+      title: `Edit Test: `,
       context: [ev],
     });
 

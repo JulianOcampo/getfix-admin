@@ -1,1 +1,11 @@
-<p>workers-pending works!</p>
+<nb-card>
+    <nb-card-header>
+        Workers pending to accepted
+    </nb-card-header>
+    <nb-card-body>
+        <ng2-smart-table [settings]="settings" (rowSelect)="rowSelect($event)" [source]="source"
+            (custom)="customAction($event)" (userRowSelect)=" userRowSelect()" (create)="onAdd($event)"
+            (edit)="onDetails($event.data)" (delete)="onDeleteConfirm($event)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

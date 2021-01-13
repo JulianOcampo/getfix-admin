@@ -41,6 +41,7 @@ export class EchartsPieComponent implements AfterViewInit, OnDestroy {
             type: 'pie',
             radius: '80%',
             center: ['50%', '50%'],
+            
             data: [
               { value: 335, name: 'Germany' },
               { value: 310, name: 'France' },
@@ -56,6 +57,7 @@ export class EchartsPieComponent implements AfterViewInit, OnDestroy {
               },
             },
             label: {
+              formatter: '({d}%)',
               normal: {
                 textStyle: {
                   color: echarts.textColor,

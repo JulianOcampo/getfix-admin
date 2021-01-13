@@ -5,7 +5,7 @@
   </div>
 
   <div class="col-6">
-    <nb-select (selectedChange)="onChange($event)" size="medium" fullWidth [selected]=""
+    <nb-select (selectedChange)="onChange($event)" size="medium" fullWidth [selected]="defaultWorkerStatus[0]"
       placeholder="Choose a Worker Status">
 
       <nb-option *ngFor="let workerstate of defaultWorkerStatus; let i =index" [value]="workerstate">

@@ -3,8 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { GetfixCustomersComponent } from './getfix-customers.component';
 import { UsersComponent } from './users/users.component';
 import { WorkersComponent } from './workers/workers.component';
-import { WorkerDetailsComponent } from './worker-details/worker-details.component';
+
 import { UserDetailsComponent } from './user-details/user-details.component';
+import { WorkerDetailsComponent } from '../shared/worker-details/worker-details.component';
+
 
 
 const routes: Routes = [{

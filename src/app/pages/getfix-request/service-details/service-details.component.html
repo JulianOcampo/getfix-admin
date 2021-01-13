@@ -1,0 +1,264 @@
+<div>
+    <div class=".col-md-6 .offset-md-3" *ngIf="!serviceRequest.user; else finalServiceRequest">
+        Loading...
+    </div>
+</div>
+
+<ng-template #finalServiceRequest>
+    <div class="row" *ngIf="serviceRequest && serviceRequest.stateService==2">
+        <div class="col-xxxl-3 col-md-6" *ngFor="let statusCard of statusCards">
+            <ngx-status-card (click)="setLiveService()" [title]="statusCard.title" [type]="statusCard.type"
+                [on]="liveService">
+                <i [ngClass]="statusCard.iconClass"></i>
+            </ngx-status-card>
+        </div>
+        <div class="col-xxxl-3 col-md-6">
+            <nb-card style="height: 6rem;">
+                <nb-card-body>
+                    <div class="row">
+                        <div class="col-12">
+                            <h5>Live service timer:</h5>
+                        </div>
+                        <div class="col-12 text-center">
+                            {{time}}
+                        </div>
+                    </div>
+
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+
+    <div class="row custom-fixed-top" *ngIf=" serviceRequest && serviceRequest.stateService==7">
+        <div class="col-12">
+            <nb-card fixed>
+                <nb-card-body>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <button nbButton status="success">Approve payment</button>
+                        </div>
+                        <div class="col-6">
+                            <button nbButton status="warning">Deny payment</button>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+    <div class="row custom-fixed-top" *ngIf=" serviceRequest && serviceRequest.stateService==6 && serviceRequest.bill.statusCanceled.includes('APPROVED')">
+        <div class="col-12">
+            <nb-card fixed>
+                <nb-card-body>
+                    <div class="row text-center">
+                        <div class="col-6">
+                            <button nbButton status="success">Apply penalty</button>
+                        </div>
+                        <div class="col-6">
+                            <button nbButton status="warning">Accept canceled</button>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <nb-card>
+                <nb-card-body>
+                    <strong>Client</strong>
+                    <div class="container pb-2" style="text-align: center;">
+                        <img [src]="serviceRequest.user.profileImage" alt="profileImage" width="100px" height="100px"
+                            style="border-radius: 80px;box-shadow: 0 0 5px 0 rgba(0,0,0,.52); border: 1px solid #1e3e9e;"><br>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="label">Name</label>
+                            <p>{{serviceRequest.user.fullName}}</p>
+                            <label class="label">Phone</label>
+                            <p>{{serviceRequest.user.phone}}</p>
+                        </div>
+                        <div class="col-6">
+                            <label class="label">Email</label>
+                            <p>{{serviceRequest.user.email}}</p>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-6">
+            <nb-card>
+                <nb-card-body>
+                    <strong>Worker</strong>
+                    <div class="container pb-2" style="text-align: center;">
+                        <img [src]="serviceRequest.worker.profileImage" alt="profileImage" width="100px" height="100px"
+                            style="border-radius: 80px;box-shadow: 0 0 5px 0 rgba(0,0,0,.52); border: 1px solid #1e3e9e;"><br>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label class="label">Name</label>
+                            <p>{{serviceRequest.worker.fullName}}</p>
+                            <label class="label">Phone</label>
+                            <p>{{serviceRequest.worker.phone}}</p>
+                        </div>
+                        <div class="col-6">
+                            <label class="label">Email</label>
+                            <p>{{serviceRequest.worker.email}}</p>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-6">
+            <nb-card>
+                <nb-card-body>
+                    <strong>Specifications</strong>
+                    <div class="row mt-2">
+                        <div class="col-4" style="display: flex; align-items: center;">
+                            <img id="blah" [src]="serviceRequest.serviceRepair.modelImage" alt="your image"
+                                height="100px"
+                                style="display:block; margin:auto; background-color: black; border-radius: 4px; padding: 1px;" />
+                        </div>
+                        <div class="col-8">
+                            <div class="form-group row">
+                                <label class="label col-sm-4 form-control-label">Category:</label>
+                                <div class="col-sm-8">
+                                    <p>{{serviceRequest.serviceRepair.categoryType}}</p>
+
+                                </div>
+                                <label class="label col-sm-4 form-control-label">Brand:</label>
+                                <div class="col-sm-8">
+                                    <p>{{serviceRequest.serviceRepair.brandType}}</p>
+
+                                </div>
+                                <label class="label col-sm-4 form-control-label">Model:</label>
+                                <div class="col-sm-8">
+                                    <p>{{serviceRequest.serviceRepair.modelType}}</p>
+
+                                </div>
+                                <label class="label col-sm-4 form-control-label">Color:</label>
+                                <div class="col-sm-8" style="display: inline-flex; align-items: baseline;">
+                                    <div class="mr-2" style="height: 10px; width: 10px; border-radius: 50%;"
+                                        [style.background-color]="serviceRequest.serviceRepair.modelColor.hexaValue">
+                                    </div>
+                                    <p>- {{serviceRequest.serviceRepair.modelColor.name}}</p>
+                                </div>
+                                <label class="label col-sm-4 form-control-label">Description:</label>
+                                <div class="col-sm-8">
+                                    <p>{{serviceRequest.serviceRepair.modelDescription}}</p>
+                                </div>
+                                <label class="label col-sm-4 form-control-label">Total issues:</label>
+                                <div class="col-sm-8">
+                                    <p>{{serviceRequest.serviceRepair.issues.length}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-6">
+            <nb-card>
+                <nb-card-body>
+                    <strong>Service Details</strong>
+
+                    <div class="form-group row mt-2">
+                        <label class="label col-sm-4 form-control-label">Service State:</label>
+                        <div class="col-sm-8">
+                            <p> <strong> {{getStateService(serviceRequest.stateService)}} </strong></p>
+
+                        </div>
+                        <label class="label col-sm-4 form-control-label">Payment Id:</label>
+                        <div class="col-sm-8">
+                            <p>{{serviceRequest.bill.paymentId}}</p>
+                        </div>
+                        <label class="label col-sm-4 form-control-label">Fine amount:</label>
+                        <div class="col-sm-8">
+                            <p>{{serviceRequest.bill.fineAmount}}</p>
+                        </div>
+                        <label class="label col-sm-4 form-control-label">Status canceled:</label>
+                        <div class="col-sm-8">
+                            <p>{{ serviceRequest.bill.statusCanceled ? serviceRequest.bill.statusCanceled: '-'}}</p>
+                        </div>
+                        <label class="label col-sm-4 form-control-label">Status payment:</label>
+                        <div class="col-sm-8">
+                            <p>{{serviceRequest.bill.statusPayment}}</p>
+                        </div>
+                        <label class="label col-sm-4 form-control-label">Total price:</label>
+                        <div class="col-sm-8">
+                            <p>{{serviceRequest.serviceRepair.totalPrice}}</p>
+                        </div>
+                    </div>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12">
+            <nb-card size="medium">
+                <nb-card-header>
+                    <strong>Issues Detail</strong>
+                </nb-card-header>
+                <nb-card-body>
+                    <div class="row mt-2">
+                        <div class="col-6" *ngFor="let issue of serviceRequest.serviceRepair.issues">
+                            <nb-card>
+                                <nb-card-header>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            {{issue.title}}
+                                        </div>
+                                        <div class="col-6">
+                                            <p> Price: <strong>{{issue.price}} $</strong> </p>
+                                        </div>
+                                    </div>
+                                </nb-card-header>
+                                <nb-card-body>
+                                    <div class="row">
+                                        <div class="col-6" style="align-items: center;">
+                                            <strong>After</strong>
+
+                                            <img id="blah" [src]="issue.issueImage" alt="your image" width="100px"
+                                                height="100px"
+                                                style="display:block; margin:auto; background-color: black; border-radius: 4px; padding: 1px;" />
+                                        </div>
+                                        <div class="col-6" style="align-items: center;">
+                                            <strong>Before</strong>
+
+                                            <img id="blah" [src]="issue.proofImage" alt="your image" width="100px"
+                                                height="100px"
+                                                style="display:block; margin:auto; background-color: black; border-radius: 4px; padding: 1px;" />
+                                        </div>
+                                    </div>
+                                </nb-card-body>
+                            </nb-card>
+                        </div>
+                    </div>
+
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-12">
+            <nb-card size="small">
+                <nb-card-header>
+                    <div class="row">
+                        <div class="col-6">Date start {{formatDate('dateStart') }} </div>
+                        <div class="col-6">Date estimation arrival {{formatDate('dateEstimatedArrival') }}</div>
+                    </div>
+                </nb-card-header>
+                <nb-card-body snInViewport (inViewportChange)="onInViewportChange($event)">
+                    <google-map width="100%" [center]="center" height="100%" [zoom]="zoom" [fitBounds]="center">
+                        <map-polyline [options]="polylineOptions"></map-polyline>
+                        <map-marker #marker [position]="markerWorkerPosition"
+                            [options]="{icon:markerWorkerOptions.icon, animation:markerWorkerOptions.animation}"
+                            (mapClick)="openInfoWindow(marker)"></map-marker>
+                        <map-marker #marker [position]="markerUserPosition"
+                            [options]="{icon:markerUserOptions.icon, animation:markerUserOptions.animation}"
+                            (mapClick)="openInfoWindow(marker)"></map-marker>
+                        <map-marker #marker [position]="workerLiveLocation" *ngFor="let workerLiveLocation of workerLiveLocations"
+                            [options]="{icon:markerUserOptions.icon, animation:markerUserOptions.animation}"
+                            (mapClick)="openInfoWindow(marker)"></map-marker>
+                        <map-info-window>Info Window content</map-info-window>
+                    </google-map>
+                </nb-card-body>
+            </nb-card>
+        </div>
+    </div>
+</ng-template>

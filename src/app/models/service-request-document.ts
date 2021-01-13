@@ -1,6 +1,6 @@
 import { firestore } from "firebase";
 
-export class ServiceRequesDocument {
+export class ServiceRequestDocument {
     id: string;
     bill: Bill;
     dateEnd: firestore.Timestamp;

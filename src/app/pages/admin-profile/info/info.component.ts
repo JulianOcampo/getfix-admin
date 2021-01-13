@@ -73,6 +73,7 @@ export class InfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAdminInfo();
+    console.log(this.credentialsForm)
   }
 
   showToast(message, position, status) {
