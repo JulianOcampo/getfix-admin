@@ -9,7 +9,7 @@ To use material theme checkout `feat/material-theme` branch.
 
 Get material ngx-admin integrated with backend technology of your choice. [Check out our store](https://hubs.ly/H0qwyl60).
 
-## Key features
+## LAAAAUUUUURRAAAAAA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 - The most popular and trusted Angular open source dashboard template is out there. Used by hundreds of thousands developers worldwide and Fortune 500 companies*.
 - Over 40+ Angular Components and 60+ Usage Examples. Kick off your project and save money by using ngx-admin.
