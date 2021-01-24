@@ -5,7 +5,6 @@ import { NbAuthService, NbAuthToken } from '@nebular/auth';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
 import { Admin } from '../../../models/admin';
 import { CustomValidators } from '../../../models/custom-validators';
 import { AdminService } from '../../../services/admin.service';
@@ -28,7 +27,7 @@ export class InfoComponent implements OnInit {
   userToken$: Observable<NbAuthToken>;
   isAuthenticated$: Observable<boolean>;
   adminInfo: Admin = new Admin();
-  titleHeader: string = 'Bienvenido';
+  titleHeader: string = 'Welcome admin';
   dialog: TemplateRef<any>;
   dialogCredentials: TemplateRef<any>;
   saveSuccess = false;
@@ -130,7 +129,7 @@ export class InfoComponent implements OnInit {
         phoneNumber: this.adminInfo.phoneNumber
       })
     }
-    this._dialogRef = this._dialogService.open(dialog, { closeOnBackdropClick: true, closeOnEsc: true, context: { title: 'Editar perfil' } });
+    this._dialogRef = this._dialogService.open(dialog, { closeOnBackdropClick: true, closeOnEsc: true, context: { title: 'Edit profile' } });
   }
 
   closeEditProfile() {
@@ -168,7 +167,7 @@ export class InfoComponent implements OnInit {
         email: this.adminInfo.email,
       })
     }
-    this._dialogCredentialsRef = this._dialogService.open(this.dialogCredentials, { closeOnBackdropClick: true, closeOnEsc: true, context: { title: 'Editar credenciales' } });
+    this._dialogCredentialsRef = this._dialogService.open(this.dialogCredentials, { closeOnBackdropClick: true, closeOnEsc: true, context: { title: 'Change credentials' } });
   }
 
   updateProfile() {

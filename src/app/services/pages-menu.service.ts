@@ -13,6 +13,7 @@ export class PagesMenuService {
       title: 'Dashboard',
       icon: 'home-outline',
       link: '/pages/dashboard',
+      home: true,
     },
     {
       title: 'GETFIX-APP',
@@ -109,7 +110,7 @@ export class PagesMenuService {
     },
     {
       "icon": "person-outline",
-      "title": "Perfil",
+      "title": "Profile",
       "link": "/pages/admin-profile",
       "pathMatch": "full",
     },
@@ -357,6 +358,10 @@ export class PagesMenuService {
     //     },
     //   ],
     // },
+
+
+
+    
   ];
 
 

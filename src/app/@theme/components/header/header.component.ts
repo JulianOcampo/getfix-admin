@@ -154,6 +154,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   navigateHome() {
     this.menuService.navigateHome();
+    console.log('go home')
     return false;
   }
   logout() {

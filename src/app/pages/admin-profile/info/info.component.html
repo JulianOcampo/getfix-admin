@@ -28,21 +28,21 @@
                     <nb-card-body>
                         <div class="row">
                             <div class="col-6">
-                                <label class="label">Correo</label>
+                                <label class="label">Email</label>
                                 <p class="profile-p">{{adminInfo.email}}</p>
                             </div>
                             <div class="col-6">
-                                <label class="label">Telefono</label>
+                                <label class="label">Phone</label>
                                 <p class="profile-p">{{adminInfo.phoneNumber}}</p>
 
                             </div>
                             <div class="col-6">
-                                <label class="label">Nombre</label>
+                                <label class="label">First Name</label>
                                 <p class="profile-p">{{adminInfo.name}}</p>
 
                             </div>
                             <div class="col-6">
-                                <label class="label">Apellido</label>
+                                <label class="label">Last name</label>
                                 <p class="profile-p">{{adminInfo.lastName}}</p>
 
                             </div>
@@ -53,13 +53,13 @@
                             </div>
                             <div class="col-lg-3 col-sm-5 separator ">
                                 <button nbButton fullWidth size="small" status="primary"
-                                    (click)="editAdminProfile($event)"><i class="nb-edit"></i>editar
-                                    informacion</button>
+                                    (click)="editAdminProfile($event)"><i class="nb-edit"></i>Edit
+                                    info</button>
                             </div>
                             <div class="col-lg-3 col-sm-5 separator">
                                 <button nbButton fullWidth size="small" status="primary"
-                                    (click)="editAdminCredentials($event)"><i class="nb-edit"></i>cambiar
-                                    credenciales</button>
+                                    (click)="editAdminCredentials($event)"><i class="nb-edit"></i>Update
+                                    credentials</button>
                             </div>
                             <div class="col-lg-3 col-sm-1">
                             </div>
@@ -103,7 +103,7 @@
                                 <div class="profile-image-button separator col-12">
                                     <button nbButton size="tiny" status="primary" type="button"
                                         (click)="selectInputFile('profileImage')">
-                                        <nb-icon icon="upload"></nb-icon>Seleccione
+                                        <nb-icon icon="upload"></nb-icon>Select
                                     </button>
                                 </div>
                             </div>
@@ -120,21 +120,21 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <label for="name" class="label">Nombre</label>
+                                    <label for="name" class="label">First Name</label>
                                     <div class="">
                                         <input type="text" nbInput fieldSize="small" fullWidth id="name"
                                             placeholder="Nombre" formControlName="name">
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <label for="lastName" class="label">Apellido</label>
+                                    <label for="lastName" class="label">Last Name</label>
                                     <div class="">
                                         <input type="text" nbInput fieldSize="small" fullWidth id="lastName"
                                             placeholder="Apellido" formControlName="lastName">
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <label for="phoneNumber" class="label">Telefono</label>
+                                    <label for="phoneNumber" class="label">Phone</label>
                                     <div class="">
                                         <input type="tel" nbInput fieldSize="small" fullWidth id="phoneNumber"
                                             placeholder="Telefono" formControlName="phoneNumber">
@@ -152,10 +152,10 @@
                         <div class="col-12 center-buttons">
                             <button nbButton size="tiny" type="submit" status="primary" (click)="updateProfile()"
                                 [disabled]="!profileForm.valid">
-                                <nb-icon icon="paper-plane"></nb-icon>Actualizar
+                                <nb-icon icon="paper-plane"></nb-icon>Update
                             </button>
                             <button nbButton size="tiny" status="primary" type="button" (click)="closeEditProfile()">
-                                <nb-icon icon="close"></nb-icon>Cancelar
+                                <nb-icon icon="close"></nb-icon>Cancel
                             </button>
                         </div>
                     </div>
@@ -179,61 +179,60 @@
                                     background="transparent" speed="0.4" loop autoplay>
                                 </lottie-player>
                             </div>
-                            <a class="forgot-password label" routerLink="/auth/request-password">Olvido su
-                                contraseña?</a>
+                            <a class="forgot-password label" routerLink="/auth/request-password"> Forgot your password?</a>
                         </div>
                         <div class="col-md-8 col-sm-8">
                             <div class="row">
                                 <div class="col-12">
-                                    <label for="email" class="label">Correo electronico</label>
+                                    <label for="email" class="label">Email</label>
                                     <div class="">
                                         <input type="email" nbInput fieldSize="small" fullWidth id="email"
-                                            disabled="disabled" placeholder="Correo electronico"
+                                            disabled="disabled" placeholder="Email"
                                             formControlName="email">
                                     </div>
                                 </div>
                                 <div class="col-12">
 
-                                    <label for="email" class="label">Contraseña actual</label>
+                                    <label for="email" class="label">Current password</label>
                                     <div class="">
                                         <input type="email" nbInput fieldSize="small" fullWidth id="email"
-                                            placeholder="Contraseña actual" formControlName="oldPassword">
+                                            placeholder="Current password" formControlName="oldPassword">
                                     </div>
                                     <label class="label text-danger"
                                         *ngIf="credentialsForm.controls['oldPassword'].hasError('required')">
-                                        * Requerido
+                                        * Requiered
                                     </label>
                                 </div>
                                 <div class="col-12">
 
-                                    <label for="name" class="label">Contraseña Nueva</label>
+                                    <label for="name" class="label">New password</label>
                                     <div class="">
                                         <input type="text" nbInput fieldSize="small" fullWidth id="name"
-                                            placeholder="Contraseña Nueva" formControlName="newPassword">
+                                            placeholder="New password" formControlName="newPassword">
                                     </div>
                                     <label class="label text-danger"
                                         *ngIf="credentialsForm.controls['newPassword'].hasError('required')">
-                                        * Requerido
+                                        * Requiered
                                     </label>
                                     <label class="label text-danger"
                                         *ngIf="credentialsForm.controls['newPassword'].hasError('minlength')">
-                                        * Longitud Minima (6)
+                                        * Min lenght (6)
                                     </label>
                                 </div>
                                 <div class="col-12">
 
-                                    <label for="lastName" class="label">Confirme Contraseña</label>
+                                    <label for="lastName" class="label">Confirm</label>
                                     <div class="">
                                         <input type="text" nbInput fieldSize="small" fullWidth id="lastName"
-                                            placeholder="Confirme Contraseña" formControlName="confirmNewPassword">
+                                            placeholder="Confirm" formControlName="confirmNewPassword">
                                     </div>
                                     <label class="label text-danger"
                                         *ngIf="credentialsForm.controls['confirmNewPassword'].hasError('required')">
-                                        * Requerido
+                                        * Requiered
                                     </label>
                                     <label class="label text-danger"
                                         *ngIf="credentialsForm.controls['confirmNewPassword'].hasError('NoPassswordMatch')">
-                                        * Las contraseñas no coinciden
+                                        * The pasword are not the same
                                     </label>
 
 
@@ -247,11 +246,11 @@
                         <div class="col-12 center-buttons">
                             <button nbButton size="tiny" type="submit" status="primary" (click)="updateCredentials()"
                                 [disabled]="!credentialsForm.valid">
-                                <nb-icon icon="paper-plane"></nb-icon>Actualizar
+                                <nb-icon icon="paper-plane"></nb-icon>Update
                             </button>
                             <button nbButton size="tiny" status="primary" type="button"
                                 (click)="closeEditCredentials()">
-                                <nb-icon icon="close"></nb-icon>Cancelar
+                                <nb-icon icon="close"></nb-icon>Cancel
                             </button>
                         </div>
                     </div>

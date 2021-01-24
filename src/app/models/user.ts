@@ -6,5 +6,6 @@ export class User {
     fullName: string;
     phoneNunber: string;
     profileImage: string;
+    token: string;
     
 }

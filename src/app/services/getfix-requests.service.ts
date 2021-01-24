@@ -1,5 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentReference } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ServiceRequestDocument } from '../models/service-request-document';
 
@@ -14,9 +16,18 @@ export class GetfixRequestsService {
   private workerRefEn = environment.firebaseRef.worker;
   private serviceReqRef: AngularFirestoreCollection<any>;
   private brandReqRef: AngularFirestoreDocument<any>;
-
+  private apiUrl = environment.firebaseFunctionApi.url;
+  private completePaymentPoint = environment.firebaseFunctionApi.completePayment;
+  private cancelPaymentPoint = environment.firebaseFunctionApi.cancelPayment;
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    }),
+  }
   constructor(
     private db: AngularFirestore,
+    private http: HttpClient,
   ) {
   }
 
@@ -44,6 +55,28 @@ export class GetfixRequestsService {
     return this.db.collection(this.serviceReqRefPath).doc(serviceRequestId);
   }
 
-  
+  cancelPayment(paymentId: string): Observable<any> {
+    return this.http.post(this.apiUrl + this.cancelPaymentPoint,
+      {
+        payment_id: paymentId,
+      }, { observe: 'body', ...this.httpOptions })
+  }
+
+  completePayment(paymentId: string): Observable<any> {
+    return this.http.post(this.apiUrl + this.completePaymentPoint,
+      {
+        payment_id: paymentId,
+      }, { observe: 'body', ...this.httpOptions })
+  }
+
+  async updateServiceRequest(serviceId: string, serviceReq: any): Promise<boolean> {
+    try {
+      await this.db.collection(this.serviceReqRefPath).doc(serviceId).update(serviceReq);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
 
 }

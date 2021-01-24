@@ -12,7 +12,16 @@
 <div class="row">
     <div class="col-12">
         <nb-card>
-            <nb-card-header>Services in progress</nb-card-header>
+            <nb-card-header>
+                <div class="row">
+                    <div class="col-8">Services in progress</div>
+                    <div class="col-4 text-right">
+                        <a routerLink="/pages/get-fix-location/workers">
+                            <button nbButton> go live</button>
+                        </a>
+                    </div>
+                </div>
+            </nb-card-header>
             <nb-card-body>
                 <ng2-smart-table [settings]="settings" (rowSelect)="rowSelect($event)" [source]="source"
                     (custom)="customAction($event)" (userRowSelect)="userRowSelect($event)" (create)="onAdd($event)"

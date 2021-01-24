@@ -8,7 +8,7 @@ export class ServiceRequestDocument {
     dateStart: firestore.Timestamp;
     locationRequest: firestore.GeoPoint;
     locationResponse: firestore.GeoPoint;
-    reason: string;
+    reasons: Reasons;
     refBrandId: firestore.DocumentReference;
     refCategoryId: firestore.DocumentReference;
     refUserId: firestore.DocumentReference;
@@ -20,12 +20,18 @@ export class ServiceRequestDocument {
     worker: Worker;
 }
 
+class Reasons {
+    admin: string;
+    user: string;
+    worker: string;
+}
 class Bill {
     canceledId: string;
     fineAmount: number;
     paymentId: string;
     statusCanceled: string;
     statusPayment: string;
+    lastDateChange: firestore.Timestamp
 }
 
 class serviceRepair {

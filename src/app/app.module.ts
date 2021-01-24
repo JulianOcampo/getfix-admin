@@ -145,7 +145,6 @@ import { StatusCardModule } from './pages/shared/status-card/status-card.module'
       echarts
     }),
     StatusCardModule.forRoot(),
-
   ],
   providers: [
     { provide: SETTINGS, useValue: {} },

@@ -22,8 +22,6 @@ import { NbCardModule, NbInputModule, NbSelectModule } from '@nebular/theme';
     NbCardModule,
     NbSelectModule,
     NbInputModule,
-
-
   ]
 })
 export class GetfixLocationModule { }

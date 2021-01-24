@@ -136,7 +136,7 @@ export class PagesComponent {
       )).subscribe(servicesRequest => {
         this._commonService.updateServiceRequest(servicesRequest.filter(val => (this.statesForServiceRequest.includes(val.stateService))));
         this._commonService.updateServiceRequestCanceledByClient(servicesRequest.filter(val => (this.statesForServiceRequestCanceledByClient.includes(val.stateService))));
-        this._commonService.updateServiceRequestCanceledByWorker(servicesRequest.filter(val => (this.statesForServiceRequestCanceledByWorker.includes(val.stateService))));
+        this._commonService.updateServiceRequestCanceledByWorker(servicesRequest.filter(val => (this.statesForServiceRequestCanceledByWorker.includes(val.stateService) && val.bill.statusPayment.includes('APPROVED'))));
         this._commonService.updateServiceRequestInProgress(servicesRequest.filter(val => (this.statesForServiceRequestInProgress.includes(val.stateService))));
 
         this._pagesMenuService.MENU_ITEMS.find((val, index) => {

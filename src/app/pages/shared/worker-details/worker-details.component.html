@@ -25,19 +25,26 @@
                 <ng-template #tmpWorker>
 
                     <div class="container" style="text-align: center;">
-                        <img [src]="worker.profileImage" alt="profileImage" width="150px" height="150px"
+                        <img [src]="worker.profileImage" alt="profileImage" width="110px" height="110px"
                             style="border-radius: 80px;box-shadow: 0 0 5px 0 rgba(0,0,0,.52); border: 1px solid #1e3e9e;"><br>
-                        <p style="padding-top: 5px;">{{worker.fullName}}</p>
+                        <p class="mb-1 mt-1">{{worker.fullName}}</p>
                     </div>
-                    <hr>
+                    <hr class="mb-1 mt-1">
                     <label *ngIf="worker.certificate" class="label">Validate Credentials <a [href]="worker.certificate"
                             target="_blank" rel="noopener noreferrer"> open here</a> </label><br>
-                    <label class="label">Phone number</label>
-                    <p>{{worker.phoneNumber}}</p>
+                    <label class="label" *ngIf=" workerBankStorage.idType == 0">Social
+                        Security Number</label>
+                    <label class="label" *ngIf="workerBankStorage.idType == 1">Individual
+                        Taxpayer Identification Number</label>
+                    <p class="mb-1">{{workerBankStorage.idNumber}}</p>
                     <label class="label">Email</label>
-                    <p>{{worker.email}}</p>
-                    <label class="label">Identification Number</label>
-                    <p>{{worker.identificationNumber}}</p>
+                    <p class="mb-1"><a href="mailto:{{worker.email}}">{{worker.email}}</a></p>
+                    <label class="label">Phone number</label>
+                    <p class="mb-1"><a href="tel:{{worker.phoneNumber}}">{{worker.phoneNumber}}</a></p>
+                    <label class="label">Rating average</label>
+                    <nb-progress-bar [value]="((worker.avgRating*100)/5)" [status]="status" size="tiny">
+                        {{worker.avgRating }}
+                    </nb-progress-bar>
 
                 </ng-template>
             </nb-card-body>

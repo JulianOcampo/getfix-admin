@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument,
 import { Observable, Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Worker } from '../models/worker'
+import { WorkerBankStorage } from '../models/worker-bank-storage';
 import { WorkerLocation } from '../models/worker-location';
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class WorkerService {
 
   private pathRef = environment.firebaseRef.worker;
   private workerLocation = environment.firebaseRef.location;
+  private bankStorage = environment.firebaseRef.bankStorage;
   private workerRef: AngularFirestoreCollection<Worker>;
   public workers: Array<Worker> = [];
   public workersPendingToAccepted: Array<Worker> = [];
@@ -45,6 +47,10 @@ export class WorkerService {
 
   getWorker(id: string): AngularFirestoreDocument<any> {
     return this.workerRef.doc(id);
+  }
+
+  getWorkerBankStorage(id: string): AngularFirestoreDocument<WorkerBankStorage> {
+    return this.workerRef.doc(id).collection(this.bankStorage).doc(id);
   }
 
   getWorkerByStatus(status: number): AngularFirestoreCollection<Worker> {

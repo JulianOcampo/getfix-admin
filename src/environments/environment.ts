@@ -32,6 +32,7 @@ export const environment = {
     uploadPathAdminProfile: '/UploadsAdminProfile',
     uploadProfile: '/Profile',
     location: '/Location',
+    bankStorage: '/BankStorage',
   },
   uploadPath: {
     category: 'uploads/category_',
@@ -44,7 +45,9 @@ export const environment = {
     saveCourseResult: '/saveCourseResult',
     sendMessageToDevice: '/sendMessageToDevice',
     sendMail: '/sendMail',
-    workerStatus: '/workerStatus'
+    workerStatus: '/workerStatus',
+    completePayment: '/completePayment',
+    cancelPayment: '/cancelPayment',
   },
   constants: {
     liveServiceTimer: 60,
@@ -65,7 +68,9 @@ export const environment = {
       serviceCompleted: 'servicecompleted',
       newService: 'newservice',
       paymentCompleted: 'paymentcompleted',
+      paymentCompletedSubject: 'We have been approved a pay',
       paymentCanceled: 'paymentcanceled',
+      paymentCanceledSubject: 'We have been canceled a pay',
       workerDenied: 'workerdenied',
       workerDeniedSubject: 'We found a problem with your application',
       workerApproved: 'workerapproved',

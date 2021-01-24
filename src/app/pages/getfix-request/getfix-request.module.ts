@@ -4,6 +4,7 @@ import { InViewportModule } from '@thisissoon/angular-inviewport';
 import { GetfixRequestRoutingModule, routedComponents } from './getfix-request-routing.module';
 import { ThemeModule } from '../../@theme/theme.module';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { FormsModule as ngFormsModule, ReactiveFormsModule as ngReactiveFormsModule } from '@angular/forms';
 import {
   NbSelectModule,
   NbCardModule,
@@ -38,7 +39,9 @@ import { StatusCardModule } from '../shared/status-card/status-card.module';
     GoogleMapsModule,
     InViewportModule,
     NbDialogModule.forChild(),
-    StatusCardModule
+    StatusCardModule,
+    ngFormsModule,
+    ngReactiveFormsModule,
 
   ]
 })

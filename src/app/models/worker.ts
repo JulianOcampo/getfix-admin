@@ -11,6 +11,8 @@ export class Worker {
     profileImage: string;
     workerStatus: number;
     token: string;
+    avgRating: number;
+    numRatings: number;
     g: GeoPoint;
     error: boolean;
 

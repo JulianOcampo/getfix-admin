@@ -14,6 +14,7 @@ import {
   NbButtonModule,
   NbTabsetModule,
   NbSpinnerModule,
+  NbProgressBarModule,
 } from '@nebular/theme';
 
 @NgModule({
@@ -21,6 +22,7 @@ import {
   imports: [
     CommonModule,
     GetfixCustomersRoutingModule,
+    ThemeModule,
     Ng2SmartTableModule,
     NbSelectModule,
     NbCardModule,
@@ -31,7 +33,7 @@ import {
     NbButtonModule,
     NbTabsetModule,
     NbSpinnerModule,
-    ThemeModule
+    NbProgressBarModule,
   ]
 })
 export class GetfixCustomersModule { }

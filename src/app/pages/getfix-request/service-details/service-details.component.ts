@@ -1,22 +1,31 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, takeWhile } from 'rxjs/operators';
 import { ServiceRequestDocument } from '../../../models/service-request-document';
 import { GetfixRequestsService } from '../../../services/getfix-requests.service';
 import { formatDate } from '@angular/common';
-import { NbThemeService } from '@nebular/theme';
+import { NbDialogRef, NbDialogService, NbThemeService, NbToastrService } from '@nebular/theme';
 import { TimerService } from '../../../services/timer.service';
 import { environment } from '../../../../environments/environment';
 import { WorkerService } from '../../../services/worker.service';
 import { WorkerLocation } from '../../../models/worker-location';
 import { CardSettings } from '../../../models/card-setting';
-
+import { NotifyService } from '../../../services/notify.service';
+import { User } from '../../../models/user';
+import { Worker } from '../../../models/worker';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { firestore } from 'firebase';
 @Component({
   selector: 'ngx-service-details',
   templateUrl: './service-details.component.html',
-  styleUrls: ['./service-details.component.scss']
+  styleUrls: ['./service-details.component.scss'],
+  queries: {
+    dialog: new ViewChild("dialog")
+  },
 })
+
 export class ServiceDetailsComponent implements OnInit, OnDestroy {
+
 
   suscriptionServiceDetails: any = [];
   suscriptionHelper: Array<any> = [];
@@ -107,12 +116,29 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       dark: this.commonStatusCardsSet,
     };
   liveService: boolean = false;
+
+  saveSuccess: boolean = false;
+  saveError: boolean = false;
+  dialog: TemplateRef<any>;
+  approvedByAdmin: boolean = false;
+  openDenyPaymentOption: Boolean = false;
+  user: User;
+  worker: Worker;
+  action: string = '';
+  actionsPaymentForm = this.fb.group({
+    justification: new FormControl('', { validators: Validators.required, updateOn: 'change' })
+  })
   constructor(
     private activatedRouter: ActivatedRoute,
     private _serviceRequestService: GetfixRequestsService,
+    private _toastrService: NbToastrService,
+    private _dialogService: NbDialogService,
     private themeService: NbThemeService,
-    private _timerService: TimerService,
     private _workerService: WorkerService,
+    private _notifyService: NotifyService,
+    private _timerService: TimerService,
+    private fb: FormBuilder,
+    @Optional() protected _dialogRef: NbDialogRef<any>,
   ) {
     this.themeService.getJsTheme()
       .pipe(takeWhile(() => this.alive))
@@ -128,10 +154,12 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       this.suscriptionServiceDetails = this._serviceRequestService.getServiceRequest(params.id).snapshotChanges()
         .pipe(
           map(data => ({ id: data.payload.id, ...data.payload.data() }) as ServiceRequestDocument)
-        ).subscribe(serviceRequest => {
+        ).subscribe(async serviceRequest => {
           this.liveService = false;
           this.stopTime();
           this.serviceRequest = serviceRequest;
+          this.user = Object.assign(new User, await (await serviceRequest.refUserId.get()).data())
+          this.worker = Object.assign(new Worker, await (await serviceRequest.refWorkerId.get()).data())
           var workerPosition: google.maps.LatLngLiteral = { lat: serviceRequest.locationResponse.latitude, lng: serviceRequest.locationResponse.longitude };
           var userPosition: google.maps.LatLngLiteral = { lat: serviceRequest.locationRequest.latitude, lng: serviceRequest.locationRequest.longitude };
           this.markerWorkerPosition = workerPosition;
@@ -151,13 +179,19 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
+  get justification() {
+    return this.actionsPaymentForm.get('justification') as FormControl;
+  }
+
   formatDate(handler: string) {
     if (handler == 'dateStart') {
       return formatDate(this.serviceRequest.dateStart.toDate(), 'dd-MM-yyyy hh:mm', 'en-US')
 
     } else if (handler == 'dateEstimatedArrival') {
-      return formatDate(this.serviceRequest.dateEstimatedArrival.toDate(), 'dd-MM-yyyy hh:mm', 'en-US')
-
+      if (this.serviceRequest.dateEstimatedArrival)
+        return formatDate(this.serviceRequest.dateEstimatedArrival.toDate(), 'dd-MM-yyyy hh:mm', 'en-US')
+      else
+        return '--:--'
     }
   }
 
@@ -283,6 +317,133 @@ export class ServiceDetailsComponent implements OnInit, OnDestroy {
       return true;
     else
       return false;
+  }
+
+  openActionForPayment(action: string) {
+    debugger
+
+    this.action = action;
+    console.log(this.actionsPaymentForm)
+    this._dialogRef = this._dialogService.open(this.dialog, { closeOnBackdropClick: false, closeOnEsc: false, context: { title: action == 'approve' ? 'Approving Payment' : 'Denyng Payment' } });
+  }
+
+  approvePayment() {
+    this.approvedByAdmin = true;
+    this._serviceRequestService.completePayment(this.serviceRequest.bill.paymentId).toPromise()
+      .then(completePaymentResponse => {
+        console.log(completePaymentResponse)
+        this.serviceRequest.bill.statusPayment = completePaymentResponse.status;
+        this.serviceRequest.bill.lastDateChange = firestore.Timestamp.fromDate(new Date());
+        if (!this.serviceRequest.reasons) this.serviceRequest.reasons = { admin: '', user: '', worker: '' }
+        this.serviceRequest.reasons.admin = this.justification.value;
+        return this._serviceRequestService.updateServiceRequest(this.serviceRequest.id,
+          {
+            bill: this.serviceRequest.bill,
+            reasons: this.serviceRequest.reasons,
+          })
+      }).then(serviceUpdated => {
+        console.log(serviceUpdated)
+        if (!serviceUpdated) {
+          throw new Error("no se ha podido actualizar el servicio");
+        }
+        return this._notifyService.sendMessageToDevice(this.worker.token, environment.constants.notify.paymentCompleted).toPromise()
+      })
+      .then(messageResponse => {
+        console.log(messageResponse)
+        return this._notifyService.sendMessageToDevice(this.user.token, environment.constants.notify.paymentCompleted).toPromise()
+      })
+      .then(messageResponse => {
+        console.log(messageResponse)
+        return this._notifyService.sendEmailToUser(this.worker.email, environment.constants.notify.paymentCompletedSubject, environment.constants.notify.paymentCompleted, environment.constants.notify.paymentCompleted).toPromise()
+      })
+      .then(emailResponse => {
+        console.log(emailResponse)
+        return this._notifyService.sendEmailToUser(this.user.email, environment.constants.notify.paymentCompletedSubject, environment.constants.notify.paymentCompleted, environment.constants.notify.paymentCompleted).toPromise()
+      })
+      .then(emailResponse => {
+        console.log(emailResponse)
+      })
+      .catch(error => {
+        console.error(error)
+        this.saveError = true;
+        setTimeout(() => {
+          this._dialogRef.close();
+          this.showToast(`Service ${this.serviceRequest.id} could not be approved!`, 'top-right', 'danger');
+        }, 1000);
+      })
+      .finally(() => {
+        this.saveSuccess = true;
+        setTimeout(() => {
+          this._dialogRef.close();
+          this.showToast(`Service ${this.serviceRequest.id} was approved sucefull!`, 'top-right', 'success');
+        }, 1000);
+      })
+  }
+
+  denyPayment() {
+    this.approvedByAdmin = true;
+    this._serviceRequestService.cancelPayment(this.serviceRequest.bill.paymentId).toPromise()
+      .then(cancelPaymentResponse => {
+        console.log(cancelPaymentResponse)
+        this.serviceRequest.bill.statusPayment = cancelPaymentResponse.status;
+        this.serviceRequest.bill.lastDateChange = firestore.Timestamp.fromDate(new Date());
+        if (!this.serviceRequest.reasons) this.serviceRequest.reasons = { admin: '', user: '', worker: '' }
+        this.serviceRequest.reasons.admin = this.justification.value;
+        return this._serviceRequestService.updateServiceRequest(this.serviceRequest.id,
+          {
+            bill: this.serviceRequest.bill,
+            reasons: this.serviceRequest.reasons,
+          })
+      }).then(serviceUpdated => {
+        console.log(serviceUpdated)
+        if (!serviceUpdated) {
+          throw new Error("no se ha podido actualizar el servicio");
+        }
+        return this._notifyService.sendMessageToDevice(this.worker.token, environment.constants.notify.paymentCanceled).toPromise()
+      })
+      .then(messageResponse => {
+        console.log(messageResponse)
+        return this._notifyService.sendMessageToDevice(this.user.token, environment.constants.notify.paymentCanceled).toPromise()
+      })
+      .then(messageResponse => {
+        console.log(messageResponse)
+        return this._notifyService.sendEmailToUser(this.worker.email, environment.constants.notify.paymentCanceledSubject, environment.constants.notify.paymentCanceled, environment.constants.notify.paymentCanceled).toPromise()
+      })
+      .then(emailResponse => {
+        console.log(emailResponse)
+        return this._notifyService.sendEmailToUser(this.user.email, environment.constants.notify.paymentCanceledSubject, environment.constants.notify.paymentCanceled, environment.constants.notify.paymentCanceled).toPromise()
+      })
+      .then(emailResponse => {
+        console.log(emailResponse)
+      })
+      .catch(error => {
+        console.error(error)
+        this.saveError = true;
+        setTimeout(() => {
+          this._dialogRef.close();
+          this.showToast(`Service ${this.serviceRequest.id} could not be denied!`, 'top-right', 'danger');
+        }, 1000);
+      })
+      .finally(() => {
+        this.saveSuccess = true;
+        setTimeout(() => {
+          this._dialogRef.close();
+          this.showToast(`Service ${this.serviceRequest.id} was denied sucefull!`, 'top-right', 'success');
+        }, 1000);
+      })
+  }
+
+  showToast(message, position, status) {
+    this._toastrService.show(
+      status || 'Success',
+      `Result: ${message}`,
+      { position, status });
+  }
+
+  cancelApprove() {
+    this._dialogRef.close();
+    this.openDenyPaymentOption = false;
+    this.approvedByAdmin = false;
   }
 
   ngOnDestroy() {

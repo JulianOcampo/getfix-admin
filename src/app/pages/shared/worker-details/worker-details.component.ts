@@ -11,16 +11,19 @@ import { CourseResult } from '../../../models/courseResult';
 import { NotifyService } from '../../../services/notify.service';
 import { environment } from '../../../../environments/environment';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
+import { WorkerBankStorage } from '../../../models/worker-bank-storage';
 @Component({
   selector: 'ngx-worker-details',
   templateUrl: './worker-details.component.html',
+  styleUrls: ['./worker-details.component.scss'],
   queries: {
     dialog: new ViewChild("dialog")
   },
-  styleUrls: ['./worker-details.component.scss']
 })
 export class WorkerDetailsComponent implements OnInit, OnDestroy {
-  public worker: Worker = new Worker();
+
+  worker: Worker = new Worker();
+  workerBankStorage: WorkerBankStorage = new WorkerBankStorage();
   source: LocalDataSource = new LocalDataSource();
   sourceCourses: LocalDataSource = new LocalDataSource();
   loading: boolean = false;
@@ -108,6 +111,8 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
     },
   };
   suscriptionServiceDetails: any = [];
+  suscriptionHistory: any = [];
+  suscriptionBankStorage: any = [];
   suscriptionHelper: Array<any> = [];
 
   saveSuccess: boolean = false;
@@ -117,13 +122,13 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private _dialogService: NbDialogService,
+    private _toastrService: NbToastrService,
     private _workerService: WorkerService,
     private _getfixReqService: GetfixRequestsService,
     private _courseService: CourseService,
     private _notifyService: NotifyService,
-    private router: Router,
-    private _dialogService: NbDialogService,
-    private _toastrService: NbToastrService,
     @Optional() protected _dialogRef: NbDialogRef<any>
   ) { }
 
@@ -133,14 +138,13 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
         this.suscriptionServiceDetails = this._workerService.getWorker(params.id).snapshotChanges()
           .pipe(
             map(changes => {
-              return { ...Object.assign(new Worker, { id: changes.payload.id, ...changes.payload.data() }) }
+              return Object.assign(new Worker, { id: changes.payload.id, ...changes.payload.data() })
             })
           )
           .subscribe(
             _worker => {
               this.worker = _worker;
-              this.worker.workerStatus
-              this._getfixReqService.getWorkerHistory(this.worker.id).get().pipe(
+              this.suscriptionHistory = this._getfixReqService.getWorkerHistory(this.worker.id).get().pipe(
                 first(),
                 map(history => history.docs.map(h =>
                 ({
@@ -158,12 +162,19 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
                   this.source.setPaging(1, 5);
                 }
               )
+              this.suscriptionHelper.push({ subscriber: this.suscriptionHistory })
             }
-
           )
-        this.suscriptionHelper.push({ suscriber: this.suscriptionServiceDetails })
-
-
+        this.suscriptionHelper.push({ subscriber: this.suscriptionServiceDetails })
+        this.suscriptionBankStorage = this._workerService.getWorkerBankStorage(params.id).snapshotChanges()
+          .pipe(
+            map(changes => {
+              return Object.assign(new WorkerBankStorage, { id: changes.payload.id, ...changes.payload.data() })
+            })
+          )
+          .subscribe(bankStorage => {
+            this.workerBankStorage = bankStorage;
+          })
       }
     )
   }
@@ -201,7 +212,7 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
   approveWorker() {
     this._dialogRef = this._dialogService.open(this.dialog, { closeOnBackdropClick: false, closeOnEsc: false, context: { title: 'Accepting Worker' } });
 
-    this._workerService.updateWorkerState(this.worker.id, environment.constants.workerStates.available).toPromise()
+    this._workerService.updateWorkerState(this.worker.id, environment.constants.workerStates.busy).toPromise()
       .then(workerStateResponse => {
         console.log(workerStateResponse)
         return this._notifyService.sendMessageToDevice(this.worker.token, environment.constants.notify.workerApproved).toPromise()
@@ -263,15 +274,17 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
       })
 
   }
-  ngOnDestroy() {
-    this.suscriptionHelper.forEach(suscription => {
-      console.log("abierta", suscription)
-      if (!suscription.suscriber.closed) {
-        suscription.suscriber.unsubscribe();
-        suscription.suscriber.remove;
-        console.log("Cerrando suscripciones..: cerrada?", suscription.suscriber.closed)
-      }
-    });
+
+  get status() {
+    if ((this.worker.avgRating) <= 2) {
+      return 'danger';
+    } else if (this.worker.avgRating <= 3) {
+      return 'warning';
+    } else if (this.worker.avgRating <= 4) {
+      return 'info';
+    } else {
+      return 'success';
+    }
   }
 
   showToast(message, position, status) {
@@ -280,4 +293,17 @@ export class WorkerDetailsComponent implements OnInit, OnDestroy {
       `Result: ${message}`,
       { position, status });
   }
+
+  ngOnDestroy() {
+    this.suscriptionHelper.forEach(suscription => {
+      console.log("abierta", suscription)
+      if (suscription.subscriber && !suscription.subscriber.closed) {
+        suscription.subscriber.unsubscribe();
+        suscription.subscriber.remove;
+        console.log("Cerrando suscripciones..: cerrada?", suscription.subscriber.closed)
+      }
+    });
+  }
+
+
 }

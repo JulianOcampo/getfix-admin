@@ -1,5 +1,5 @@
 <div>
-    <div class=".col-md-6 .offset-md-3" *ngIf="!serviceRequest.user; else finalServiceRequest">
+    <div class=".col-md-6 .offset-md-3" *ngIf="!user || !worker ; else finalServiceRequest">
         Loading...
     </div>
 </div>
@@ -29,23 +29,25 @@
         </div>
     </div>
 
-    <div class="row custom-fixed-top" *ngIf=" serviceRequest && serviceRequest.stateService==7">
+    <div class="row custom-fixed-top"
+        *ngIf=" serviceRequest && serviceRequest.stateService==7 && serviceRequest.bill.statusPayment.includes('APPROVED')">
         <div class="col-12">
             <nb-card fixed>
                 <nb-card-body>
                     <div class="row text-center">
-                        <div class="col-6">
-                            <button nbButton status="success">Approve payment</button>
+                        <div class="col-lg-6 col-sm-12 col-md-6">
+                            <button nbButton status="success" (click)="openActionForPayment('approve')">Approve payment</button>
                         </div>
-                        <div class="col-6">
-                            <button nbButton status="warning">Deny payment</button>
+                        <div class="col-lg-6 col-sm-12 col-md-6">
+                            <button nbButton status="warning" (click)="openActionForPayment('deny')">Deny payment</button>
                         </div>
                     </div>
                 </nb-card-body>
             </nb-card>
         </div>
     </div>
-    <div class="row custom-fixed-top" *ngIf=" serviceRequest && serviceRequest.stateService==6 && serviceRequest.bill.statusCanceled.includes('APPROVED')">
+    <div class="row custom-fixed-top"
+        *ngIf="serviceRequest && serviceRequest.stateService==6 && serviceRequest.bill.statusPayment.includes('APPROVED')">
         <div class="col-12">
             <nb-card fixed>
                 <nb-card-body>
@@ -62,53 +64,53 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6">
+        <div class="col-lg-6 col-sm-12">
             <nb-card>
                 <nb-card-body>
                     <strong>Client</strong>
                     <div class="container pb-2" style="text-align: center;">
-                        <img [src]="serviceRequest.user.profileImage" alt="profileImage" width="100px" height="100px"
+                        <img [src]="user.profileImage" alt="profileImage" width="100px" height="100px"
                             style="border-radius: 80px;box-shadow: 0 0 5px 0 rgba(0,0,0,.52); border: 1px solid #1e3e9e;"><br>
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <label class="label">Name</label>
-                            <p>{{serviceRequest.user.fullName}}</p>
+                            <p>{{user.fullName}}</p>
                             <label class="label">Phone</label>
-                            <p>{{serviceRequest.user.phone}}</p>
+                            <p>{{user.phoneNumber}}</p>
                         </div>
                         <div class="col-6">
                             <label class="label">Email</label>
-                            <p>{{serviceRequest.user.email}}</p>
+                            <p>{{user.email}}</p>
                         </div>
                     </div>
                 </nb-card-body>
             </nb-card>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6 col-sm-12">
             <nb-card>
                 <nb-card-body>
                     <strong>Worker</strong>
                     <div class="container pb-2" style="text-align: center;">
-                        <img [src]="serviceRequest.worker.profileImage" alt="profileImage" width="100px" height="100px"
+                        <img [src]="worker.profileImage" alt="profileImage" width="100px" height="100px"
                             style="border-radius: 80px;box-shadow: 0 0 5px 0 rgba(0,0,0,.52); border: 1px solid #1e3e9e;"><br>
                     </div>
                     <div class="row">
                         <div class="col-6">
                             <label class="label">Name</label>
-                            <p>{{serviceRequest.worker.fullName}}</p>
+                            <p>{{worker.fullName}}</p>
                             <label class="label">Phone</label>
-                            <p>{{serviceRequest.worker.phone}}</p>
+                            <p>{{worker.phoneNumber}}</p>
                         </div>
                         <div class="col-6">
                             <label class="label">Email</label>
-                            <p>{{serviceRequest.worker.email}}</p>
+                            <p>{{worker.email}}</p>
                         </div>
                     </div>
                 </nb-card-body>
             </nb-card>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6 col-sm-12">
             <nb-card>
                 <nb-card-body>
                     <strong>Specifications</strong>
@@ -156,7 +158,7 @@
                 </nb-card-body>
             </nb-card>
         </div>
-        <div class="col-6">
+        <div class="col-lg-6 col-sm-12">
             <nb-card>
                 <nb-card-body>
                     <strong>Service Details</strong>
@@ -165,7 +167,12 @@
                         <label class="label col-sm-4 form-control-label">Service State:</label>
                         <div class="col-sm-8">
                             <p> <strong> {{getStateService(serviceRequest.stateService)}} </strong></p>
-
+                        </div>
+                        <label class="label col-sm-4 form-control-label"
+                            *ngIf="serviceRequest.reasons && serviceRequest.reasons.worker.length > 0">Reason:</label>
+                        <div class="col-sm-8"
+                            *ngIf="serviceRequest.reasons && serviceRequest.reasons.worker.length > 0">
+                            <p>{{serviceRequest.reasons.worker}}</p>
                         </div>
                         <label class="label col-sm-4 form-control-label">Payment Id:</label>
                         <div class="col-sm-8">
@@ -183,6 +190,12 @@
                         <div class="col-sm-8">
                             <p>{{serviceRequest.bill.statusPayment}}</p>
                         </div>
+                        <label class="label col-sm-4 form-control-label"
+                            *ngIf="serviceRequest.reasons && serviceRequest.reasons.admin.length > 0">Reason
+                            admin:</label>
+                        <div class="col-sm-8" *ngIf="serviceRequest.reasons && serviceRequest.reasons.admin.length > 0">
+                            <p>{{serviceRequest.reasons.admin}}</p>
+                        </div>
                         <label class="label col-sm-4 form-control-label">Total price:</label>
                         <div class="col-sm-8">
                             <p>{{serviceRequest.serviceRepair.totalPrice}}</p>
@@ -198,7 +211,7 @@
                 </nb-card-header>
                 <nb-card-body>
                     <div class="row mt-2">
-                        <div class="col-6" *ngFor="let issue of serviceRequest.serviceRepair.issues">
+                        <div class="col-lg-6 col-sm-12" *ngFor="let issue of serviceRequest.serviceRepair.issues">
                             <nb-card>
                                 <nb-card-header>
                                     <div class="row">
@@ -252,7 +265,8 @@
                         <map-marker #marker [position]="markerUserPosition"
                             [options]="{icon:markerUserOptions.icon, animation:markerUserOptions.animation}"
                             (mapClick)="openInfoWindow(marker)"></map-marker>
-                        <map-marker #marker [position]="workerLiveLocation" *ngFor="let workerLiveLocation of workerLiveLocations"
+                        <map-marker #marker [position]="workerLiveLocation"
+                            *ngFor="let workerLiveLocation of workerLiveLocations"
                             [options]="{icon:markerUserOptions.icon, animation:markerUserOptions.animation}"
                             (mapClick)="openInfoWindow(marker)"></map-marker>
                         <map-info-window>Info Window content</map-info-window>
@@ -261,4 +275,65 @@
             </nb-card>
         </div>
     </div>
+</ng-template>
+
+<ng-template #dialog let-data let-ref="_dialogRef">
+    <nb-card class="custom-dialog">
+        <nb-card-header>{{ data.title}}</nb-card-header>
+        <nb-card-body>
+
+            <div *ngIf="!approvedByAdmin">
+                <form [formGroup]="actionsPaymentForm">
+                    <strong>Admin</strong>
+                    <p>Write your justification for {{action}} payment</p>
+                    <textarea rows="6" #name nbInput fullWidth formControlName="justification"> </textarea>
+                </form>
+            </div>
+
+            <div class="row" style="height: 16rem !important;" *ngIf="approvedByAdmin">
+                <div class="col-12">
+                    Service: <strong>{{serviceRequest.id}}</strong>
+                    <div *ngIf="saveSuccess" class="row">
+                        <div class="col-md-6 offset-md-3 col-sm-6 offset-sm-2" style="height: 14rem;">
+                            <lottie-player style="width: 100%;height:100% "
+                                src="../../assets/getFix/lotties/success.json" background="transparent" speed="0.4" loop
+                                autoplay>
+                            </lottie-player>
+                        </div>
+                        <div class="col-12 center">
+                            <h6>Succesfull!</h6>
+                        </div>
+                    </div>
+                    <div *ngIf="!saveSuccess && !saveError" class="row">
+                        <div class="col-md-6 offset-md-3 col-sm-6 offset-sm-2" style="height: 14rem;">
+                            <lottie-player style="width: 100%;height:100%"
+                                src="../../assets/getFix/lotties/spinner.json" background="transparent" speed="0.4" loop
+                                autoplay>
+                            </lottie-player>
+                        </div>
+                        <div class="col-12 center">
+                            <h6>Aplaying...</h6>
+                        </div>
+                    </div>
+                    <div *ngIf="saveError" class="row">
+                        <div class="col-md-6 offset-md-3 col-sm-6 offset-sm-2" style="height: 14rem;">
+                            <lottie-player style="width: 100%;height:100%" src="../../assets/chill/lotties/error.json"
+                                background="transparent" speed="0.4" loop autoplay>
+                            </lottie-player>
+                        </div>
+                        <div class="col-12 center">
+                            <h6>Somethig go wrong, try again!</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nb-card-body>
+        <nb-card-footer class="text-center" *ngIf="!approvedByAdmin">
+            <button *ngIf="action=='approve'" nbButton status="success" (click)="approvePayment()"
+                [disabled]="!actionsPaymentForm.valid">Submit</button>
+            <button *ngIf="action=='deny'" nbButton status="success" (click)="denyPayment()"
+                [disabled]="!actionsPaymentForm.valid">Submit</button>
+            <button class="cancel" nbButton status="danger" (click)="cancelApprove()">Cancel</button>
+        </nb-card-footer>
+    </nb-card>
 </ng-template>

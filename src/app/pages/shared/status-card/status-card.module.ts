@@ -9,7 +9,6 @@ const NB_MODULES = [
   NbCardModule,
   NbIconModule,
   ThemeModule,
-
 ];
 @NgModule({
   declarations: [StatusCardComponent],
