@@ -1,7 +1,9 @@
 <div class="gfix-form">
-    <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
-        <nb-card-body>
-            <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+        <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
+
+            <nb-card-body>
+
                 <label class="label" for="">Name:</label>
                 <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" name="name"
                     formControlName="name">
@@ -71,8 +73,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="row"
-                    style="padding-top: 15px; position: fixed; bottom: 7px; width: 90%; text-align: center;">
+
+
+
+
+            </nb-card-body>
+            <nb-card-footer>
+                <div class="row">
                     <div class="col-6 col-md-6" *ngIf="brand.id" style="text-align: end;">
                         <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Update"
                             [disabled]="!brandForm.valid">
@@ -86,9 +93,8 @@
                             (click)="cancel()">Cancel</button>
                     </div>
                 </div>
+            </nb-card-footer>
 
-            </form>
-
-        </nb-card-body>
-    </nb-card>
+        </nb-card>
+    </form>
 </div>

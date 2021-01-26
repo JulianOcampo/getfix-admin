@@ -1,9 +1,9 @@
 <!-- <pre>{{ category | json }}</pre> -->
 
 <div class="gfix-form">
-    <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
-        <nb-card-body>
-            <form [formGroup]="categoryForm" (ngSubmit)="onSubmit(categoryForm)">
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <nb-card [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
+            <nb-card-body>
                 <!-- <input type="text" style="display: none;" name="id" #id="ngModel" [ngModel]="category.id"> -->
                 <label class="label" for="">Name:</label>
                 <input type="text" nbInput fullWidth shape="rectangle" placeholder="Name" name="name"
@@ -65,23 +65,26 @@
   
             </div> -->
                 </div>
-                <div class="row"
-                    style="padding-top: 15px; position: fixed; bottom: 7px; width: 90%; text-align: center;">
-                    <div class="col-6 col-md-6" *ngIf="category.id" style="text-align: end;">
+
+            </nb-card-body>
+            <nb-card-footer>
+                <div class="row">
+                    <div class="col-md-6" *ngIf="category.id" style="text-align: end;">
                         <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Update"
                             [disabled]="!categoryForm.valid">
                     </div>
-                    <div class="col-6 col-md-6" *ngIf="!category.id" style="text-align: end;">
+                    <div class="col-md-6" *ngIf="!category.id" style="text-align: end;">
                         <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Create"
                             [disabled]="!categoryForm.valid">
                     </div>
-                    <div class="col-6 col-md-6" style="text-align: initial;">
+                    <div class=" col-md-6" style="text-align: initial;">
                         <button nbButton outline status="danger" size="small" type="button"
                             (click)="cancel()">Cancel</button>
                     </div>
-                </div>
-            </form>
-        </nb-card-body>
 
-    </nb-card>
+                </div>
+            </nb-card-footer>
+        </nb-card>
+    </form>
+
 </div>
