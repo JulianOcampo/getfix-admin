@@ -1,5 +1,4 @@
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, } from '@angular/fire/firestore'
-import { GeoFire } from 'geofire';
 
 export class Worker {
     id: string;

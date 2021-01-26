@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbToastrService, NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowRef, NbWindowService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
 import { ModelService } from '../../../services/model.service';
@@ -68,7 +68,7 @@ export class ModelsComponent implements OnInit {
   };
   source: LocalDataSource = new LocalDataSource();
   doingSomething: boolean = false;
-
+  windowsOpen: NbWindowRef;
   constructor(
     private _modelService: ModelService,
     private _windowService: NbWindowService,
@@ -95,13 +95,17 @@ export class ModelsComponent implements OnInit {
 
   onAdd(ev) {
     console.log("ADD->", ev)
-    this._windowService.open(ModelFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(ModelFormComponent, {
       title: `Create Model: `,
       context: [{ active: false, categoryId: '' }]
     });
   }
   onEdit(ev: Model) {
-    this._windowService.open(ModelFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(ModelFormComponent, {
       title: `Edit Model: `,
       context: [ev],
     });

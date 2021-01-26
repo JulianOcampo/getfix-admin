@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbToastrService, NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowRef, NbWindowService } from '@nebular/theme';
 import { ManageFormComponent } from '../manage-form/manage-form.component';
 import { LocalDataSource } from 'ng2-smart-table';
 import { CourseService } from '../../../services/course.service';
@@ -67,6 +67,7 @@ export class ManageComponent implements OnInit {
     },
   };
   source: LocalDataSource = new LocalDataSource();
+  windowsOpen: NbWindowRef;
 
   constructor(
     private _windowService: NbWindowService,
@@ -94,13 +95,17 @@ export class ManageComponent implements OnInit {
 
   onAdd(ev) {
     console.log("ADD->", ev)
-    this._windowService.open(ManageFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(ManageFormComponent, {
       title: `Create Test: `,
       context: [{ active: false, courseId: '' }]
     });
   }
   onEdit(ev: Course) {
-    this._windowService.open(ManageFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(ManageFormComponent, {
       title: `Edit Test: `,
       context: [ev],
     });

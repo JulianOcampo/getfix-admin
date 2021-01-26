@@ -79,11 +79,10 @@ export class CategoryFormComponent {
       console.log(category)
     // this._categoryService.updateCategory()
   }
-  onSubmit(category) {
+  onSubmit() {
     this.doingSomething = true;
     console.log(this.category)
     // console.log("submit", category.form.value)
-    console.log("submit", category.value)
     const id = Math.random().toString(36).substring(2);
     var file = null;
     var filePath = null;

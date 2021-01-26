@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbToastrService, NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowRef, NbWindowService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { CategoryFormComponent } from '../category-form/category-form.component';
 import { CategoryService } from '../../../services/category.service';
@@ -61,6 +61,7 @@ export class CategoriesComponent implements OnInit {
       },
     },
   };
+  windowsOpen: NbWindowRef;
 
   constructor(
     private _categoryService: CategoryService,
@@ -114,14 +115,18 @@ export class CategoriesComponent implements OnInit {
 
   onAdd(ev) {
     console.log("ADD->", ev)
-    this._windowService.open(CategoryFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(CategoryFormComponent, {
       title: `Create Category: `,
       context: { active: false }
     });
   }
 
   onEdit(ev) {
-    this._windowService.open(CategoryFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(CategoryFormComponent, {
       title: `Edit Category: `,
       context: ev.data
     });

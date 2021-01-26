@@ -1,27 +1,13 @@
 <div class="gfix-form">
-    <nb-card>
-        <nb-card-body>
-            <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" [nbSpinner]="doingSomething"
-                nbSpinnerStatus="primary">
+    <form [formGroup]="courseForm" (ngSubmit)="onSubmit()" [nbSpinner]="doingSomething" nbSpinnerStatus="primary">
+        <nb-card>
+            <nb-card-body>
+
                 <label class="label" for="">Name:</label>
                 <input type="text" nbInput fullWidth fieldSize="small" shape="rectangle" placeholder="Name" name="name"
                     formControlName="name">
 
-                <div class="row"
-                    style="padding-top: 15px; position: fixed; bottom: 7px; width: 90%; text-align: center;">
-                    <div class="col-6 col-md-6" *ngIf="course.id" style="text-align: end;">
-                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Update"
-                            [disabled]="!courseForm.valid">
-                    </div>
-                    <div class="col-6 col-md-6" *ngIf="!course.id" style="text-align: end;">
-                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Create"
-                            [disabled]="!courseForm.valid">
-                    </div>
-                    <div class="col-6 col-md-6" style="text-align: initial;">
-                        <button nbButton outline status="danger" size="small" type="button"
-                            (click)="cancel()">Cancel</button>
-                    </div>
-                </div>
+
 
                 <div class="row">
                     <div class="col-md-6 gfix-center">
@@ -140,8 +126,25 @@
                 </div>
 
 
-            </form>
 
-        </nb-card-body>
-    </nb-card>
+
+            </nb-card-body>
+            <nb-card-footer>
+                <div class="row">
+                    <div class="col-6 col-md-6" *ngIf="course.id" style="text-align: end;">
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Update"
+                            [disabled]="!courseForm.valid">
+                    </div>
+                    <div class="col-6 col-md-6" *ngIf="!course.id" style="text-align: end;">
+                        <input nbButton outline status="primary" size="small" type="submit" name="enviar" value="Create"
+                            [disabled]="!courseForm.valid">
+                    </div>
+                    <div class="col-6 col-md-6" style="text-align: initial;">
+                        <button nbButton outline status="danger" size="small" type="button"
+                            (click)="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </nb-card-footer>
+        </nb-card>
+    </form>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NbToastrService, NbWindowService } from '@nebular/theme';
+import { NbToastrService, NbWindowRef, NbWindowService } from '@nebular/theme';
 
 import { LocalDataSource } from 'ng2-smart-table';
 import { BrandService } from '../../../services/brand.service';
@@ -62,7 +62,7 @@ export class BrandsComponent implements OnInit {
       },
     },
   };
-
+  windowsOpen: NbWindowRef;
   constructor(
     private _brandService: BrandService,
     private _windowService: NbWindowService,
@@ -90,14 +90,18 @@ export class BrandsComponent implements OnInit {
 
   onAdd(ev) {
     console.log("ADD->", ev)
-    this._windowService.open(BrandFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(BrandFormComponent, {
       title: `Create Brand: `,
       context: { active: false }
     });
   }
 
   onEdit(ev) {
-    this._windowService.open(BrandFormComponent, {
+    if (this.windowsOpen)
+      this.windowsOpen.close();
+    this.windowsOpen = this._windowService.open(BrandFormComponent, {
       title: `Edit Brand: `,
       context: ev.data
     });
