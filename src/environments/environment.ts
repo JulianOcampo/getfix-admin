@@ -11,7 +11,7 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyDIrtIe2W0Fssbmjxtg85e_YxO17C6PIpA",
+    apiKey: "AIzaSyBc0Pgxabki5tjkE8iNKtLrauFOp9rwgm8",
     authDomain: "getfix24-e3383.firebaseapp.com",
     databaseURL: "https://getfix24-e3383.firebaseio.com",
     projectId: "getfix24-e3383",

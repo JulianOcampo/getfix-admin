@@ -8,6 +8,7 @@ export class Model {
     categoryName: string;
     brandId: string;
     categoryId: string;
+    year: number;
     colors: Array<colors>;
     issues: Array<issues>;
 }

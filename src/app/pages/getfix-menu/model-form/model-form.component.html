@@ -6,15 +6,29 @@
                 <label for="name" class="label">Name:</label>
                 <input type="text" nbInput fullWidth shape="rectangle" fieldSize="small" placeholder="Name" name="name"
                     formControlName="name">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="description" class="label">Description:</label>
+                        <textarea rows="1" nbInput fullWidth shape="rectangle" fieldSize="small"
+                            placeholder="Description" name="description" formControlName="description"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="year" class="label">Year:</label>
+                        <nb-select formControlName="year" [selected]="modelForm.value.year" placeholder="Choose a year"
+                            size="small" fullWidth>
 
-                <label for="description" class="label">Description:</label>
-                <textarea rows="1" nbInput fullWidth shape="rectangle" fieldSize="small" placeholder="Description"
-                    name="description" formControlName="description"></textarea>
+                            <nb-option *ngFor="let year of getLastYears(30); let i = index" [value]="year">
+                                {{year}}
+                            </nb-option>
+                        </nb-select>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6 gfix-center">
                         <label for="categoryId" class="label">Category:</label> <br>
                         <nb-select formControlName="categoryId" (selectedChange)="onChange($event)" size="small"
-                            [selected]="model.categoryId" placeholder="Choose a Category" [ngStyle]="{'width':'100%'}">
+                            [selected]="model.categoryId" placeholder="Choose a Category" fullWidth>
 
                             <nb-option *ngFor="let category of categoriesByModel; let i =index" [value]="category.id">
                                 {{i+1 +' - '+category.name}}
@@ -24,7 +38,7 @@
                     <div class="col-md-6 gfix-center">
                         <label for="brandId" class="label">Brand:</label> <br>
                         <nb-select formControlName="brandId" [selected]="model.brandId" placeholder="Choose a Category"
-                            size="small" [ngStyle]="{'width':'100%'}">
+                            size="small" fullWidth>
 
                             <nb-option *ngFor="let brand of brandsByModel; let i = index" [value]="brand.id">
                                 {{i+1 +' - '+brand.name}}

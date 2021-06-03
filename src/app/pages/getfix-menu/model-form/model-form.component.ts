@@ -73,6 +73,7 @@ export class ModelFormComponent {
     categoryName: [''],
     brandName: [''],
     brandId: [''],
+    year: ['', Validators.required],
     colors: this.fb.array([
       // this.fb.group({
       //   id: ['],
@@ -119,6 +120,7 @@ export class ModelFormComponent {
       brandId: this.model.brandId,
       brandName: this.model.brandName,
       active: this.model.active,
+      year: this.model.year,
     })
     if (this.model.colors) {
       this.model.colors.forEach(val => {
@@ -172,7 +174,7 @@ export class ModelFormComponent {
     this.colors.push(this.fb.group({
       id: [uuidv4()],
       name: [''],
-      hexaValue: ['']
+      hexaValue: ['#ffffff']
     }))
   }
   resetColor() {
@@ -413,6 +415,17 @@ export class ModelFormComponent {
     console.log("**************", c1.id && c2 ? c1.id === c2 : c1 === c2)
 
     return true;
+  }
+
+  getLastYears(lastYears: number): Array<number> {
+    let data = new Date();
+    let years: Array<number> = [data.getFullYear()];
+    for (let index = 1; index < lastYears; index++) {
+      data.setMonth(data.getMonth() - 12)
+      years.push(data.getFullYear())
+
+    }
+    return years;
   }
 
   onChange(ev) {

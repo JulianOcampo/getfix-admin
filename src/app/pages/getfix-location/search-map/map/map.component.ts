@@ -41,7 +41,7 @@ export class MapComponent implements OnInit {
         if (workers.length > 0) {
           this.markerPositions = [];
           this.animation = google.maps.Animation.BOUNCE;
-        }else{
+        } else {
           this.showToast(`${workers.length} workers found`, 'top-right', 'info');
 
         }
@@ -123,4 +123,6 @@ export class MapComponent implements OnInit {
       `Result: ${message}`,
       { position, status });
   }
+
+ 
 }

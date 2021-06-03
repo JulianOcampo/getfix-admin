@@ -4,6 +4,6 @@
     (mapMouseover)="openInfoWindow(marker1)" (mapRightclick)="cl(marker1)">
   </map-marker>
   <map-marker #marker *ngFor="let markerPosition of markerPositions" [position]="markerPosition" [options]="{icon:image, animation:animation}"
-    (mapClick)="openInfoWindow(marker)"></map-marker>
+    (mapClick)="openInfoWindow(marker)" ></map-marker>
   <map-info-window>Info Window content{{melo}}</map-info-window>
 </google-map>

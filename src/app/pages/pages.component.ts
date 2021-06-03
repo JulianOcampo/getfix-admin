@@ -127,8 +127,8 @@ export class PagesComponent {
         ({
           id: c.payload.doc.id,
           ...c.payload.doc.data(),
-          userFullName: c.payload.doc.data().user.fullName,
-          workerFullName: c.payload.doc.data().worker.fullName,
+          userFullName: c.payload.doc.data().user && c.payload.doc.data().user.fullName ? c.payload.doc.data().user.fullName : 'Not Found',
+          workerFullName: c.payload.doc.data().worker && c.payload.doc.data().worker.fullName ? c.payload.doc.data().worker.fullName : 'Not Found',
           price: c.payload.doc.data().serviceRepair.totalPrice + ' $',
           date: formatDate(c.payload.doc.data().dateStart.toDate(), 'dd-MM-yyyy hh:mm', 'en-US')
         })
