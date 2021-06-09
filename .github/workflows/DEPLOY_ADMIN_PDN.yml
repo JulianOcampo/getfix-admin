@@ -1,0 +1,45 @@
+name: DEPLOY_ADMIN_PDN
+
+on: 
+  workflow_dispatch:
+    inputs:
+      deploy-message:
+        description: 'Tags for firebase hosting deploy'
+        required: true
+        default: 'master'
+        
+        
+jobs:
+  firebase-deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
+      with:
+        node-version: '14.x'
+    - run: npm install
+    - run: npm run build:prod-all
+    - name: Copy the Configuration files
+      run: |
+          echo "Home: ${HOME}"
+          echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
+          echo "GITHUB_ACTIONS: ${GITHUB_ACTIONS}"
+          echo "GITHUB_ACTOR: ${GITHUB_ACTOR}"
+          echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+          echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
+          echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+          echo "GITHUB_SHA: ${GITHUB_SHA}"
+          echo "GITHUB_REF: ${GITHUB_REF}"          
+          
+    - run: ls -l
+    - uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting:admin --project=default --message \"${{ github.event.inputs.deploy-message }}  - Deployed from GitHub Actions \"
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    - uses: w9jds/firebase-action@master
+      with:
+        args: deploy --only hosting:admin-us --project=default --message \"${{ github.event.inputs.deploy-message }}  - Deployed from GitHub Actions \"
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
