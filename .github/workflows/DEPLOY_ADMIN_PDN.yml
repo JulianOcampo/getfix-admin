@@ -40,6 +40,6 @@ jobs:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     - uses: w9jds/firebase-action@master
       with:
-        args: deploy --only hosting:admin-us --project=default --message \"${{ github.event.inputs.deploy-message }}  - Deployed from GitHub Actions \"
+        args: deploy --only hosting:admin-pdn --project=default --message \"${{ github.event.inputs.deploy-message }}  - Deployed from GitHub Actions \"
       env:
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

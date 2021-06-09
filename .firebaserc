@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "getfix24-e3383"
+  },
+  "targets": {
+    "getfix24-e3383": {
+      "hosting": {
+        "admin-pdn": [
+          "getfix24-e3383"
+        ]
+      }
+    }
   }
 }
