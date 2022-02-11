@@ -72,7 +72,7 @@
     "ng2-smart-table": "^1.6.0",
     "ngx-color-picker": "^9.1.0",
     "ngx-echarts": "^6.0.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "normalize.css": "6.0.0",
     "roboto-fontface": "0.8.0",
     "rxjs": "6.5.4",
